@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RAProject"
         mc:Ignorable="d"
-        Title="RetroAchievements Browser" Height="422" Width="800">
+        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1079">
     <Grid>
-        <Menu x:Name="menu" Height="20" Margin="0" VerticalAlignment="Top">
-            <MenuItem Header="File">
-                <MenuItem x:Name="menuExit" Header="Exit" Click="menuExit_Click"/>
+        <Menu x:Name="menu" Height="20" Margin="0" VerticalAlignment="Top" Foreground="White">
+            <MenuItem Header="File" Foreground="Black">
+                <MenuItem x:Name="menuExit" Header="Exit" Click="menuExit_Click" Foreground="Black"/>
             </MenuItem>
-            <MenuItem Header="Data">
+            <MenuItem Header="Data" Foreground="Black">
                 <MenuItem Header="Download...">
                     <MenuItem Header="All Data"/>
                     <MenuItem Header="Consoles"/>
@@ -19,43 +19,87 @@
                     <MenuItem Header="Achievements"/>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Help">
+            <MenuItem Header="Help" Foreground="Black">
                 <MenuItem Header="Help"/>
-                <MenuItem Header="About"/> 
+                <MenuItem Header="About"/>
             </MenuItem>
         </Menu>
-        <DockPanel LastChildFill="False" Margin="0,20,0,0">
-            <GroupBox DockPanel.Dock="Top">
-                <ToolBar>
-                    <Label Content="Search" />
-                    <TextBox Width="250">Enter search query...
-                    </TextBox>
-                </ToolBar>
-            </GroupBox>
-            <TabControl x:Name="tabControl" Margin="0" TabStripPlacement="Left">
-                <TabItem Header="User Profile" Margin="0,0,0,0" Height="50" Width="150">
-                    <Grid Background="AliceBlue"/>
+        <Grid Margin="0,20,0,0">
+            <ToolBar Background="Teal" VerticalAlignment="Top" Margin="0">
+                <Label Content="Search" Foreground="White" FontSize="14" />
+                <TextBox Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White">Enter search query...
+                </TextBox>
+            </ToolBar>
+            <TabControl x:Name="tabControl" Margin="0,35,0,0" TabStripPlacement="Left" Background="Teal" BorderBrush="#00000000">
+                <TabControl.Resources>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Grid>
+                                        <Border  Name="Border" Margin="0,0,-4,0" BorderThickness="1,1,1,1" CornerRadius="10,0,0,10" >
+                                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="12,2,12,2" RecognizesAccessKey="True"/>
+                                        </Border>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+
+
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="#FF00CBCB" />
+                                        </Trigger>
+
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Border" Property="Background" Value="Teal" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="#FF00CBCB" />
+                                        </Trigger>
+
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+
+                <TabItem Header="User Profile" Margin="0,0,0,0" Height="50" Width="150" FontSize="16" BorderThickness="3,0,0,0">
+                    <WrapPanel Background="#FF00CBCB">
+                        <GroupBox x:Name="groupBox" Header="GroupBox" Height="210" VerticalAlignment="Top" Margin="4,-1,348,0" Width="216"/>
+                        <GroupBox Header="GroupBox" Height="210" VerticalAlignment="Top" Margin="4,-1,348,0" Width="216"/>
+
+                    </WrapPanel>
                 </TabItem>
                 <TabItem Header="Consoles" Margin="0,0,0,0" Height="50" Width="150">
-                    <Grid Background="#FFE5E5E5"/>
+                    <WrapPanel>
+                    </WrapPanel>
                 </TabItem>
                 <TabItem Header="Games" Margin="0,0,0,0" Height="50" Width="150">
-                    <Grid Background="#FFE5E5E5"/>
+                    <WrapPanel>
+                    </WrapPanel>
                 </TabItem>
                 <TabItem Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
-                    <Grid Background="#FFE5E5E5"/>
                 </TabItem>
                 <TabItem Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
-                    <Grid Background="#FFE5E5E5"/>
+                    <WrapPanel>
+                    </WrapPanel>
                 </TabItem>
                 <TabItem Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
-                    <Grid Background="#FFE5E5E5"/>
+                    <WrapPanel>
+                    </WrapPanel>
                 </TabItem>
                 <TabItem Header="Help" Margin="0,0,0,0" Height="50" Width="150">
-                    <Grid Background="#FFE5E5E5"/>
+                    <WrapPanel>
+                    </WrapPanel>
                 </TabItem>
             </TabControl>
 
-        </DockPanel>
+            <StatusBar VerticalAlignment="Bottom" Background="Teal">
+                <Label x:Name="label" Content="Label" Width="350" Foreground="#FF00CBCB"/>
+                <Separator Height="30" Margin="0" VerticalAlignment="Top" Width="3" Background="#FF00CBCB"/>
+                <Label x:Name="label1" Content="Label" Foreground="#FF00CBCB"/>
+            </StatusBar>
+        </Grid>
     </Grid>
 </Window>
