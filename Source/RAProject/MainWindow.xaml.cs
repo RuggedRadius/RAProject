@@ -24,5 +24,17 @@ namespace RAProject
         {
             InitializeComponent();
         }
+
+        // General Methods
+        private void exitApplication()
+        {
+            Environment.Exit(0);
+        }
+
+        // Event Handlers
+        private void menuExit_Click(object sender, RoutedEventArgs e)
+        {
+            exitApplication();
+        }
     }
 }

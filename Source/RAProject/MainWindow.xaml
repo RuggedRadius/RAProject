@@ -5,8 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RAProject"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="RetroAchievements Browser" Height="422" Width="800">
     <Grid>
-        
+        <Menu x:Name="menu" Height="20" Margin="0" VerticalAlignment="Top">
+            <MenuItem Header="File">
+                <MenuItem x:Name="menuExit" Header="Exit" Click="menuExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Data">
+                <MenuItem Header="Download...">
+                    <MenuItem Header="All Data"/>
+                    <MenuItem Header="Consoles"/>
+                    <MenuItem Header="Games"/>
+                    <MenuItem Header="Achievements"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Help"/>
+                <MenuItem Header="About"/> 
+            </MenuItem>
+        </Menu>
+        <DockPanel LastChildFill="False" Margin="0,20,0,0">
+            <GroupBox DockPanel.Dock="Top">
+                <ToolBar>
+                    <Label Content="Search" />
+                    <TextBox Width="250">Enter search query...
+                    </TextBox>
+                </ToolBar>
+            </GroupBox>
+            <TabControl x:Name="tabControl" Margin="0" TabStripPlacement="Left">
+                <TabItem Header="User Profile" Margin="0,0,0,0" Height="50" Width="150">
+                    <Grid Background="AliceBlue"/>
+                </TabItem>
+                <TabItem Header="Consoles" Margin="0,0,0,0" Height="50" Width="150">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="Games" Margin="0,0,0,0" Height="50" Width="150">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="Help" Margin="0,0,0,0" Height="50" Width="150">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
+
+        </DockPanel>
     </Grid>
 </Window>
