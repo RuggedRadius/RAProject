@@ -69,6 +69,7 @@
     <Compile Include="Utilities\Data.cs" />
     <Compile Include="Utilities\FetchImage.cs" />
     <Compile Include="Utilities\FileHandling.cs" />
+    <Compile Include="Utilities\ImageConversion.cs" />
     <Compile Include="Utilities\Requests.cs" />
     <Compile Include="Utilities\Utilities.cs" />
     <Page Include="MainWindow.xaml">
@@ -118,7 +119,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\maxresdefault.bmp" />
+    <Resource Include="Resources\maxresdefault.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\download.png" />

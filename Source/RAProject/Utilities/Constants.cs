@@ -26,12 +26,6 @@ namespace RAProject.Connection
             internal const string WEB_USER_FEED = "user_feed.php";
             internal const string WEB_USER_ACHIEVEMENTS_BY_DATE = "user_by_date.php";
             internal const string WEB_USER_USER_ACHIEVEMENTS_BY_DATE_RANGE = "user_by_date.php";
-
-            // API
-            //internal const string METHOD_GET_TOP_TEN_USERS = "API_GetTopTenUsers.php";
-            //internal const string METHOD_GET_USER_RANK_AND_SCORE = "API_GetUserRankAndScore.php";
-            //internal const string METHOD_GET_USER_RECENTLY_PLAYED_GAMES = "API_GetUserRecentlyPlayedGames.php";
-            //internal const string METHOD_GET_GAME_INFO_AND_USER_PROGRESS = "API_GetGameInfoAndUserProgress.php";
         }
 
         internal struct BaseURLs

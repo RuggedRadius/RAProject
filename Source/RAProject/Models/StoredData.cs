@@ -15,11 +15,6 @@ namespace RAProject.Models
         public static DataFile myData;
         static string dataFileName = "\\myData.dat";
 
-        //public StoredData()
-        //{
-        //    myData = new DataFile();
-        //}
-
         public struct FileHandling
         {
             public static bool SaveData()
@@ -56,7 +51,7 @@ namespace RAProject.Models
                         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
                         // Deserilise stream of binary data into object
-                        myData = (DataFile)binaryFormatter.Deserialize(stream);
+                        myData = (DataFile) binaryFormatter.Deserialize(stream);
 
                         Console.WriteLine("Data file {0} loaded.", dataFile.FullName);
 
@@ -75,8 +70,6 @@ namespace RAProject.Models
                 }
             }
         }
-
-
 
         public static void DownloadConsoles()
         {

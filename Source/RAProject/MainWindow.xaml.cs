@@ -177,37 +177,45 @@ namespace RAProject
         {
             Console.WriteLine("User Profile tab selected.");
 
+            // Check user object exists, if not create it and fetch it's data
             if (StoredData.myData.currentUser == null)
             {
+                Console.WriteLine("No user found in myData.");
                 StoredData.myData.currentUser = new User();
             }
 
             // Populate fields with user data
-            populateUserDetails(StoredData.myData.currentUser);
-            populateRecentlyPlayedGames(StoredData.myData.currentUser);
+            populateUserDetails();
+            populateRecentlyPlayedGames();
         }
 
-        private void populateUserDetails(User user)
+        private void populateUserDetails()
         {
-            if (user.user == null)
+            // Update label
+            lblUsername.Content = Properties.Settings.Default.Credential_Username;
+
+            if (StoredData.myData.currentUser.userAvatar == null)
             {
-                Console.WriteLine("No user found in myData.");
-                user.fetchUserData();
+                // Fetch user avatar
+                StoredData.myData.currentUser.fetchUserAvatar();
             }
 
-            lblUsername.Content = user.user;
-            //imgUserAvatar = user.userAvatar;
+            // Update User Profile Avatar
+            imgUserAvatar.Source = new BitmapImage(new Uri(StoredData.myData.currentUser.UserPic));
         }
-        private void populateRecentlyPlayedGames(User user)
+        private void populateRecentlyPlayedGames()
         {
             // Fetch list of user's recently played games
-            if (user.RecentlyPlayedGames == null)
+            if (StoredData.myData.currentUser.RecentlyPlayedGames == null)
             {
-                user.getRecentGames();
+                StoredData.myData.currentUser.getRecentGames();
             }
 
+            // Clear wrap panel
+            wrpRecentlyPlayed.Children.Clear();
+
             // For each game in list
-            foreach (Game game in user.RecentlyPlayedGames)
+            foreach (Game game in StoredData.myData.currentUser.RecentlyPlayedGames)
             {
                 // Download game's Box Art, if necessary
                 if (game.imgBoxArt == null)
@@ -215,9 +223,7 @@ namespace RAProject
                     game.downloadImage_BoxArt();
                 }
 
-
                 //Create image object for BoxArt
-
                 System.Windows.Controls.Image img = ConvertDrawingImageToWPFImage(game.imgBoxArt);                
 
                 //Size object

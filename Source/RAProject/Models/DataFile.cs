@@ -13,6 +13,7 @@ namespace RAProject.Models
         public DataFile()
         {
             consoles = new List<SupportedConsole>();
+            currentUser = new User();
         }
     }
 }

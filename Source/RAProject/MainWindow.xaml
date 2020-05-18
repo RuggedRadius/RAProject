@@ -46,16 +46,18 @@
             </Grid.Resources>
             <ToolBar Background="Teal" VerticalAlignment="Top" Margin="0" Height="45">
                 <Label Content="Search" Foreground="White" FontSize="14" />
-                <TextBox Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White" Text="Enter search query..."/>
+                <TextBox Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White" Text="Enter search query..." Height="26" Margin="0,5,0,9"/>
                 <Separator />
                 <ToggleSwitch:HorizontalToggleSwitch x:Name="tglVisualStyles" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" CheckedContent="Text" UncheckedContent="Visual" UncheckedBackground="Teal" CheckedBackground="#FF00CBCB" CheckedForeground="Black" Checked="tglVisualStyles_Checked" Unchecked="tglVisualStyles_Unchecked"/>
                 <Button x:Name="btnTest" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnTest_Click" Margin="0,5,0,0"/>
+                <Image x:Name="imgTest" Height="40" VerticalAlignment="Top" Width="100"/>
 
             </ToolBar>
             <TabControl x:Name="tabControl" Margin="0,35,0,0" TabStripPlacement="Left" Background="Teal" BorderBrush="#00000000" SelectionChanged="tabControl_SelectionChanged">
                 <TabControl.Resources>
                     <Style TargetType="{x:Type TabItem}">
                         <Setter Property="FontSize" Value="16" />
+                        <Setter Property="Foreground" Value="White"/>
                         <Setter Property="Template">
                             <Setter.Value>
 
@@ -66,20 +68,12 @@
                                         </Border>
                                     </Grid>
                                     <ControlTemplate.Triggers>
-
-
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="Border" Property="Background" Value="#FF00575A" />
-                                            <Setter Property="Foreground" Value="White"/>
                                         </Trigger>
-
                                         <Trigger Property="IsSelected" Value="False">
                                             <Setter TargetName="Border" Property="Background" Value="Teal" />
                                         </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Foreground" Value="#FFF" />
-                                        </Trigger>
-
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -89,10 +83,10 @@
 
                 <TabItem x:Name="tabUserProfile" Header="User Profile" Margin="0,0,0,0" Height="50" Width="150" FontSize="16" BorderThickness="3,0,0,0">
                     <WrapPanel Background="#FF00575A">
-                        <GroupBox x:Name="groupBox" Header="GroupBox" Height="188" VerticalAlignment="Top" Margin="4,-1,348,0" Width="426" Foreground="White">
+                        <GroupBox x:Name="groupBox" Header="User Profile" Height="188" VerticalAlignment="Top" Margin="4,-1,348,0" Width="411" Foreground="White">
                             <Grid>
-                                <Image x:Name="imgUserAvatar" HorizontalAlignment="Left" Height="150" Margin="5,6,0,0" VerticalAlignment="Top" Width="150"/>
-                                <Label x:Name="lblUsername" Content="Label" HorizontalAlignment="Left" Margin="168,6,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontSize="18" Panel.ZIndex="1" Background="Black"/>
+                                <Image x:Name="imgUserAvatar" HorizontalAlignment="Left" Height="150" Margin="5,6,0,0" VerticalAlignment="Top" Width="150" Panel.ZIndex="2"/>
+                                <Label x:Name="lblUsername" Content="Label" HorizontalAlignment="Left" Margin="168,6,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontSize="20" Panel.ZIndex="1" Background="#00000000"/>
                             </Grid>
                         </GroupBox>
                         <GroupBox Header="Recently Played Games">
@@ -124,7 +118,16 @@
                     <WrapPanel Background="#FF00575A"></WrapPanel>
                 </TabItem>
                 <TabItem x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
-                    <WrapPanel Background="#FF00575A"></WrapPanel>
+                    <WrapPanel Background="#FF00575A">
+                        <GroupBox x:Name="groupBox1" Header="Account Details" Height="117" Width="335">
+                            <Grid>
+                                <Label x:Name="label" Content="Username" HorizontalAlignment="Left" Margin="14,13,0,0" VerticalAlignment="Top" Width="80" Foreground="White"/>
+                                <TextBox x:Name="txtSettingsUsername" HorizontalAlignment="Left" Height="24" Margin="99,18,0,0" TextWrapping="Wrap" Text="RuggedRadius" VerticalAlignment="Top" Width="205"/>
+                                <Label x:Name="label_Copy" Content="API Key" HorizontalAlignment="Left" Margin="14,47,0,0" VerticalAlignment="Top" Width="80" Foreground="White"/>
+                                <PasswordBox x:Name="txtSettingsAPIKey" HorizontalAlignment="Left" Margin="99,52,0,0" VerticalAlignment="Top" Width="205" Password="B28aNhBWut5BmBmIbsYrFPdpUJoa2Dmt"/>
+                            </Grid>
+                        </GroupBox>
+                    </WrapPanel>
                 </TabItem>
                 <TabItem x:Name="tabHelp" Header="Help" Margin="0,0,0,0" Height="50" Width="150">
                     <WrapPanel Background="#FF00575A">

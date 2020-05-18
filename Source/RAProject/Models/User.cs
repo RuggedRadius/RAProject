@@ -3,10 +3,10 @@ using Newtonsoft.Json.Linq;
 using RAProject.Connection;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace RAProject.Models
@@ -14,7 +14,6 @@ namespace RAProject.Models
     [Serializable]
     public class User
     {
-        [JsonProperty("user")] public string user { get; set; }
         [JsonProperty("score")] public string score { get; set; }
         [JsonProperty("trueratio")] public string trueratio { get; set; }
         [JsonProperty("ID")] public long Id { get; set; }
@@ -27,10 +26,9 @@ namespace RAProject.Models
         [JsonProperty("Rank")] public long Rank { get; set; }
         [JsonProperty("UserPic")] public string UserPic { get; set; }
 
-
         public List<Game> RecentlyPlayedGames;
 
-        //public Image userAvatar;
+        public Image userAvatar;
 
         // Default Constructor
         public User() {
@@ -40,7 +38,6 @@ namespace RAProject.Models
         // Constructor
         public User(JToken j)
         {
-            user = (string) j["user"];
             score = (string) j["score"];
             trueratio = (string) j["trueratio"];
 
@@ -97,13 +94,21 @@ namespace RAProject.Models
             return true;
         }
 
-        //public bool fetchUserAvatar()
-        //{
-        //    Console.WriteLine("Fetching user avatar...");
-        //    userAvatar = new Image();
-        //    userAvatar.Source = new BitmapImage(new Uri(UserPic));
-        //    return true;
-        //}
+        public bool fetchUserAvatar()
+        {
+            Console.WriteLine("Fetching user avatar...");
+            if (UserPic == null)
+            {
+                Console.WriteLine("No user avatar available.");
+                userAvatar = Image.FromFile("Resources/maxresdefault.jpg");
+            }
+            else
+            {
+                Console.WriteLine("Downloading user avatar...");
+                userAvatar = Requests.DownloadImageFromUrl(UserPic); // ...    /RuggedRadius.png
+            }
+            return true;
+        }
 
         public void fetchUserData()
         {
@@ -116,7 +121,6 @@ namespace RAProject.Models
             // Deserialize JSON into object
             dynamic data = JsonConvert.DeserializeObject(jsonString);
 
-            user = (string) data["user"];
             score = (string) data["score"];
             trueratio = (string) data["trueratio"];
 
