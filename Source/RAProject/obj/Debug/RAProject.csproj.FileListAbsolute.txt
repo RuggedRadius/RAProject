@@ -16,3 +16,4 @@ C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\obj\Debug\RAProject.pdb
 C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\obj\Debug\RAProject.csproj.CopyComplete
+C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\bin\Debug\ToggleSwitch.dll

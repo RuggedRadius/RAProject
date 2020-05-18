@@ -116,51 +116,7 @@
 //        // Download
 //        public static void DownloadConsoleList_CreateObjects()
 //        {
-//            main.UpdateStatus("Downloading console list...");
-//            Console.WriteLine("Downloading console data...");
 
-//            receivingData = true;
-
-//            // Fetch console list
-//            string url = Requests.requestURL(Constants.QueryTypes.WEB_CONSOLE_IDs, null);
-//            string json = Requests.FetchJSON(url);
-
-//            // Populate list of console IDs
-//            dynamic data = JsonConvert.DeserializeObject(json);
-
-//            if (data["console"][0] != null)
-//            {
-//                if (globalData == null)
-//                {
-//                    globalData = new StoredData();
-//                }
-
-//                // Create list of consoles
-//                globalData.consoles = new List<SupportedConsole>();
-
-//                foreach (JObject j in data["console"][0])
-//                {
-//                    // Create console object
-//                    SupportedConsole sc = new SupportedConsole(j);
-
-//                    // Add console to list
-//                    globalData.consoles.Add(sc);
-
-//                    Console.WriteLine("Added console: " + sc.Name);
-//                }
-//            }
-//            else
-//            {
-//                MessageBox.Show(
-//                    "No data received for consoles, check your credentials in Settings.",
-//                    "No data received",
-//                    MessageBoxButtons.OK,
-//                    MessageBoxIcon.Error
-//                    );
-//            }
-//            receivingData = false;
-
-//            main.UpdateStatus(string.Empty);
 
 //        }
 //        public static void DownloadGameList_CreateObjects()

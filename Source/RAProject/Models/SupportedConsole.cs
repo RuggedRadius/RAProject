@@ -4,20 +4,14 @@ using RAProject.Connection;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace RAProject.Models
 {
     [Serializable]
     public class SupportedConsole
     {
-        [JsonProperty("ID")]
-        public string ID { get; set; }
-        [JsonProperty("Name")]
-        public string Name { get; set; }
+        [JsonProperty("ID")]    public string ID { get; set; }
+        [JsonProperty("Name")]  public string Name { get; set; }
 
         public List<Game> games;
 
@@ -28,26 +22,36 @@ namespace RAProject.Models
 
 
         public SupportedConsole(JToken j)
-        {
-            games = new List<Game>();
-
+        {            
             ID = (string)j["ID"];
             Name = (string)j["Name"];
 
-            // Fetch games for console
-            string url = Requests.requestURL(Constants.QueryTypes.WEB_GAME_LIST, ID);
-            string json = Requests.FetchJSON(url);
+            games = new List<Game>();
+        }
 
-            // Create object
+        public void DownloadConsoleGames()
+        {
+            Console.WriteLine("Downloading games list for {0}...", Name);
+
+            // Fetch console list
+            string url = Requests.Consoles.getConsoleGames(ID);
+            string json = Requests.FetchJSON(url);
             dynamic data = JsonConvert.DeserializeObject(json);
 
-            // Extract achievements from gameObject into individual objects
-            if (data["Games"] != null)
+            // Create list of Games
+            if (data["game"][0] != null)
             {
-                foreach (JObject g in data["Games"])
+                this.games = new List<Game>();
+
+                foreach (JObject j in data["game"][0])
                 {
-                    Game newGame = new Game(g);
-                    games.Add(newGame);
+                    // Create console object
+                    Game newGame = new Game(j);
+
+                    // Adds Game object to list in console's class
+                    this.games.Add(newGame);
+
+                    Console.WriteLine("Added game: " + newGame.Title);
                 }
             }
         }

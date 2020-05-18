@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="Credential_Username" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">RuggedRadius</Value>
     </Setting>
     <Setting Name="Credential_APIKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">B28aNhBWut5BmBmIbsYrFPdpUJoa2Dmt</Value>
     </Setting>
   </Settings>
 </SettingsFile>
