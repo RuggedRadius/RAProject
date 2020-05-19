@@ -105,27 +105,49 @@
                     </WrapPanel>
                 </TabItem>
                 <TabItem x:Name="tabConsoles" Header="Consoles" Margin="0,0,0,0" Height="50" Width="150">
-                    <DockPanel Margin="0,0,0,34" Background="#FF00575A" >
-                        <ListBox DockPanel.Dock="Left" x:Name="lstConsoles" Width="500" Background="#FF00575A" Foreground="White" SelectionChanged="lstConsoles_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1">
-
-                        </ListBox>
-                        <GroupBox DockPanel.Dock="Right" Header="Console Information" Width="350" >
+                    <Grid Margin="0,0,0,34" Background="#FF00575A" >
+                        <ListBox DockPanel.Dock="Left" x:Name="lstConsoles" Background="#FF00575A" Foreground="White" SelectionChanged="lstConsoles_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" Margin="0,0,510,0" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
+                        <GroupBox DockPanel.Dock="Right" Header="Console Information" Width="500" Panel.ZIndex="1" Margin="0,-3,3,3" HorizontalAlignment="Right" >
                             <StackPanel>
                                 <Image x:Name="imgConsole" Height="200" Source="Resources/Consoles/gba.png"/>
                                 <Label x:Name="lblConsoleName" HorizontalContentAlignment="Center" Content="Console Name" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
-                                <DataGrid x:Name="dgConsoleInformation" Height="253" Background="#00F0F0F0" >
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Width="Auto"/>
-                                        <DataGridTextColumn Width="Auto"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
+                                
+                                <Separator Margin="0,20" />
+                                <WrapPanel>
+                                    <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Content="Release Year" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                </WrapPanel>
+
                             </StackPanel>
                         </GroupBox>
-                    </DockPanel>
+                    </Grid>
 
                 </TabItem>
                 <TabItem x:Name="tabGames" Header="Games" Margin="0,0,0,0" Height="50" Width="150">
-                    <WrapPanel Background="#FF00575A"></WrapPanel>
+                    <Grid Margin="0,0,0,34" Background="#FF00575A" >
+                        <ListBox DockPanel.Dock="Left" x:Name="lstGames" Background="#FF00575A" Foreground="White" SelectionChanged="lstConsoles_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" Margin="0,0,510,0" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
+                        <GroupBox DockPanel.Dock="Right" Header="Console Information" Width="500" Panel.ZIndex="1" Margin="0,-3,3,3" HorizontalAlignment="Right" >
+                            <StackPanel>
+                                <Image x:Name="imgGamee" Height="200"/>
+                                <Label x:Name="lblGameTitle" HorizontalContentAlignment="Center" Content="Game Title" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
+
+                                <Separator Margin="0,20" />
+                                <WrapPanel>
+                                    <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Content="Release Year" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                </WrapPanel>
+
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
                 </TabItem>
                 <TabItem x:Name="tabAchievements" Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
                     <WrapPanel Background="#FF00575A"></WrapPanel>
@@ -155,7 +177,9 @@
             <StatusBar VerticalAlignment="Bottom" Background="Teal">
                 <Label x:Name="lblStatus" Content="Label" Width="350" Foreground="#FF00CBCB"/>
                 <Separator Height="30" Margin="0" VerticalAlignment="Top" Width="3" Background="#FF00CBCB"/>
-                <Label x:Name="label1" Content="Label" Foreground="#FF00CBCB"/>
+                <Label x:Name="label1" Content="Label" Foreground="#FF00CBCB" Width="350"/>
+                <Separator Height="30" Margin="0" VerticalAlignment="Top" Width="3" Background="#FF00CBCB"/>
+                <ProgressBar Width="352" Height="25" />
             </StatusBar>
         </Grid>
     </Grid>

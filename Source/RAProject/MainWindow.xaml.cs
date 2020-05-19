@@ -1,10 +1,5 @@
-﻿using Microsoft.Win32;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RAProject.Connection;
-using RAProject.Models;
+﻿using RAProject.Models;
 using RAProject.Modules;
-using RAProject.Utilities;
 using System;
 using System.Drawing;
 using System.IO;
@@ -159,18 +154,26 @@ namespace RAProject
         }
         private void populateConsoleInfo (SupportedConsole console)
         {
-            // Set image
+            //// Set image
             System.Drawing.Image consoleImage = ConsoleInformation.getConsoleImage(console);
-            Bitmap bmp = new Bitmap(consoleImage);
-            IntPtr hBitmap = bmp.GetHbitmap();
-            ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            
-            imgConsole.Source = WpfBitmap;
 
-            // Set title
-            lblConsoleName.Content = console.Name;
+            if (consoleImage == null)
+            {
+                Console.WriteLine("Image not found...");
+            }
+            else
+            {
+                Bitmap bmp = new Bitmap(consoleImage);
+                IntPtr hBitmap = bmp.GetHbitmap();
+                ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-            // Set details
+                imgConsole.Source = WpfBitmap;
+
+                // Set title
+                lblConsoleName.Content = console.Name;
+
+                // Set details
+            }
         }
         #endregion
 

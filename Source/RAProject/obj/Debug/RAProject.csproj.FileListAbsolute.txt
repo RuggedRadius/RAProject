@@ -16,3 +16,4 @@ C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\obj\Debug\RAProject.csp
 C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\obj\Debug\RAProject.csproj.CoreCompileInputs.cache
 C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\obj\Debug\RAProject.csproj.CopyComplete
 C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\obj\Debug\RAProject.exe
+C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\obj\Debug\RAProject.csprojAssemblyReference.cache
