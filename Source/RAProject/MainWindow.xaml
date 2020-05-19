@@ -48,7 +48,9 @@
                 <Label Content="Search" Foreground="White" FontSize="14" />
                 <TextBox Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White" Text="Enter search query..." Height="26" Margin="0,5,0,9"/>
                 <Separator />
+                <Label Content="Data Styling" Foreground="White" FontSize="14" />
                 <ToggleSwitch:HorizontalToggleSwitch x:Name="tglVisualStyles" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" CheckedContent="Text" UncheckedContent="Visual" UncheckedBackground="Teal" CheckedBackground="#FF00CBCB" CheckedForeground="Black" Checked="tglVisualStyles_Checked" Unchecked="tglVisualStyles_Unchecked"/>
+                <Separator />
                 <Button x:Name="btnTest" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnTest_Click" Margin="0,5,0,0"/>
                 <Image x:Name="imgTest" Height="40" VerticalAlignment="Top" Width="100"/>
 
@@ -103,10 +105,24 @@
                     </WrapPanel>
                 </TabItem>
                 <TabItem x:Name="tabConsoles" Header="Consoles" Margin="0,0,0,0" Height="50" Width="150">
-                    <Grid>
-                        <WrapPanel x:Name="wrpConsoles" Background="#FF00575A"/>
-                        <DataGrid x:Name="dgConsoles" IsEnabled="False" Background="#FF00575A" IsHitTestVisible="False" Panel.ZIndex="-1"/>
-                    </Grid>
+                    <DockPanel Margin="0,0,0,34" Background="#FF00575A" >
+                        <ListBox DockPanel.Dock="Left" x:Name="lstConsoles" Width="500" Background="#FF00575A" Foreground="White" SelectionChanged="lstConsoles_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1">
+
+                        </ListBox>
+                        <GroupBox DockPanel.Dock="Right" Header="Console Information" Width="350" >
+                            <StackPanel>
+                                <Image x:Name="imgConsole" Height="200" Source="Resources/Consoles/gba.png"/>
+                                <Label x:Name="lblConsoleName" HorizontalContentAlignment="Center" Content="Console Name" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
+                                <DataGrid x:Name="dgConsoleInformation" Height="253" Background="#00F0F0F0" >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Width="Auto"/>
+                                        <DataGridTextColumn Width="Auto"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </GroupBox>
+                    </DockPanel>
+
                 </TabItem>
                 <TabItem x:Name="tabGames" Header="Games" Margin="0,0,0,0" Height="50" Width="150">
                     <WrapPanel Background="#FF00575A"></WrapPanel>
@@ -119,12 +135,12 @@
                 </TabItem>
                 <TabItem x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
                     <WrapPanel Background="#FF00575A">
-                        <GroupBox x:Name="groupBox1" Header="Account Details" Height="117" Width="335">
+                        <GroupBox x:Name="groupBox1" Header="Account Details" Height="117" Width="465">
                             <Grid>
                                 <Label x:Name="label" Content="Username" HorizontalAlignment="Left" Margin="14,13,0,0" VerticalAlignment="Top" Width="80" Foreground="White"/>
-                                <TextBox x:Name="txtSettingsUsername" HorizontalAlignment="Left" Height="24" Margin="99,18,0,0" TextWrapping="Wrap" Text="RuggedRadius" VerticalAlignment="Top" Width="205"/>
+                                <TextBox x:Name="txtSettingsUsername" HorizontalAlignment="Left" Height="24" Margin="99,18,0,0" TextWrapping="Wrap" Text="RuggedRadius" VerticalAlignment="Top" Width="325" Foreground="White" Background="Transparent"/>
                                 <Label x:Name="label_Copy" Content="API Key" HorizontalAlignment="Left" Margin="14,47,0,0" VerticalAlignment="Top" Width="80" Foreground="White"/>
-                                <PasswordBox x:Name="txtSettingsAPIKey" HorizontalAlignment="Left" Margin="99,52,0,0" VerticalAlignment="Top" Width="205" Password="B28aNhBWut5BmBmIbsYrFPdpUJoa2Dmt"/>
+                                <PasswordBox x:Name="txtSettingsAPIKey" HorizontalAlignment="Left" Margin="99,52,0,0" VerticalAlignment="Top" Width="325" Password="B28aNhBWut5BmBmIbsYrFPdpUJoa2Dmt" Background="Transparent" Foreground="White"/>
                             </Grid>
                         </GroupBox>
                     </WrapPanel>

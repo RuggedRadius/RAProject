@@ -9,25 +9,12 @@ namespace RA_API.Models
 {
     public class User_LastActivity
     {
-        [JsonProperty("ID")]
-        public long Id { get; set; }
-
-        [JsonProperty("timestamp")]
-        public DateTimeOffset Timestamp { get; set; }
-
-        [JsonProperty("lastupdate")]
-        public DateTimeOffset Lastupdate { get; set; }
-
-        [JsonProperty("activitytype")]
-        public long Activitytype { get; set; }
-
-        [JsonProperty("User")]
-        public string User { get; set; }
-
-        [JsonProperty("data")]
-        public object Data { get; set; }
-
-        [JsonProperty("data2")]
-        public object Data2 { get; set; }
+        [JsonProperty("ID")]            public long Id                      { get; set; }
+        [JsonProperty("activitytype")]  public long Activitytype            { get; set; }
+        [JsonProperty("timestamp")]     public DateTimeOffset Timestamp     { get; set; }
+        [JsonProperty("lastupdate")]    public DateTimeOffset Lastupdate    { get; set; }
+        [JsonProperty("User")]          public string User                  { get; set; }
+        [JsonProperty("data")]          public object Data                  { get; set; }
+        [JsonProperty("data2")]         public object Data2                 { get; set; }
     }
 }

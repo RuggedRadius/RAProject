@@ -16,7 +16,7 @@ namespace RAProject.Models
         public List<Game> games;
 
         // Console Info
-        public Image consoleImage { get; set; }
+        //public Image consoleImage { get; set; }
         public string released { get; set; }
 
 

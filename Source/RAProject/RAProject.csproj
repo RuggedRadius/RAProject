@@ -64,14 +64,24 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\DataFile.cs" />
-    <Compile Include="Utilities\ConsoleDetails.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\ConsoleInformation.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\Data.cs" />
-    <Compile Include="Utilities\FetchImage.cs" />
     <Compile Include="Utilities\FileHandling.cs" />
     <Compile Include="Utilities\ImageConversion.cs" />
+    <Compile Include="Utilities\MergeSort.cs" />
     <Compile Include="Utilities\Requests.cs" />
-    <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="Utilities\InternetConnection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -89,31 +99,10 @@
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\SupportedConsole.cs" />
     <Compile Include="Models\Game.cs" />
-    <Compile Include="Models\StoredData.cs" />
+    <Compile Include="Models\MyData.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\User_LastActivity.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -122,7 +111,77 @@
     <Resource Include="Resources\maxresdefault.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Resources\download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Consoles\3do_interactive.png" />
+    <Resource Include="Resources\Consoles\amiga.jpg" />
+    <Resource Include="Resources\Consoles\amstrad_cpc.png" />
+    <Resource Include="Resources\Consoles\apple_ii.png" />
+    <Resource Include="Resources\Consoles\arcade.png" />
+    <Resource Include="Resources\Consoles\atari_2600.png" />
+    <Resource Include="Resources\Consoles\atari_5200.png" />
+    <Resource Include="Resources\Consoles\atari_7800.jpg" />
+    <Resource Include="Resources\Consoles\atari_7800.png" />
+    <Resource Include="Resources\Consoles\atari_jaguar.png" />
+    <Resource Include="Resources\Consoles\atari_lynx.png" />
+    <Resource Include="Resources\Consoles\atari_st.jpg" />
+    <Resource Include="Resources\Consoles\c64.png" />
+    <Resource Include="Resources\Consoles\Cassette Vision.png" />
+    <Resource Include="Resources\Consoles\cirtual_boy.png" />
+    <Resource Include="Resources\Consoles\colecovision.jpg" />
+    <Resource Include="Resources\Consoles\dos.png" />
+    <Resource Include="Resources\Consoles\dreamcast.png" />
+    <Resource Include="Resources\Consoles\gamecube.png" />
+    <Resource Include="Resources\Consoles\game_gear.png" />
+    <Resource Include="Resources\Consoles\gb.png" />
+    <Resource Include="Resources\Consoles\gba.png" />
+    <Resource Include="Resources\Consoles\gbc.png" />
+    <Resource Include="Resources\Consoles\intellivision.jpg" />
+    <Resource Include="Resources\Consoles\maxresdefault.jpg" />
+    <Resource Include="Resources\Consoles\megaDrive.png" />
+    <Resource Include="Resources\Consoles\msx.png" />
+    <Resource Include="Resources\Consoles\n64.png" />
+    <Resource Include="Resources\Consoles\neo_geo.png" />
+    <Resource Include="Resources\Consoles\nes.png" />
+    <Resource Include="Resources\Consoles\nintendo_ds.png" />
+    <Resource Include="Resources\Consoles\oric.jpg" />
+    <Resource Include="Resources\Consoles\pc-8000.jpg" />
+    <Resource Include="Resources\Consoles\pc-9800.png" />
+    <Resource Include="Resources\Consoles\pc-fx.jpg" />
+    <Resource Include="Resources\Consoles\PC_Engine.jpg" />
+    <Resource Include="Resources\Consoles\philips_cd-i.png" />
+    <Resource Include="Resources\Consoles\pokemon_mini.png" />
+    <Resource Include="Resources\Consoles\ps1.png" />
+    <Resource Include="Resources\Consoles\ps2.png" />
+    <Resource Include="Resources\Consoles\psp.png" />
+    <Resource Include="Resources\Consoles\RA_Logo10.png" />
+    <Resource Include="Resources\Consoles\sega_32x.png" />
+    <Resource Include="Resources\Consoles\sega_cd.png" />
+    <Resource Include="Resources\Consoles\sega_saturn.jpg" />
+    <Resource Include="Resources\Consoles\sg_1000.jpg" />
+    <Resource Include="Resources\Consoles\sms.png" />
+    <Resource Include="Resources\Consoles\snes.jpg" />
+    <Resource Include="Resources\Consoles\snes.png" />
+    <Resource Include="Resources\Consoles\super Cassette Vision.jpg" />
+    <Resource Include="Resources\Consoles\vectrex.png" />
+    <Resource Include="Resources\Consoles\vic-20.jpg" />
+    <Resource Include="Resources\Consoles\wii.png" />
+    <Resource Include="Resources\Consoles\wii_u.png" />
+    <Resource Include="Resources\Consoles\wonderswan.jpg" />
+    <Resource Include="Resources\Consoles\x68k.jpg" />
+    <Resource Include="Resources\Consoles\xbox.png" />
+    <Resource Include="Resources\Consoles\zx81.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

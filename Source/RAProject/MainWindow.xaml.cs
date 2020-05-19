@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RAProject.Connection;
 using RAProject.Models;
+using RAProject.Modules;
 using RAProject.Utilities;
 using System;
 using System.Drawing;
@@ -24,9 +25,9 @@ namespace RAProject
         public MainWindow()
         {
             // Load data or initialise new data
-            if (!StoredData.FileHandling.LoadData())
+            if (!MyData.FileHandling.LoadData())
             {
-                StoredData.myData = new DataFile();
+                MyData.myData = new DataFile();
             }
             
             InitializeComponent();
@@ -51,15 +52,15 @@ namespace RAProject
         private void tglVisualStyles_Checked(object sender, RoutedEventArgs e)
         {
             // Text mode
-            Panel.SetZIndex(dgConsoles, 0);
-            Panel.SetZIndex(wrpConsoles, -1);
+            //Panel.SetZIndex(dgConsoles, 0);
+            //Panel.SetZIndex(wrpConsoles, -1);
             Console.WriteLine("Text mode set.");
         }
         private void tglVisualStyles_Unchecked(object sender, RoutedEventArgs e)
         {
             // Visual mode
-            Panel.SetZIndex(dgConsoles, -1);
-            Panel.SetZIndex(wrpConsoles, 0);
+            //Panel.SetZIndex(dgConsoles, -1);
+            //Panel.SetZIndex(wrpConsoles, 0);
             Console.WriteLine("Visual mode set.");
         }
 
@@ -70,7 +71,7 @@ namespace RAProject
             // TEST
             Console.WriteLine("Consoles:");
 
-            foreach (SupportedConsole sc in StoredData.myData.consoles)
+            foreach (SupportedConsole sc in MyData.myData.consoles)
             {
                 Console.WriteLine(sc.Name);
             }
@@ -140,23 +141,36 @@ namespace RAProject
 
         #region Console Tab
         private void displayTab_Consoles()
-        {
-            Console.WriteLine("Console tab selected.");
-            if (tglVisualStyles.IsChecked)
-            {
-                // Text mode
-                // Populate datagrid...
-                foreach (SupportedConsole console in StoredData.myData.consoles)
-                {
-                    dgConsoles.Items.Add(console);
-                }
-            }
-            else
-            {
-                // Visual mode
-                // Populate wrap panel...
-            }
+        {            
+            populateConsoleList();
 
+        }
+        private void populateConsoleList()
+        {
+            // Clear list
+            lstConsoles.Items.Clear();
+
+            // Populate list with each downloaded console
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                // Add to list box
+                lstConsoles.Items.Add(console.Name);
+            }
+        }
+        private void populateConsoleInfo (SupportedConsole console)
+        {
+            // Set image
+            System.Drawing.Image consoleImage = ConsoleInformation.getConsoleImage(console);
+            Bitmap bmp = new Bitmap(consoleImage);
+            IntPtr hBitmap = bmp.GetHbitmap();
+            ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            
+            imgConsole.Source = WpfBitmap;
+
+            // Set title
+            lblConsoleName.Content = console.Name;
+
+            // Set details
         }
         #endregion
 
@@ -175,13 +189,11 @@ namespace RAProject
         #region User Tab
         private void displayTab_UserProfile() 
         {
-            Console.WriteLine("User Profile tab selected.");
-
             // Check user object exists, if not create it and fetch it's data
-            if (StoredData.myData.currentUser == null)
+            if (MyData.myData.currentUser == null)
             {
                 Console.WriteLine("No user found in myData.");
-                StoredData.myData.currentUser = new User();
+                MyData.myData.currentUser = new User();
             }
 
             // Populate fields with user data
@@ -194,28 +206,28 @@ namespace RAProject
             // Update label
             lblUsername.Content = Properties.Settings.Default.Credential_Username;
 
-            if (StoredData.myData.currentUser.userAvatar == null)
+            if (MyData.myData.currentUser.userAvatar == null)
             {
                 // Fetch user avatar
-                StoredData.myData.currentUser.fetchUserAvatar();
+                MyData.myData.currentUser.fetchUserAvatar();
             }
 
             // Update User Profile Avatar
-            imgUserAvatar.Source = new BitmapImage(new Uri(StoredData.myData.currentUser.UserPic));
+            imgUserAvatar.Source = new BitmapImage(new Uri(MyData.myData.currentUser.UserPic));
         }
         private void populateRecentlyPlayedGames()
         {
             // Fetch list of user's recently played games
-            if (StoredData.myData.currentUser.RecentlyPlayedGames == null)
+            if (MyData.myData.currentUser.RecentlyPlayedGames == null)
             {
-                StoredData.myData.currentUser.getRecentGames();
+                MyData.myData.currentUser.getRecentGames();
             }
 
             // Clear wrap panel
             wrpRecentlyPlayed.Children.Clear();
 
             // For each game in list
-            foreach (Game game in StoredData.myData.currentUser.RecentlyPlayedGames)
+            foreach (Game game in MyData.myData.currentUser.RecentlyPlayedGames)
             {
                 // Download game's Box Art, if necessary
                 if (game.imgBoxArt == null)
@@ -287,18 +299,87 @@ namespace RAProject
         // Control Event Handlers
         private void miDownloadConsoles_Click(object sender, RoutedEventArgs e)
         {
-            StoredData.DownloadConsoles();
+            MyData.DownloadConsoles();
         }
 
         private void miSaveFile_Click(object sender, RoutedEventArgs e)
         {
-            StoredData.FileHandling.SaveData();
+            MyData.FileHandling.SaveData();
             status("Data saved to file.");
         }
         private void miLoadData_Click(object sender, RoutedEventArgs e)
         {
-            StoredData.FileHandling.LoadData(); 
+            MyData.FileHandling.LoadData(); 
             status("Data saved to file.");
+        }
+
+        private void lstConsoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstConsoles.SelectedIndex < 0)
+                return;
+
+                // Get console from name
+                string listValue = (string) lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
+            Console.WriteLine("{0} clicked.", listValue);
+
+            // Search for selected console
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                if (console.Name == listValue)
+                {
+                    // Populate console information panel
+                    populateConsoleInfo(console);
+                }
+            }            
+        }
+
+        private void lstConsoles_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (lstConsoles.SelectedIndex < 0)
+                return;
+
+            // Get console from name
+            string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
+            Console.WriteLine("{0} double-clicked.", listValue);
+
+            // Search for selected console
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                if (console.Name == listValue)
+                {
+                    // Populate console information panel
+                    populateConsoleInfo(console);
+                }
+            }
+
+            // Select Games Tab, and populate it
+            tabControl.SelectedIndex = 2;
+
+
+        }
+
+        private void lstConsoles_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Console.WriteLine("Mouse down...");
+            if (e.ClickCount >= 2)
+            {
+                // Double click
+                string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
+                Console.WriteLine("{0} double-clicked.", listValue);
+
+                // Search for selected console
+                foreach (SupportedConsole console in MyData.myData.consoles)
+                {
+                    if (console.Name == listValue)
+                    {
+                        // Populate console information panel
+                        populateConsoleInfo(console);
+                    }
+                }
+
+                // Select Games Tab, and populate it
+                tabControl.SelectedIndex = 2;
+            }
         }
     }
 }
