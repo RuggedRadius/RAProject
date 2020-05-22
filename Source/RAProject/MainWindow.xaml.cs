@@ -1,6 +1,8 @@
 ﻿using RAProject.Models;
 using RAProject.Modules;
 using System;
+using System.Collections;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -138,7 +140,7 @@ namespace RAProject
         private void displayTab_Consoles()
         {            
             populateConsoleList();
-
+            populateConsoleDataGrid();
         }
         private void populateConsoleList()
         {
@@ -151,6 +153,18 @@ namespace RAProject
                 // Add to list box
                 lstConsoles.Items.Add(console.Name);
             }
+        }
+        public void populateConsoleDataGrid()
+        {
+            dgConsoleList.Items.Clear();
+
+            // Populate list with each downloaded console
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                // Add to datagrid
+                dgConsoleList.Items.Add(new ConsoleDataRow(console.Name, console.released, console.games.Count));
+            }
+
         }
         private void populateConsoleInfo (SupportedConsole console)
         {
@@ -174,6 +188,108 @@ namespace RAProject
 
                 // Set details
             }
+        }
+
+        
+
+        private void lstConsoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstConsoles.SelectedIndex < 0)
+                return;
+
+            // Get console from name
+            string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
+            Console.WriteLine("{0} clicked.", listValue);
+
+            // Search for selected console
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                if (console.Name == listValue)
+                {
+                    // Populate console information panel
+                    populateConsoleInfo(console);
+                }
+            }
+        }
+        private void lstConsoles_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (lstConsoles.SelectedIndex < 0)
+                return;
+
+            // Get console from name
+            string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
+            Console.WriteLine("{0} double-clicked.", listValue);
+
+            // Search for selected console
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                if (console.Name == listValue)
+                {
+                    // Populate console information panel
+                    populateConsoleInfo(console);
+                }
+            }
+
+            // Select Games Tab, and populate it
+            tabControl.SelectedIndex = 2;
+
+
+        }
+        private void lstConsoles_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Console.WriteLine("Mouse down...");
+            if (e.ClickCount >= 2)
+            {
+                // Double click
+                string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
+                Console.WriteLine("{0} double-clicked.", listValue);
+
+                // Search for selected console
+                foreach (SupportedConsole console in MyData.myData.consoles)
+                {
+                    if (console.Name == listValue)
+                    {
+                        // Populate console information panel
+                        populateConsoleInfo(console);
+                    }
+                }
+
+                // Select Games Tab, and populate it
+                tabControl.SelectedIndex = 2;
+            }
+        }
+
+        private void dgConsoleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ConsoleDataRow row = (ConsoleDataRow)dgConsoleList.SelectedItem;
+
+            if (row == null)
+            {
+                return;
+            }
+
+            string consoleName = row.ConsoleName;
+
+            Console.WriteLine("{0} clicked.", consoleName);
+
+            // Search for selected console
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                if (console.Name == consoleName)
+                {
+                    // Populate console information panel
+                    populateConsoleInfo(console);
+
+                    // Prevent event from bubbling and re-triggering this method
+                    e.Handled = true;
+                    return;
+                }
+            }
+        }
+        private void dgConsoleList_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            // Implement sorting method here
+            // ...
         }
         #endregion
 
@@ -283,12 +399,7 @@ namespace RAProject
         }
         #endregion
 
-        #region Console Tab
-        public void populateConsoleDataGrid()
-        {
 
-        }
-        #endregion
 
         private void displayTab_Settings() { 
 
@@ -316,73 +427,6 @@ namespace RAProject
             status("Data saved to file.");
         }
 
-        private void lstConsoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (lstConsoles.SelectedIndex < 0)
-                return;
 
-                // Get console from name
-                string listValue = (string) lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
-            Console.WriteLine("{0} clicked.", listValue);
-
-            // Search for selected console
-            foreach (SupportedConsole console in MyData.myData.consoles)
-            {
-                if (console.Name == listValue)
-                {
-                    // Populate console information panel
-                    populateConsoleInfo(console);
-                }
-            }            
-        }
-
-        private void lstConsoles_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (lstConsoles.SelectedIndex < 0)
-                return;
-
-            // Get console from name
-            string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
-            Console.WriteLine("{0} double-clicked.", listValue);
-
-            // Search for selected console
-            foreach (SupportedConsole console in MyData.myData.consoles)
-            {
-                if (console.Name == listValue)
-                {
-                    // Populate console information panel
-                    populateConsoleInfo(console);
-                }
-            }
-
-            // Select Games Tab, and populate it
-            tabControl.SelectedIndex = 2;
-
-
-        }
-
-        private void lstConsoles_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Console.WriteLine("Mouse down...");
-            if (e.ClickCount >= 2)
-            {
-                // Double click
-                string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
-                Console.WriteLine("{0} double-clicked.", listValue);
-
-                // Search for selected console
-                foreach (SupportedConsole console in MyData.myData.consoles)
-                {
-                    if (console.Name == listValue)
-                    {
-                        // Populate console information panel
-                        populateConsoleInfo(console);
-                    }
-                }
-
-                // Select Games Tab, and populate it
-                tabControl.SelectedIndex = 2;
-            }
-        }
     }
 }

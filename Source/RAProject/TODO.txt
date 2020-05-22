@@ -1,0 +1,82 @@
+﻿
+                                                                                                                                                             
+                                                                                                                                                             
+TTTTTTTTTTTTTTTTTTTTTTT                   DDDDDDDDDDDDD                              LLLLLLLLLLL               iiii                            tttt          
+T:::::::::::::::::::::T                   D::::::::::::DDD                           L:::::::::L              i::::i                        ttt:::t          
+T:::::::::::::::::::::T                   D:::::::::::::::DD                         L:::::::::L               iiii                         t:::::t          
+T:::::TT:::::::TT:::::T                   DDD:::::DDDDD:::::D                        LL:::::::LL                                            t:::::t          
+TTTTTT  T:::::T  TTTTTTooooooooooo          D:::::D    D:::::D    ooooooooooo          L:::::L               iiiiiii     ssssssssss   ttttttt:::::ttttttt    
+        T:::::T      oo:::::::::::oo        D:::::D     D:::::D oo:::::::::::oo        L:::::L               i:::::i   ss::::::::::s  t:::::::::::::::::t    
+        T:::::T     o:::::::::::::::o       D:::::D     D:::::Do:::::::::::::::o       L:::::L                i::::i ss:::::::::::::s t:::::::::::::::::t    
+        T:::::T     o:::::ooooo:::::o       D:::::D     D:::::Do:::::ooooo:::::o       L:::::L                i::::i s::::::ssss:::::stttttt:::::::tttttt    
+        T:::::T     o::::o     o::::o       D:::::D     D:::::Do::::o     o::::o       L:::::L                i::::i  s:::::s  ssssss       t:::::t          
+        T:::::T     o::::o     o::::o       D:::::D     D:::::Do::::o     o::::o       L:::::L                i::::i    s::::::s            t:::::t          
+        T:::::T     o::::o     o::::o       D:::::D     D:::::Do::::o     o::::o       L:::::L                i::::i       s::::::s         t:::::t          
+        T:::::T     o::::o     o::::o       D:::::D    D:::::D o::::o     o::::o       L:::::L         LLLLLL i::::i ssssss   s:::::s       t:::::t    tttttt
+      TT:::::::TT   o:::::ooooo:::::o     DDD:::::DDDDD:::::D  o:::::ooooo:::::o     LL:::::::LLLLLLLLL:::::Li::::::is:::::ssss::::::s      t::::::tttt:::::t
+      T:::::::::T   o:::::::::::::::o     D:::::::::::::::DD   o:::::::::::::::o     L::::::::::::::::::::::Li::::::is::::::::::::::s       tt::::::::::::::t
+      T:::::::::T    oo:::::::::::oo      D::::::::::::DDD      oo:::::::::::oo      L::::::::::::::::::::::Li::::::i s:::::::::::ss          tt:::::::::::tt
+      TTTTTTTTTTT      ooooooooooo        DDDDDDDDDDDDD           ooooooooooo        LLLLLLLLLLLLLLLLLLLLLLLLiiiiiiii  sssssssssss              ttttttttttt  
+           
+KNOWN BUGS:
+===========
+
+
+UN-IMPLEMENTED REQUIREMENTS:
+============================
+    
+    - Merge Sort algorithm
+        - algorithm present, not implemented
+    - Dynamic data structure
+        - Doubly Linked List?
+    - Hashing techniques
+        - Store user's username and API key in hashtable
+
+
+
+CURRENT FEATURES TO COMPLETE:
+=============================
+
+    - User Profile
+        - Recent achievements
+    - Console View
+        - Implement console details
+            - Year released
+            - Games in RA database
+            - Hardware specs
+                - CPU
+                - Graphics
+                - Sound
+                - Controller(s)
+                + other specs
+    - Game view
+        - Game art
+        - Game Details
+            - Year released
+            - Developer
+            + all details available from RA database
+        - YouTube videos? 
+    - Achivement view
+    - Leader Board
+        - Populate on tab click
+            - Possibly add user avatars?
+                - Maybe not if never returned properly in JSONs, explore other user JSONs
+    - Settings
+        - Pick theme colours
+            - Use extended WPF controls library
+            - <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/> ... this is key to global colours
+    - Help
+        - Fix display issues with the HTML
+            - Possibly because IE is prob being used instead of chrome
+            - Try to find solution without launching in default browser (which is usually chrome or firefox)
+    
+
+                                                                                                                                                             
+FUTURE FEATURES:
+================
+
+    - Streamers features
+        - add a streamers overlay window that launches in separate window (so OBS studio can target it)
+	        - stats display in stylised box
+	        - green screen background for transparency
+
