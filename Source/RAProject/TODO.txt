@@ -79,4 +79,8 @@ FUTURE FEATURES:
         - add a streamers overlay window that launches in separate window (so OBS studio can target it)
 	        - stats display in stylised box
 	        - green screen background for transparency
+    - Splash screens
+        - Downloading
+        - Saving / Loading
+        - Welcome screen
 
