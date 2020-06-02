@@ -81,6 +81,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\ConsoleDataRow.cs" />
     <Compile Include="Models\DataFile.cs" />
+    <Compile Include="Models\TopUser.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -120,7 +120,7 @@
         </Style>
         <Style x:Key="DataGridRowHeaderStyle1" TargetType="{x:Type DataGridRowHeader}">
             <Setter Property="Background" Value="#FF00CBCB"/>
-            
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridRowHeader}">
@@ -185,7 +185,6 @@
                 <Separator />
                 <Button x:Name="btnTest" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnTest_Click" Margin="0,5,0,0"/>
                 <Image x:Name="imgTest" Height="40" VerticalAlignment="Top" Width="100"/>
-                <ListBox x:Name="lstConsoles" Background="#FF00575A" Foreground="White" SelectionChanged="lstConsoles_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Width="290" Margin="0,4,0,10"/>
 
             </ToolBar>
             <TabControl x:Name="tabControl" Margin="0,35,0,0" TabStripPlacement="Left" Background="Teal" BorderBrush="#00000000" SelectionChanged="tabControl_SelectionChanged">
@@ -290,8 +289,8 @@
                                 <Label Content="Available Consoles" Foreground="White" HorizontalContentAlignment="Center"/>
                             </Border>
                             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                <DataGrid x:Name="dgConsoleList" Margin="10,0,10,10" SelectionChanged="dgConsoleList_SelectionChanged" Panel.ZIndex="1" SelectionMode="Single" Background="Transparent" Sorting="dgConsoleList_Sorting"       ScrollViewer.CanContentScroll="True" 
-                                ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}">
+                                <DataGrid x:Name="dgConsoleList" Margin="10,0,10,10" SelectionChanged="dgConsoleList_SelectionChanged" Panel.ZIndex="1" SelectionMode="Single" Background="Transparent" Sorting="dgConsoleList_Sorting"       ScrollViewer.CanContentScroll="False" 
+                                ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" MouseDoubleClick="dgConsoleList_MouseDoubleClick">
                                     <DataGrid.RowStyle>
                                         <Style TargetType="{x:Type DataGridRow}">
                                             <Setter Property="Background" Value="Transparent"/>
@@ -306,7 +305,6 @@
                                     </DataGrid.RowStyle>
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Width="*" Binding="{Binding ConsoleName}" Header="Name"/>
-                                        <DataGridTextColumn Width="120" Binding="{Binding YearReleased}" Header="Year Released"/>
                                         <DataGridTextColumn Width="60" Binding="{Binding GamesCount}" Header="Games"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
@@ -321,9 +319,24 @@
                     <Grid Margin="0,0,0,34" Background="#FF00575A" >
                         <StackPanel DockPanel.Dock="Left" Margin="0,0,510,0">
                             <Border BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
-                                <Label Content="Console Name" Foreground="White" HorizontalContentAlignment="Center"/>
+                                <ListBox x:Name="lstConsoles" Background="#FF00575A" Foreground="White" SelectionChanged="lstConsoles_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Margin="10,0" Height="26"/>
                             </Border>
                             <ListBox x:Name="lstGames" Background="#FF00575A" Foreground="White" SelectionChanged="lstConsoles_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
+                            <DataGrid x:Name="dgGames" Margin="10" Panel.ZIndex="1" SelectionMode="Single" Background="Transparent" Sorting="dgConsoleList_Sorting"       ScrollViewer.CanContentScroll="True" 
+                                ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="{x:Type DataGridRow}">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True" >
+                                                <Setter Property="Background" Value="Gainsboro" />
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                            </DataGrid>
                         </StackPanel>
                         <Border DockPanel.Dock="Right" Width="500" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Right" Padding="10" BorderBrush="White" BorderThickness="2" >
                             <StackPanel>
@@ -348,12 +361,19 @@
                     <WrapPanel Background="#FF00575A"/>
                 </TabItem>
                 <TabItem x:Name="tabLeaderBoard" Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
-                    <DataGrid Background="#FF00575A">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Rank" Width="100"/>
-                            <DataGridTextColumn Header="Username" Width="*"/>
-                            <DataGridTextColumn Header="Score" Width="300"/>
-                        </DataGrid.Columns>
+                    <DataGrid x:Name="dgLeaderBoard" Margin="10" Panel.ZIndex="1" SelectionMode="Single" Background="Transparent" Sorting="dgConsoleList_Sorting" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True" >
+                                        <Setter Property="Background" Value="Gainsboro" />
+                                        <Setter Property="Foreground" Value="#FF00EEB8"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
                     </DataGrid>
                 </TabItem>
                 <TabItem x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="50" Width="150">

@@ -1,12 +1,18 @@
-﻿using RAProject.Models;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RAProject.Connection;
+using RAProject.Models;
 using RAProject.Modules;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -65,13 +71,19 @@ namespace RAProject
         // DEBUG ONLY
         private void btnTest_Click(object sender, RoutedEventArgs e)
         {
-            // TEST
-            Console.WriteLine("Consoles:");
+            Console.WriteLine("Test Button Hit");
 
-            foreach (SupportedConsole sc in MyData.myData.consoles)
+            // Populate games data grid test
+            int consoleNumber = 2;
+            SupportedConsole console = MyData.myData.consoles[consoleNumber];
+            Console.WriteLine(console.Name);
+            if (console.games.Count < 1)
             {
-                Console.WriteLine(sc.Name);
+                console.DownloadConsoleGames();
             }
+            Task.Run(() => {
+                populateGamesDataGrid(console);
+            });
         }
 
 
@@ -294,16 +306,54 @@ namespace RAProject
         #endregion
 
 
-
+        #region Games Tab
         private void displayTab_Games() { 
 
         }
+        private void populateGamesDataGrid(SupportedConsole console) {
+            Dispatcher.Invoke(() => {
+                dgGames.ItemsSource = console.games;
+            });
+
+        }
+        #endregion
+
         private void displayTab_Achievements() { 
 
         }
-        private void displayTab_LeaderBoard() { 
 
+
+        #region Leader Board Tab
+        private void displayTab_LeaderBoard() {
+            populateLeaderBoard();
         }
+        private void populateLeaderBoard()
+        {
+            List<User> leaders = new List<User>();
+
+            string requestURL = Requests.Users.getTop10Users();
+            string json = Requests.FetchJSON(requestURL);
+            dynamic data = JsonConvert.DeserializeObject(json);
+
+            List<TopUser> topUsers = new List<TopUser>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                int rank = i + 1;
+                string placeString = "place_" + (i + 1);
+                string username = data["top10"][placeString]["user"];
+                int score = data["top10"][placeString]["score"];
+                int trueratio = data["top10"][placeString]["trueratio"];
+
+                topUsers.Add(new TopUser(rank, username, score, trueratio));
+
+                
+            }
+
+            dgLeaderBoard.ItemsSource = topUsers;
+        }
+
+        #endregion
 
         #region User Tab
         private void displayTab_UserProfile() 
@@ -427,6 +477,9 @@ namespace RAProject
             status("Data saved to file.");
         }
 
-
+        private void dgConsoleList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Console.WriteLine("Double CLICK!!!!");
+        }
     }
 }
