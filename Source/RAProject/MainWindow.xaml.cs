@@ -34,7 +34,7 @@ namespace RAProject
             InitializeComponent();
             
 
-            updateStatus("Browser initialised");
+            
 
             // If connection settings are empty, 
             if (string.IsNullOrEmpty(Properties.Settings.Default.Credential_Username) ||
@@ -51,9 +51,12 @@ namespace RAProject
 
                 // Load data
                 loadDataFromFile();
+
+
             }
 
             initialised = true;
+            updateStatus("Browser initialised");
         }
 
         private async void wndMain_Loaded(object sender, RoutedEventArgs e)
@@ -66,9 +69,14 @@ namespace RAProject
         private async void loadDataFromFile()
         {
             // Load data
-            await Task.Run(() => {
+            await Task.Run(() => 
+            {
                 // Load data or initialise new data
                 MyData.FileHandling.LoadData();
+
+                // Display user profile
+                // SLOW FIXXX THISSSSSSSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //displayTab_UserProfile();
             });
         }
 
@@ -428,25 +436,29 @@ namespace RAProject
         #endregion
 
         #region User Tab
-        private void displayTab_UserProfile() 
+        private async void displayTab_UserProfile() 
         {
-            Dispatcher.Invoke(() =>
-            {
-                // Check user object exists, if not create it and fetch it's data
-                if (MyData.myData.currentUser == null)
+            await Task.Run(() => {
+                Dispatcher.Invoke(() =>
                 {
-                    Console.WriteLine("No user found in myData.");
-                    MyData.myData.currentUser = new User();
+                    if (MyData.myData == null)
+                    {
+                        Console.WriteLine("No myData, this shouldn't happen");
+                    }
+
+                    // Check user object exists, if not create it and fetch it's data
+                    if (MyData.myData.currentUser == null)
+                    {
+                        Console.WriteLine("No user found in myData.");
+                        MyData.myData.currentUser = new User();
+                    }
 
                     // Populate fields with user data
                     populateUserDetails();
                     populateRecentlyPlayedGames();
-                }
-                else
-                {
-
-                }
+                });
             });
+
   
         }
 
