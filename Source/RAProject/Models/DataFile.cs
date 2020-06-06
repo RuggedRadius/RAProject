@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace RAProject.Models
 {
@@ -14,7 +16,7 @@ namespace RAProject.Models
 
         public DataFile()
         {
-            consoles = new List<SupportedConsole>();
+            consoles = new List<SupportedConsole>();            
             currentUser = new User();
         }
     }

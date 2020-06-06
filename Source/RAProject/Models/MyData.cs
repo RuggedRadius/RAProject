@@ -61,11 +61,13 @@ namespace RAProject.Models
                 catch (FileNotFoundException ex)
                 {
                     Console.WriteLine("No data exists.");
+                    myData = new DataFile();
                     return false;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error loading: {0}", dataFileName);
+                    myData = new DataFile();
                     return false;
                 }
             }

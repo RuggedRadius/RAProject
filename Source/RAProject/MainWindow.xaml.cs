@@ -25,18 +25,60 @@ namespace RAProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool initialised;
+
         public FileInfo currentDataFile;
 
         public MainWindow()
-        {
-            // Load data or initialise new data
-            if (!MyData.FileHandling.LoadData())
-            {
-                MyData.myData = new DataFile();
-            }
-            
+        {            
             InitializeComponent();
+            
+
+            updateStatus("Browser initialised");
+
+            // If connection settings are empty, 
+            if (string.IsNullOrEmpty(Properties.Settings.Default.Credential_Username) ||
+                string.IsNullOrEmpty(Properties.Settings.Default.Credential_APIKey))
+            {
+                // Start on settings page
+                tabControl.SelectedIndex = 5;
+                MessageBox.Show("Enter your RetroAchievements credentials here to connect.", "No credentials entered", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                // Start on user profile
+                tabControl.SelectedIndex = 0;
+
+                // Load data
+                loadDataFromFile();
+            }
+
+            initialised = true;
         }
+
+        private async void wndMain_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+
+            
+        }
+
+        private async void loadDataFromFile()
+        {
+            // Load data
+            await Task.Run(() => {
+                // Load data or initialise new data
+                MyData.FileHandling.LoadData();
+            });
+        }
+
+        public void updateStatus(string status)
+        {
+            Dispatcher.Invoke(() => {
+                lblStatus.Content = status;
+            });
+        }
+
 
         // General Methods
         private void exitApplication()
@@ -107,46 +149,49 @@ namespace RAProject
         // Tab Control
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (tabControl.SelectedIndex)
+            if (initialised)
             {
-                case 0:
-                    // User Profile
-                    displayTab_UserProfile();
-                    break;
+                switch (tabControl.SelectedIndex)
+                {
+                    case 0:
+                        // User Profile
+                        displayTab_UserProfile();
+                        break;
 
-                case 1:
-                    // Consoles
-                    displayTab_Consoles();
-                    break;
+                    case 1:
+                        // Consoles
+                        displayTab_Consoles();
+                        break;
 
-                case 2:
-                    // Games
-                    displayTab_Games();
-                    break;
+                    case 2:
+                        // Games
+                        displayTab_Games();
+                        break;
 
-                case 3:
-                    // Achievements
-                    displayTab_Achievements();
-                    break;
+                    case 3:
+                        // Achievements
+                        displayTab_Achievements();
+                        break;
 
-                case 4:
-                    // Leader Board
-                    displayTab_LeaderBoard();
-                    break;
+                    case 4:
+                        // Leader Board
+                        displayTab_LeaderBoard();
+                        break;
 
-                case 5:
-                    // Settings
-                    displayTab_Settings();
-                    break;
+                    case 5:
+                        // Settings
+                        displayTab_Settings();
+                        break;
 
-                case 6:
-                    // Help
-                    displayTab_Help();
-                    break;
+                    case 6:
+                        // Help
+                        displayTab_Help();
+                        break;
 
-                default:
-                    Console.WriteLine("No tab selected");
-                    break;
+                    default:
+                        Console.WriteLine("No tab selected");
+                        break;
+                }
             }
         }
 
@@ -295,14 +340,10 @@ namespace RAProject
             populateSelectConsoleComboBox();
         }
         private void populateGamesDataGrid(SupportedConsole console) {
-            Task.Run(() => {
-                Dispatcher.Invoke(() => {
-                    // Clear list
-                    dgGames.ItemsSource = console.games;
-                });
+            Dispatcher.Invoke(() => {
+                // Clear list
+                dgGames.ItemsSource = console.games;
             });
-
-
         }
         private void populateSelectConsoleComboBox()
         {
@@ -318,7 +359,7 @@ namespace RAProject
 
 
 
-        private void cmbConsoleSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cmbConsoleSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmbConsoleSelection.SelectedIndex < 0)
                 return;
@@ -333,7 +374,9 @@ namespace RAProject
                 if (console.Name == listValue)
                 {
                     // Populate games list for selected console
-                    populateGamesDataGrid(console);
+                    await Task.Run(() => {
+                        populateGamesDataGrid(console);
+                    });
                     MyData.myData.currentConsole = console;
                     break;
                 }
@@ -387,24 +430,37 @@ namespace RAProject
         #region User Tab
         private void displayTab_UserProfile() 
         {
-            // Check user object exists, if not create it and fetch it's data
-            if (MyData.myData.currentUser == null)
+            Dispatcher.Invoke(() =>
             {
-                Console.WriteLine("No user found in myData.");
-                MyData.myData.currentUser = new User();
-            }
+                // Check user object exists, if not create it and fetch it's data
+                if (MyData.myData.currentUser == null)
+                {
+                    Console.WriteLine("No user found in myData.");
+                    MyData.myData.currentUser = new User();
 
-            // Populate fields with user data
-            populateUserDetails();
-            populateRecentlyPlayedGames();
+                    // Populate fields with user data
+                    populateUserDetails();
+                    populateRecentlyPlayedGames();
+                }
+                else
+                {
+
+                }
+            });
+  
         }
 
         private void populateUserDetails()
         {
+            Console.WriteLine("Populating user details...");
+
+            // Update status
+            lblStatus.Content = "Populating user details...";
+
             // Update label
             lblUsername.Content = Properties.Settings.Default.Credential_Username;
 
-            if (MyData.myData.currentUser.userAvatar == null)
+            if (MyData.myData != null && MyData.myData.currentUser.userAvatar == null)
             {
                 // Fetch user avatar
                 MyData.myData.currentUser.fetchUserAvatar();
@@ -415,6 +471,8 @@ namespace RAProject
         }
         private void populateRecentlyPlayedGames()
         {
+            Console.WriteLine("Populating recently played games");
+
             // Fetch list of user's recently played games
             if (MyData.myData.currentUser.RecentlyPlayedGames == null)
             {
@@ -511,17 +569,44 @@ namespace RAProject
             Console.WriteLine("Double CLICK!!!!");
         }
 
-        private void btnSaveCredentials_Click(object sender, RoutedEventArgs e)
+        private async void btnSaveCredentials_Click(object sender, RoutedEventArgs e)
         {
-            // Store credentials in user object
-            MyData.myData.currentUser.addToCredentials(
-                txtSettingsUsername.Text, 
-                Security.ComputeSha256Hash(txtSettingsAPIKey.Password)
-                );
+            await Task.Run(() => {
+                // Update app settings
+                Dispatcher.Invoke(() => {
+                    updateStatus("Credentials updated.");
+                    Properties.Settings.Default.Credential_Username = txtSettingsUsername.Text;
+                    Properties.Settings.Default.Credential_APIKey = txtSettingsAPIKey.Password;
+                });
 
-            // Update app settings
-            Properties.Settings.Default.Credential_Username = txtSettingsUsername.Text;
-            Properties.Settings.Default.Credential_APIKey = txtSettingsAPIKey.Password;
+
+                if (MyData.myData == null)
+                {
+                    // Create new data file for user
+                    MyData.myData = new DataFile();
+                    updateStatus("New local data file created.");
+                }
+
+                if (MyData.myData.currentUser == null)
+                {
+                    // Create new user
+                    MyData.myData.currentUser = new User();
+                    updateStatus("New user created.");
+                }
+
+                Dispatcher.Invoke(() => {
+                    // Store credentials in user object
+                    MyData.myData.currentUser.addToCredentials(
+                        txtSettingsUsername.Text,
+                        Security.ComputeSha256Hash(txtSettingsAPIKey.Password)
+                        );
+                });
+
+
+                Console.WriteLine("Displaying user profile");
+                displayTab_UserProfile();            
+            });
+
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -578,10 +663,6 @@ namespace RAProject
                         }
                         break;
 
-                    // All
-                    case 3:
-                        break;
-
                     // WTF
                     default:
                         break;
@@ -602,47 +683,78 @@ namespace RAProject
 
 
 
-        private void downloadAllMainData()
+        private async void downloadAllMainData()
         {
-            MyData.DownloadConsoles();
+            // Download consoles
+            await Task.Run(() => {
 
-            int numberOfConsoles = MyData.myData.consoles.Count;
+                Console.WriteLine("Downloading console data...");
 
-            pbMain.Maximum = numberOfConsoles;
 
-            for (int i = 0; i < numberOfConsoles; i++)
+                // Fetch console list
+                string url = Requests.Consoles.getConsoleIDs();
+                string json = Requests.FetchJSON(url);
+                dynamic data = JsonConvert.DeserializeObject(json);
+
+                if (data["console"][0] != null)
+                {
+                    if (MyData.myData == null)
+                    {
+                        MyData.myData = new DataFile();
+                    }
+
+                    // Create list of consoles
+                    MyData.myData.consoles = new List<SupportedConsole>();
+
+                    foreach (JObject j in data["console"][0])
+                    {
+                        // Create console object
+                        SupportedConsole sc = new SupportedConsole(j);
+
+                        // Add console to list
+                        MyData.myData.consoles.Add(sc);
+
+
+                        Dispatcher.Invoke(() => {
+                            lblStatus.Content = "Added console: " + sc.Name;
+                        });
+                        Console.WriteLine("Added console: " + sc.Name);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "No data received for consoles, check your credentials in Settings.",
+                        "No data received",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                        );
+                }
+            });
+
+
+            pbMain.Maximum = MyData.myData.consoles.Count - 1;
+
+            var progress = new Progress<int>(value => pbMain.Value = value);
+
+            await Task.Run(() =>
             {
-                MyData.myData.consoles[i].DownloadConsoleGames();
-                pbMain.Value = i;
-            }
+                for (int i = 0; i < MyData.myData.consoles.Count; i++)
+                {
+                    updateStatus(string.Format("Downloading list of {0} games... ", MyData.myData.consoles[i].Name));
+                    
+                    MyData.myData.consoles[i].DownloadConsoleGames();
+
+                    ((IProgress<int>)progress).Report(i);
+                }
+
+                updateStatus("Data lists download complete.");
+            });
         }
 
         private void miDownloadAllData_Click(object sender, RoutedEventArgs e)
         {
-            //downloadAllMainData();
-            testProg();
-        }
-
-        private void testProg()
-        {
-            Task.Run(() => {
-                Dispatcher.Invoke(() => {
-                    pbMain.Minimum = 0;
-                    pbMain.Maximum = 100;
-
-                    for (int i = 0; i < 10; i++)
-                    {
-                        for (int j = 0; j < 100; j++)
-                        {
-                            pbMain.Value = j;
-                            Console.WriteLine(pbMain.Value);
-                            pbMain.UpdateLayout();
-
-                            Thread.Sleep(50);
-                        }
-                    }
-                });
-            });
+            downloadAllMainData();
         }
     }
 }

@@ -5,9 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RAProject"
-        xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="RAProject.MainWindow"
+        xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Name="wndMain" x:Class="RAProject.MainWindow"
         mc:Ignorable="d"
-        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1079" FontFamily="Bahnschrift Light">
+        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1079" FontFamily="Bahnschrift Light" Loaded="wndMain_Loaded">
     <Window.Resources>
         <Style TargetType="{x:Type DataGridRow}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>

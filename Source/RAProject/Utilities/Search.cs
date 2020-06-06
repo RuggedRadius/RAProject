@@ -22,12 +22,12 @@ namespace RAProject.Utilities
             else
             {
                 int mid = (min + max) / 2;
-                if (key == inputArray[mid].Name)
+                if (key.ToLower() == inputArray[mid].Name.ToLower())
                 {
                     // Found
                     return inputArray[mid];
                 }
-                else if (key.CompareTo(inputArray[mid].Name) < 0)
+                else if (key.ToLower().CompareTo(inputArray[mid].Name.ToLower()) < 0)
                 {
                     return BinarySearch_Consoles(inputArray, key, min, mid - 1);
                 }
@@ -49,12 +49,12 @@ namespace RAProject.Utilities
             else
             {
                 int mid = (min + max) / 2;
-                if (key == inputArray[mid].Title)
+                if (key.ToLower() == inputArray[mid].Title.ToLower())
                 {
                     // Found
                     return inputArray[mid];
                 }
-                else if (key.CompareTo(inputArray[mid].Title) < 0)
+                else if (key.ToLower().CompareTo(inputArray[mid].Title.ToLower()) < 0)
                 {
                     return BinarySearch_Games(inputArray, key, min, mid - 1);
                 }
@@ -76,12 +76,12 @@ namespace RAProject.Utilities
             else
             {
                 int mid = (min + max) / 2;
-                if (key == inputArray[mid].Title)
+                if (key.ToLower() == inputArray[mid].Title.ToLower())
                 {
                     // Found
                     return inputArray[mid];
                 }
-                else if (key.CompareTo(inputArray[mid].Title) < 0)
+                else if (key.ToLower().CompareTo(inputArray[mid].Title.ToLower()) < 0)
                 {
                     return BinarySearch_Achievements(inputArray, key, min, mid - 1);
                 }
@@ -171,25 +171,8 @@ namespace RAProject.Utilities
             // Get data
             Game[] input = getAllGames();
 
-            foreach (Game g in input)
-            {
-                Console.WriteLine(g.Title);
-            }
-
             // Sort data
             MergeSort.Games_Rescursive(input, 0, input.Length - 1);
-
-
-            for (int i = 0; i < 50; i++)
-            {
-                Console.WriteLine();
-            }
-
-
-            foreach (Game g in input)
-            {
-                Console.WriteLine(g.Title);
-            }
 
             // Binary search data
             return BinarySearch_Games(input, query, 0, input.Length - 1);

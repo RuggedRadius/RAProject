@@ -73,6 +73,8 @@ namespace RAProject.Models
 
         public void addToCredentials(string username, string pwdHash)
         {
+            credentials.Clear();
+
             // Add username as key and hashed API key as the value
             credentials.Add(username, pwdHash);
         }
