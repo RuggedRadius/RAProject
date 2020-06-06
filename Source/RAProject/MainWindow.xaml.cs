@@ -3,12 +3,14 @@ using Newtonsoft.Json.Linq;
 using RAProject.Connection;
 using RAProject.Models;
 using RAProject.Modules;
+using RAProject.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -157,13 +159,13 @@ namespace RAProject
         private void populateConsoleList()
         {
             // Clear list
-            lstConsoles.Items.Clear();
+            cmbConsoleSelection.Items.Clear();
 
             // Populate list with each downloaded console
             foreach (SupportedConsole console in MyData.myData.consoles)
             {
                 // Add to list box
-                lstConsoles.Items.Add(console.Name);
+                cmbConsoleSelection.Items.Add(console.Name);
             }
         }
         public void populateConsoleDataGrid()
@@ -204,32 +206,14 @@ namespace RAProject
 
         
 
-        private void lstConsoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (lstConsoles.SelectedIndex < 0)
-                return;
 
-            // Get console from name
-            string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
-            Console.WriteLine("{0} clicked.", listValue);
-
-            // Search for selected console
-            foreach (SupportedConsole console in MyData.myData.consoles)
-            {
-                if (console.Name == listValue)
-                {
-                    // Populate console information panel
-                    populateConsoleInfo(console);
-                }
-            }
-        }
         private void lstConsoles_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (lstConsoles.SelectedIndex < 0)
+            if (cmbConsoleSelection.SelectedIndex < 0)
                 return;
 
             // Get console from name
-            string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
+            string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
             Console.WriteLine("{0} double-clicked.", listValue);
 
             // Search for selected console
@@ -253,7 +237,7 @@ namespace RAProject
             if (e.ClickCount >= 2)
             {
                 // Double click
-                string listValue = (string)lstConsoles.Items.GetItemAt(lstConsoles.SelectedIndex);
+                string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
                 Console.WriteLine("{0} double-clicked.", listValue);
 
                 // Search for selected console
@@ -307,15 +291,57 @@ namespace RAProject
 
 
         #region Games Tab
-        private void displayTab_Games() { 
-
+        private void displayTab_Games() {
+            populateSelectConsoleComboBox();
         }
         private void populateGamesDataGrid(SupportedConsole console) {
-            Dispatcher.Invoke(() => {
-                dgGames.ItemsSource = console.games;
+            Task.Run(() => {
+                Dispatcher.Invoke(() => {
+                    // Clear list
+                    dgGames.ItemsSource = console.games;
+                });
             });
 
+
         }
+        private void populateSelectConsoleComboBox()
+        {
+            // Clear combo box
+            cmbConsoleSelection.Items.Clear();
+
+            // Populate combo box
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                cmbConsoleSelection.Items.Add(console.Name);
+            }
+        }
+
+
+
+        private void cmbConsoleSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbConsoleSelection.SelectedIndex < 0)
+                return;
+
+            // Get console from name
+            string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
+            Console.WriteLine("{0} clicked.", listValue);
+
+            // Search for selected console
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                if (console.Name == listValue)
+                {
+                    // Populate games list for selected console
+                    populateGamesDataGrid(console);
+                    MyData.myData.currentConsole = console;
+                    break;
+                }
+            }
+        }
+
+
+
         #endregion
 
         private void displayTab_Achievements() { 
@@ -329,28 +355,31 @@ namespace RAProject
         }
         private void populateLeaderBoard()
         {
-            List<User> leaders = new List<User>();
+            Task.Run(() => {
 
-            string requestURL = Requests.Users.getTop10Users();
-            string json = Requests.FetchJSON(requestURL);
-            dynamic data = JsonConvert.DeserializeObject(json);
+                List<User> leaders = new List<User>();
 
-            List<TopUser> topUsers = new List<TopUser>();
+                string requestURL = Requests.Users.getTop10Users();
+                string json = Requests.FetchJSON(requestURL);
+                dynamic data = JsonConvert.DeserializeObject(json);
 
-            for (int i = 0; i < 10; i++)
-            {
-                int rank = i + 1;
-                string placeString = "place_" + (i + 1);
-                string username = data["top10"][placeString]["user"];
-                int score = data["top10"][placeString]["score"];
-                int trueratio = data["top10"][placeString]["trueratio"];
+                List<TopUser> topUsers = new List<TopUser>();
 
-                topUsers.Add(new TopUser(rank, username, score, trueratio));
+                for (int i = 0; i < 10; i++)
+                {
+                    int rank = i + 1;
+                    string placeString = "place_" + (i + 1);
+                    string username = data["top10"][placeString]["user"];
+                    int score = data["top10"][placeString]["score"];
+                    int trueratio = data["top10"][placeString]["trueratio"];
 
-                
-            }
+                    topUsers.Add(new TopUser(rank, username, score, trueratio));
+                }
 
-            dgLeaderBoard.ItemsSource = topUsers;
+                Dispatcher.Invoke(() => {
+                    dgLeaderBoard.ItemsSource = topUsers;
+                });
+            });
         }
 
         #endregion
@@ -480,6 +509,140 @@ namespace RAProject
         private void dgConsoleList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Console.WriteLine("Double CLICK!!!!");
+        }
+
+        private void btnSaveCredentials_Click(object sender, RoutedEventArgs e)
+        {
+            // Store credentials in user object
+            MyData.myData.currentUser.addToCredentials(
+                txtSettingsUsername.Text, 
+                Security.ComputeSha256Hash(txtSettingsAPIKey.Password)
+                );
+
+            // Update app settings
+            Properties.Settings.Default.Credential_Username = txtSettingsUsername.Text;
+            Properties.Settings.Default.Credential_APIKey = txtSettingsAPIKey.Password;
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (cmbSearchCategory.SelectedIndex >= 0)
+            {
+                // Search in selected category
+                string searchQuery = txtSearchQuery.Text;
+
+                // Filter search query here
+                // ...
+
+                switch (cmbSearchCategory.SelectedIndex)
+                {
+                    // Consoles
+                    case 0:
+                        SupportedConsole searchConsole = Search.SearchConsoles(txtSearchQuery.Text);
+                        if (searchConsole != null)
+                        {
+                            MessageBox.Show(searchConsole.Name + " released in " + searchConsole.released);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No results found");
+
+                        }
+                        break;
+
+                    // Games
+                    case 1:
+                        Game searchGame = Search.SearchGames(txtSearchQuery.Text);
+                        if (searchGame != null)
+                        {
+                            MessageBox.Show(searchGame.Title + " on " + searchGame.ConsoleName);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No results found");
+
+                        }
+                        break;
+
+                    // Achievements
+                    case 2:
+                        Achievement searchAchievements = Search.SearchAchievements(txtSearchQuery.Text);
+                        if (searchAchievements != null)
+                        {
+                            MessageBox.Show(searchAchievements.Title + "\n\n" + searchAchievements.Description);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No results found");
+
+                        }
+                        break;
+
+                    // All
+                    case 3:
+                        break;
+
+                    // WTF
+                    default:
+                        break;
+                }
+
+                //// Search the stored data for the specified query
+                //Search.SearchData(searchQuery);
+            }
+            else
+            {
+                MessageBox.Show("Choose a search category", "No category selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+
+
+
+
+
+
+        private void downloadAllMainData()
+        {
+            MyData.DownloadConsoles();
+
+            int numberOfConsoles = MyData.myData.consoles.Count;
+
+            pbMain.Maximum = numberOfConsoles;
+
+            for (int i = 0; i < numberOfConsoles; i++)
+            {
+                MyData.myData.consoles[i].DownloadConsoleGames();
+                pbMain.Value = i;
+            }
+        }
+
+        private void miDownloadAllData_Click(object sender, RoutedEventArgs e)
+        {
+            //downloadAllMainData();
+            testProg();
+        }
+
+        private void testProg()
+        {
+            Task.Run(() => {
+                Dispatcher.Invoke(() => {
+                    pbMain.Minimum = 0;
+                    pbMain.Maximum = 100;
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        for (int j = 0; j < 100; j++)
+                        {
+                            pbMain.Value = j;
+                            Console.WriteLine(pbMain.Value);
+                            pbMain.UpdateLayout();
+
+                            Thread.Sleep(50);
+                        }
+                    }
+                });
+            });
         }
     }
 }

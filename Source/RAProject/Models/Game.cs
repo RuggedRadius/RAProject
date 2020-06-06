@@ -83,6 +83,13 @@ namespace RAProject.Models
             // Create new list of achievements
             Achievements = new List<Achievement>();
 
+            // Populate achievements
+            //foreach (JProperty a in j["Achievements"])
+            //{
+            //    Achievement ac = new Achievement(a.Value);
+            //    this.Achievements.Add(ac);
+            //}
+
             // Extra attributes from other queries
             if (j["LastPlayed"] != null)
             {
@@ -92,6 +99,16 @@ namespace RAProject.Models
             {
                 ID = (string)j["GameID"];
             }
+
+
+
+
+
+
+            //if (Title == "Super Mario World")
+            //{
+                
+            //}
         }
 
         //public void downloadGameData()

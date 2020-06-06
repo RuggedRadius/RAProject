@@ -4,6 +4,7 @@ using RAProject.Connection;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace RAProject.Models
 {
@@ -14,6 +15,9 @@ namespace RAProject.Models
         [JsonProperty("Name")]  public string Name { get; set; }
 
         public List<Game> games;
+
+        Game game = new Game();
+
 
         // Console Info
         //public Image consoleImage { get; set; }
@@ -27,7 +31,22 @@ namespace RAProject.Models
             Name = (string)j["Name"];
 
             games = new List<Game>();
+            //Task.Run(() => {
+            //    DownloadConsoleGames();
+            //});
         }
+
+
+
+
+
+ 
+
+
+
+
+
+
 
         public void DownloadConsoleGames()
         {

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using RAProject.Connection;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace RAProject.Models
     [Serializable]
     public class User
     {
+
         [JsonProperty("score")] public string score { get; set; }
         [JsonProperty("trueratio")] public string trueratio { get; set; }
         [JsonProperty("ID")] public long Id { get; set; }
@@ -27,12 +29,17 @@ namespace RAProject.Models
         [JsonProperty("UserPic")] public string UserPic { get; set; }
 
         public List<Game> RecentlyPlayedGames;
-
         public Image userAvatar;
+
+        private Hashtable credentials;
+
 
         // Default Constructor
         public User() {
             fetchUserData();
+            
+
+            credentials = new Hashtable();
         }
 
         // Constructor
@@ -62,6 +69,15 @@ namespace RAProject.Models
                 UserPic += j["UserPic"].ToString();
             }
         }
+
+
+        public void addToCredentials(string username, string pwdHash)
+        {
+            // Add username as key and hashed API key as the value
+            credentials.Add(username, pwdHash);
+        }
+
+
 
         public bool getRecentGames()
         {

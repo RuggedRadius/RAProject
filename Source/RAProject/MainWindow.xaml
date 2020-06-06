@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:RAProject"
         xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="RAProject.MainWindow"
         mc:Ignorable="d"
-        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1079">
+        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1079" FontFamily="Bahnschrift Light">
     <Window.Resources>
         <Style TargetType="{x:Type DataGridRow}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -140,7 +140,7 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Menu x:Name="menu" Height="20" Margin="0" VerticalAlignment="Top" Foreground="White">
+        <Menu x:Name="menu" Height="20" Margin="0" VerticalAlignment="Top" Foreground="White" FontFamily="Bahnschrift Light">
             <MenuItem Header="File" Foreground="Black">
                 <MenuItem x:Name="menuExit" Header="Exit" Click="menuExit_Click" Foreground="Black"/>
             </MenuItem>
@@ -149,7 +149,7 @@
                 <MenuItem x:Name="miLoadData" Header="Load Data From File..." Click="miLoadData_Click"/>
                 <Separator/>
                 <MenuItem Header="Download...">
-                    <MenuItem Header="All Data"/>
+                    <MenuItem x:Name="miDownloadAllData" Header="All Data" Click="miDownloadAllData_Click"/>
                     <MenuItem x:Name="miDownloadConsoles" Header="Consoles" Click="miDownloadConsoles_Click"/>
                     <MenuItem Header="Games"/>
                     <MenuItem Header="Achievements"/>
@@ -177,17 +177,20 @@
                 </Style>
             </Grid.Resources>
             <ToolBar Background="Teal" VerticalAlignment="Top" Margin="0" Height="45">
-                <Label Content="Search" Foreground="White" FontSize="14" />
-                <TextBox Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White" Text="Enter search query..." Height="26" Margin="0,5,0,9"/>
-                <Separator />
-                <Label Content="Data Styling" Foreground="White" FontSize="14" />
-                <ToggleSwitch:HorizontalToggleSwitch x:Name="tglVisualStyles" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" CheckedContent="Text" UncheckedContent="Visual" UncheckedBackground="Teal" CheckedBackground="#FF00CBCB" CheckedForeground="Black" Checked="tglVisualStyles_Checked" Unchecked="tglVisualStyles_Unchecked"/>
+                <TextBox x:Name="txtSearchQuery" Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White" Text="Enter search query..." Height="26" Margin="0,5,0,9" FontFamily="Bahnschrift Light"/>
+                <ComboBox x:Name="cmbSearchCategory" SelectedIndex="0" Width="150" Height="30" FontFamily="Bahnschrift Light" FontSize="16" >
+                    <ComboBoxItem Content="Consoles" HorizontalAlignment="Left" Width="92"/>
+                    <ComboBoxItem Content="Games" HorizontalAlignment="Left" Width="92"/>
+                    <ComboBoxItem Content="Achievements" HorizontalAlignment="Left" Width="92"/>
+                </ComboBox>
+                <Button x:Name="btnSearch" Content="Search" Foreground="White" FontSize="14" Height="32" Margin="0,0,0,8" Width="85" Click="btnSearch_Click" />
+
                 <Separator />
                 <Button x:Name="btnTest" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnTest_Click" Margin="0,5,0,0"/>
                 <Image x:Name="imgTest" Height="40" VerticalAlignment="Top" Width="100"/>
 
             </ToolBar>
-            <TabControl x:Name="tabControl" Margin="0,35,0,0" TabStripPlacement="Left" Background="Teal" BorderBrush="#00000000" SelectionChanged="tabControl_SelectionChanged">
+            <TabControl x:Name="tabControl" Margin="0,35,0,0" TabStripPlacement="Left" Background="Teal" BorderBrush="#00000000" SelectionChanged="tabControl_SelectionChanged" FontFamily="Bahnschrift Light" FontSize="14">
                 <TabControl.Resources>
                     <Style TargetType="{x:Type TabItem}">
                         <Setter Property="FontSize" Value="16" />
@@ -216,7 +219,7 @@
                 </TabControl.Resources>
 
                 <TabItem x:Name="tabUserProfile" Header="User Profile" Margin="0,0,0,0" Height="50" Width="150" FontSize="16" BorderThickness="3,0,0,0">
-                    <WrapPanel Background="#FF00575A">
+                    <WrapPanel Background="#FF00575A" >
                         <GroupBox x:Name="groupBox" Header="User Profile" Height="188" VerticalAlignment="Top" Margin="10,0,10,10" Width="400" Foreground="White" HorizontalAlignment="Left">
                             <Grid>
                                 <Image x:Name="imgUserAvatar" HorizontalAlignment="Left" Height="150" Margin="5,6,0,0" VerticalAlignment="Top" Width="150" Panel.ZIndex="2"/>
@@ -319,9 +322,9 @@
                     <Grid Margin="0,0,0,34" Background="#FF00575A" >
                         <StackPanel DockPanel.Dock="Left" Margin="0,0,510,0">
                             <Border BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
-                                <ListBox x:Name="lstConsoles" Background="#FF00575A" Foreground="White" SelectionChanged="lstConsoles_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Margin="10,0" Height="26"/>
+                                <ComboBox x:Name="cmbConsoleSelection" Background="#FF00575A" Foreground="Black" SelectionChanged="cmbConsoleSelection_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Margin="10,0" Height="26"/>
                             </Border>
-                            <ListBox x:Name="lstGames" Background="#FF00575A" Foreground="White" SelectionChanged="lstConsoles_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
+                            <ListBox x:Name="lstGames" Background="#FF00575A" Foreground="White" SelectionChanged="cmbConsoleSelection_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
                             <DataGrid x:Name="dgGames" Margin="10" Panel.ZIndex="1" SelectionMode="Single" Background="Transparent" Sorting="dgConsoleList_Sorting"       ScrollViewer.CanContentScroll="True" 
                                 ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
                                 <DataGrid.RowStyle>
@@ -361,6 +364,7 @@
                     <WrapPanel Background="#FF00575A"/>
                 </TabItem>
                 <TabItem x:Name="tabLeaderBoard" Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
+                    <WrapPanel Background="#FF00575A">
                     <DataGrid x:Name="dgLeaderBoard" Margin="10" Panel.ZIndex="1" SelectionMode="Single" Background="Transparent" Sorting="dgConsoleList_Sorting" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
                         <DataGrid.RowStyle>
                             <Style TargetType="{x:Type DataGridRow}">
@@ -375,6 +379,7 @@
                             </Style>
                         </DataGrid.RowStyle>
                     </DataGrid>
+                    </WrapPanel>
                 </TabItem>
                 <TabItem x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
 
@@ -412,12 +417,13 @@
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Username" HorizontalAlignment="Right" Margin="14,13,0,0" Width="100" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                                            <TextBox Margin="99,18,0,0" TextWrapping="Wrap" Text="RuggedRadius" Foreground="White" Background="Transparent" Width="315" Height="25" HorizontalAlignment="Left"/>
+                                            <TextBox x:Name="txtSettingsUsername" Margin="99,18,0,0" TextWrapping="Wrap" Text="RuggedRadius" Foreground="White" Background="Transparent" Width="315" Height="25" HorizontalAlignment="Left"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="API Key" HorizontalAlignment="Right" Margin="14,47,0,0" VerticalAlignment="Top" Width="100" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                                             <PasswordBox x:Name="txtSettingsAPIKey" Margin="99,52,0,0" Password="B28aNhBWut5BmBmIbsYrFPdpUJoa2Dmt" Background="Transparent" Foreground="White"/>
                                         </StackPanel>
+                                        <Button x:Name="btnSaveCredentials" Margin="200, 50, 200, 20" Click="btnSaveCredentials_Click">Save</Button>
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>
@@ -499,11 +505,11 @@
             </TabControl>
 
             <StatusBar VerticalAlignment="Bottom" Background="Teal">
-                <Label x:Name="lblStatus" Content="Label" Width="350" Foreground="#FF00CBCB"/>
+                <Label x:Name="lblStatus" Content="Label" Width="350" Foreground="#FF00CBCB" FontFamily="Bahnschrift Light"/>
                 <Separator Height="30" Margin="0" VerticalAlignment="Top" Width="3" Background="#FF00CBCB"/>
-                <Label x:Name="label1" Content="Label" Foreground="#FF00CBCB" Width="350"/>
+                <Label x:Name="label1" Content="Label" Foreground="#FF00CBCB" Width="350" FontFamily="Bahnschrift Light"/>
                 <Separator Height="30" Margin="0" VerticalAlignment="Top" Width="3" Background="#FF00CBCB"/>
-                <ProgressBar Width="352" Height="25" />
+                <ProgressBar x:Name="pbMain" Width="352" Height="25" />
             </StatusBar>
         </Grid>
     </Grid>

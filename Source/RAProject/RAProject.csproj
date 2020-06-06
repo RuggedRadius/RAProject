@@ -100,6 +100,8 @@
     <Compile Include="Utilities\MergeSort.cs" />
     <Compile Include="Utilities\Requests.cs" />
     <Compile Include="Utilities\InternetConnection.cs" />
+    <Compile Include="Utilities\Search.cs" />
+    <Compile Include="Utilities\Security.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

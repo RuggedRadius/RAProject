@@ -8,7 +8,9 @@ namespace RAProject.Models
     {
         // Attributes
         public List<SupportedConsole> consoles;
+
         public User currentUser;
+        public SupportedConsole currentConsole;
 
         public DataFile()
         {
