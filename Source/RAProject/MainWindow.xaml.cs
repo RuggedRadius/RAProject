@@ -93,15 +93,7 @@ namespace RAProject
         {
             Environment.Exit(0);
         }
-        public void status(string message)
-        {
-            Console.WriteLine(message);
 
-            if (lblStatus == null)
-            {
-                lblStatus.Content = message;
-            }            
-        }
 
         // Visual styles
         private void tglVisualStyles_Checked(object sender, RoutedEventArgs e)
@@ -257,7 +249,7 @@ namespace RAProject
             }
         }
 
-        
+
 
 
         private void lstConsoles_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -335,6 +327,30 @@ namespace RAProject
                 }
             }
         }
+        private void dgConsoleList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ConsoleDataRow row = (ConsoleDataRow)dgConsoleList.SelectedItem;
+            string consoleName = row.ConsoleName;
+
+            // Search for selected console
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                if (console.Name == consoleName)
+                {
+                    // Populate console information panel
+                    populateGamesDataGrid(console);
+
+                    tabControl.SelectedIndex = 2;
+
+                    // Prevent event from bubbling and re-triggering this method
+                    e.Handled = true;
+                    return;
+                }
+            }
+
+
+            Console.WriteLine("Double CLICK!!!!");
+        }
         private void dgConsoleList_Sorting(object sender, DataGridSortingEventArgs e)
         {
             // Implement sorting method here
@@ -351,6 +367,16 @@ namespace RAProject
             Dispatcher.Invoke(() => {
                 // Clear list
                 dgGames.ItemsSource = console.games;
+
+                //dgGames.Columns[0].Visibility = Visibility.Collapsed;
+                //dgGames.Columns[5].Visibility = Visibility.Collapsed;
+                //dgGames.Columns[7].Visibility = Visibility.Collapsed;
+                //dgGames.Columns[8].Visibility = Visibility.Collapsed;
+                //dgGames.Columns[9].Visibility = Visibility.Collapsed;
+                //dgGames.Columns[10].Visibility = Visibility.Collapsed;
+                //dgGames.Columns[11].Visibility = Visibility.Collapsed;
+                //dgGames.Columns[12].Visibility = Visibility.Collapsed;
+                //dgGames.Columns[13].Visibility = Visibility.Collapsed;
             });
         }
         private void populateSelectConsoleComboBox()
@@ -568,18 +594,15 @@ namespace RAProject
         private void miSaveFile_Click(object sender, RoutedEventArgs e)
         {
             MyData.FileHandling.SaveData();
-            status("Data saved to file.");
+            updateStatus("Data saved to file.");
         }
         private void miLoadData_Click(object sender, RoutedEventArgs e)
         {
             MyData.FileHandling.LoadData(); 
-            status("Data saved to file.");
+            updateStatus("Data loaded from local file.");
         }
 
-        private void dgConsoleList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Console.WriteLine("Double CLICK!!!!");
-        }
+
 
         private async void btnSaveCredentials_Click(object sender, RoutedEventArgs e)
         {
@@ -767,6 +790,26 @@ namespace RAProject
         private void miDownloadAllData_Click(object sender, RoutedEventArgs e)
         {
             downloadAllMainData();
+        }
+
+        private void dgGames_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void dgGames_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void dgGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Console.WriteLine("Mouse clicked game");
+            int selIndex = dgGames.SelectedIndex;
+            Game game = (Game)dgGames.SelectedItem;
+
+            if (game != null)
+                lblGameTitle.Content = game.Title;
         }
     }
 }

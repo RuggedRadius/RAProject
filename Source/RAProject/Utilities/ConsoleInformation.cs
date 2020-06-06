@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -18,9 +20,9 @@ namespace RAProject.Modules
             public const string MegaDrive = "Mega Drive";
             public const string Nintendo64 = "Nintendo 64";
             public const string SNES = "SNES";
-            public const string GameBoy = "GameBoy";
-            public const string GameBoyAdvance = "GameBoy Advance";
-            public const string GameBoyColor = "GameBoy Color";
+            public const string GameBoy = "Game Boy";
+            public const string GameBoyAdvance = "Game Boy Advance";
+            public const string GameBoyColor = "Game Boy Color";
             public const string NES = "NES";
             public const string PCEngine = "PC Engine";
             public const string SegaCD = "Sega CD";
@@ -37,7 +39,7 @@ namespace RAProject.Modules
             public const string WiiU = "Wii U";
             public const string PlayStation2 = "PlayStation 2";
             public const string Xbox = "Xbox";
-            public const string PokemonMini = "Pokemin Mini";
+            public const string PokemonMini = "Pokemon Mini";
             public const string Atari2600 = "Atari 2600";
             public const string DOS = "DOS";
             public const string Arcade = "Arcade";
@@ -55,21 +57,22 @@ namespace RAProject.Modules
             public const string Saturn = "Saturn";
             public const string Dreamcast = "Dreamcast";
             public const string PlayStationPortable = "PlayStation Portable";
-            public const string PhilipsCD_i = "Phillips CD-i";
+            public const string PhilipsCD_i = "Philips CD-i";
             public const string _3DOInteractiveMultiplayer = "3DO Interactive Multiplayer";
             public const string ColecoVision = "ColecoVision";
-            public const string Intellivision = "IntelliVision";
+            public const string Intellivision = "Intellivision";
             public const string Vectrex = "Vectrex";
-            public const string PC8000_8800 = "PC8000/8800";
-            public const string PC9800 = "PC9800";
-            public const string PC_FX = "PC FX";
+            public const string PC8000_8800 = "PC-8000/8800";
+            public const string PC9800 = "PC-9800";
+            public const string PC_FX = "PC-FX";
             public const string Atari5200 = "Atari 5200";
             public const string Atari7800 = "Atari 7800";
             public const string X68K = "X68K";
-            public const string WonderSwan = "Wonder Swan";
+            public const string WonderSwan = "WonderSwan";
             public const string CassetteVision = "Cassette Vision";
             public const string SuperCassetteVision = "Super Cassette Vision";
         }
+
 
         //public struct ConsoleImages
         //{
@@ -130,60 +133,60 @@ namespace RAProject.Modules
         //}
         public struct ConsoleImages
         {
-            public static string MegaDrive = AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\megaDrive.png";
-            public static string Nintendo64 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\n64.png"; 
-            public static string SNES =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\snes.png"; 
-            public static string GameBoy =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\gb.png"; 
-            public static string GameBoyAdvance =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\gba.png"; 
-            public static string GameBoyColor =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\gbc.png"; 
-            public static string NES =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\nes.png"; 
-            public static string PCEngine =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\PC_Engine.png"; 
-            public static string SegaCD =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sega_cd.png"; 
-            public static string _32X =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sega_32x.png"; 
-            public static string MasterSystem =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sms.png"; 
-            public static string PlayStation =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\ps1.png"; 
-            public static string AtariLynx =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_lynx.png"; 
-            public static string NeoGeoPocket =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\neo_geo.png"; 
-            public static string GameGear =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\game_gear.png"; 
-            public static string GameCube =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\gamecube.png"; 
-            public static string AtariJaguar =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_jaguar.png"; 
-            public static string NintendoDS =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\nintendo_ds.png"; 
-            public static string Wii =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\wii.png"; 
-            public static string WiiU =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\wii_u.png"; 
-            public static string PlayStation2 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\ps2.png"; 
-            public static string Xbox =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\xbox.png"; 
-            public static string PokemonMini =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\pokemon_mini.png"; 
-            public static string Atari2600 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_2600.png"; 
-            public static string DOS =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\dos.png"; 
-            public static string Arcade =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\arcade.png"; 
-            public static string VirtualBoy =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\cirtual_boy.png"; 
-            public static string MSX =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\msx.png"; 
-            public static string Commodore64 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\c64.png"; 
-            public static string ZX81 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\zx81.png"; 
-            public static string Oric =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\oric.png"; 
-            public static string SG_1000 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sg_1000.png"; 
-            public static string VIC_20 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\vic-20.png"; 
-            public static string Amiga =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\amiga.png"; 
-            public static string AtariST =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_st.png"; 
-            public static string AmstradCPC =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\amstrad_cpc.png"; 
-            public static string AppleII =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\apple_ii.png"; 
-            public static string Saturn =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sega_saturn.png"; 
-            public static string Dreamcast =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\dreamcast.png"; 
-            public static string PlayStationPortable =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\psp.png"; 
-            public static string PhilipsCD_i =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\philips_cd-i.png"; 
-            public static string _3DOInteractiveMultiplayer =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\3do_interactive.png"; 
-            public static string ColecoVision =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\colecovision.png"; 
-            public static string Intellivision =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\intellivision.png"; 
-            public static string Vectrex =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\vectrex.png"; 
-            public static string PC8000_8800 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\pc-8000.png"; 
-            public static string PC9800 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\pc-9800.png"; 
-            public static string PC_FX =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\pc-fx.png"; 
-            public static string Atari5200 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_5200.png"; 
-            public static string Atari7800 =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_7800.png"; 
-            public static string X68K =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\x68k.png"; 
-            public static string WonderSwan =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\wonderswan.png"; 
-            public static string CassetteVision =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\Cassette_Vision.png"; 
-            public static string SuperCassetteVision =AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\super_Cassette_Vision.png"; 
+            public static string MegaDrive = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\megaDrive.png"; // AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\megaDrive.png";
+            public static string Nintendo64 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\n64.png"; 
+            public static string SNES = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\snes.png"; 
+            public static string GameBoy = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\gb.png"; 
+            public static string GameBoyAdvance = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\gba.png"; 
+            public static string GameBoyColor = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\gbc.png"; 
+            public static string NES = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\nes.png"; 
+            public static string PCEngine = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\PC_Engine.png"; 
+            public static string SegaCD = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\sega_cd.png"; 
+            public static string _32X = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\sega_32x.png"; 
+            public static string MasterSystem = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\sms.png"; 
+            public static string PlayStation = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\ps1.png"; 
+            public static string AtariLynx = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\atari_lynx.png"; 
+            public static string NeoGeoPocket = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\neo_geo.png"; 
+            public static string GameGear = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\game_gear.png"; 
+            public static string GameCube = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\gamecube.png"; 
+            public static string AtariJaguar = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\atari_jaguar.png"; 
+            public static string NintendoDS = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\nintendo_ds.png"; 
+            public static string Wii = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\wii.png"; 
+            public static string WiiU = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\wii_u.png"; 
+            public static string PlayStation2 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\ps2.png"; 
+            public static string Xbox = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\xbox.png"; 
+            public static string PokemonMini = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\pokemon_mini.png"; 
+            public static string Atari2600 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\atari_2600.png"; 
+            public static string DOS = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\dos.png"; 
+            public static string Arcade = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\arcade.png"; 
+            public static string VirtualBoy = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\cirtual_boy.png"; 
+            public static string MSX = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\msx.png"; 
+            public static string Commodore64 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\c64.png"; 
+            public static string ZX81 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\zx81.png"; 
+            public static string Oric = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\oric.png"; 
+            public static string SG_1000 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\sg_1000.png"; 
+            public static string VIC_20 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\vic-20.png"; 
+            public static string Amiga = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\amiga.png"; 
+            public static string AtariST = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\atari_st.png"; 
+            public static string AmstradCPC = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\amstrad_cpc.png"; 
+            public static string AppleII = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\apple_ii.png"; 
+            public static string Saturn = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\sega_saturn.png"; 
+            public static string Dreamcast = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\dreamcast.png"; 
+            public static string PlayStationPortable = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\psp.png"; 
+            public static string PhilipsCD_i = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\philips_cd-i.png"; 
+            public static string _3DOInteractiveMultiplayer = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\3do_interactive.png"; 
+            public static string ColecoVision = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\colecovision.png"; 
+            public static string Intellivision = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\intellivision.png"; 
+            public static string Vectrex = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\vectrex.png"; 
+            public static string PC8000_8800 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\pc-8000.png"; 
+            public static string PC9800 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\pc-9800.png"; 
+            public static string PC_FX = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\pc-fx.png"; 
+            public static string Atari5200 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\atari_5200.png"; 
+            public static string Atari7800 = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\atari_7800.png"; 
+            public static string X68K = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\x68k.png"; 
+            public static string WonderSwan = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\wonderswan.png"; 
+            public static string CassetteVision = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\Cassette Vision.png"; 
+            public static string SuperCassetteVision = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\super Cassette Vision.png"; 
         }
 
         
@@ -356,6 +359,7 @@ namespace RAProject.Modules
                         return Image.FromFile(ConsoleImages.SuperCassetteVision);
 
                     default:
+                        Console.WriteLine("ERROR: TYPO SOMEHWERE!!!");
                         return null;
                 }
             }

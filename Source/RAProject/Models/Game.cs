@@ -12,10 +12,10 @@ namespace RAProject.Models
     {
         [JsonProperty("ID")]            public string ID                        { get; set; }
         [JsonProperty("Title")]         public string Title                     { get; set; }
-        [JsonProperty("ForumTopicID")]  public string ForumTopicID              { get; set; }
-        [JsonProperty("ConsoleID")]     public string ConsoleID                 { get; set; }
+        [JsonProperty("ForumTopicID")]  private string ForumTopicID              { get; set; }
+        [JsonProperty("ConsoleID")] public string ConsoleID                 { get; set; }
         [JsonProperty("ConsoleName")]   public string ConsoleName               { get; set; }
-        [JsonProperty("Flags")]         public object Flags                     { get; set; }
+        [JsonProperty("Flags")] private object Flags                     { get; set; }
         [JsonProperty("ImageIcon")]     public string ImageIcon                 { get; set; }
         [JsonProperty("GameIcon")]      public string GameIcon                  { get; set; }
         [JsonProperty("ImageTitle")]    public string ImageTitle                { get; set; }
