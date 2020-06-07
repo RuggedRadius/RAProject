@@ -51,8 +51,16 @@ namespace RAProject
 
                 // Load data
                 loadDataFromFile();
+                updateStatus("Data loaded from local file.");
 
+                // Populate user profle
+                populateUserDetails();
 
+                // Populate consoles
+                populateConsoleDataGrid();
+
+                // Populate leader board
+                populateLeaderBoard();
             }
 
             initialised = true;
@@ -68,11 +76,13 @@ namespace RAProject
 
         private async void loadDataFromFile()
         {
+            MyData.FileHandling.LoadData();
+
             // Load data
             await Task.Run(() => 
             {
                 // Load data or initialise new data
-                MyData.FileHandling.LoadData();
+                
 
                 // Display user profile
                 // SLOW FIXXX THISSSSSSSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -149,50 +159,50 @@ namespace RAProject
         // Tab Control
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (initialised)
-            {
-                switch (tabControl.SelectedIndex)
-                {
-                    case 0:
-                        // User Profile
-                        displayTab_UserProfile();
-                        break;
+            //if (initialised)
+            //{
+            //    switch (tabControl.SelectedIndex)
+            //    {
+            //        case 0:
+            //            // User Profile
+            //            displayTab_UserProfile();
+            //            break;
 
-                    case 1:
-                        // Consoles
-                        displayTab_Consoles();
-                        break;
+            //        case 1:
+            //            // Consoles
+            //            displayTab_Consoles();
+            //            break;
 
-                    case 2:
-                        // Games
-                        displayTab_Games();
-                        break;
+            //        case 2:
+            //            // Games
+            //            displayTab_Games();
+            //            break;
 
-                    case 3:
-                        // Achievements
-                        displayTab_Achievements();
-                        break;
+            //        case 3:
+            //            // Achievements
+            //            displayTab_Achievements();
+            //            break;
 
-                    case 4:
-                        // Leader Board
-                        displayTab_LeaderBoard();
-                        break;
+            //        case 4:
+            //            // Leader Board
+            //            displayTab_LeaderBoard();
+            //            break;
 
-                    case 5:
-                        // Settings
-                        displayTab_Settings();
-                        break;
+            //        case 5:
+            //            // Settings
+            //            displayTab_Settings();
+            //            break;
 
-                    case 6:
-                        // Help
-                        displayTab_Help();
-                        break;
+            //        case 6:
+            //            // Help
+            //            displayTab_Help();
+            //            break;
 
-                    default:
-                        Console.WriteLine("No tab selected");
-                        break;
-                }
-            }
+            //        default:
+            //            Console.WriteLine("No tab selected");
+            //            break;
+            //    }
+            //}
         }
 
         #region Console Tab
@@ -216,6 +226,16 @@ namespace RAProject
         public void populateConsoleDataGrid()
         {
             dgConsoleList.Items.Clear();
+
+            if (MyData.myData == null)
+            {
+                MyData.FileHandling.LoadData();
+            }
+
+            if (MyData.myData.consoles.Count == 0)
+            {
+                MyData.DownloadConsoles();
+            }
 
             // Populate list with each downloaded console
             foreach (SupportedConsole console in MyData.myData.consoles)
@@ -367,16 +387,6 @@ namespace RAProject
             Dispatcher.Invoke(() => {
                 // Clear list
                 dgGames.ItemsSource = console.games;
-
-                //dgGames.Columns[0].Visibility = Visibility.Collapsed;
-                //dgGames.Columns[5].Visibility = Visibility.Collapsed;
-                //dgGames.Columns[7].Visibility = Visibility.Collapsed;
-                //dgGames.Columns[8].Visibility = Visibility.Collapsed;
-                //dgGames.Columns[9].Visibility = Visibility.Collapsed;
-                //dgGames.Columns[10].Visibility = Visibility.Collapsed;
-                //dgGames.Columns[11].Visibility = Visibility.Collapsed;
-                //dgGames.Columns[12].Visibility = Visibility.Collapsed;
-                //dgGames.Columns[13].Visibility = Visibility.Collapsed;
             });
         }
         private void populateSelectConsoleComboBox()
@@ -424,7 +434,10 @@ namespace RAProject
         private void displayTab_Achievements() { 
 
         }
-
+        private void populateAchievementsDataGrid(Game game)
+        {
+            dgAchievementList.ItemsSource = game.Achievements;
+        }
 
         #region Leader Board Tab
         private void displayTab_LeaderBoard() {
@@ -722,58 +735,15 @@ namespace RAProject
         {
             // Download consoles
             await Task.Run(() => {
-
-                Console.WriteLine("Downloading console data...");
-
-
-                // Fetch console list
-                string url = Requests.Consoles.getConsoleIDs();
-                string json = Requests.FetchJSON(url);
-                dynamic data = JsonConvert.DeserializeObject(json);
-
-                if (data["console"][0] != null)
-                {
-                    if (MyData.myData == null)
-                    {
-                        MyData.myData = new DataFile();
-                    }
-
-                    // Create list of consoles
-                    MyData.myData.consoles = new List<SupportedConsole>();
-
-                    foreach (JObject j in data["console"][0])
-                    {
-                        // Create console object
-                        SupportedConsole sc = new SupportedConsole(j);
-
-                        // Add console to list
-                        MyData.myData.consoles.Add(sc);
-
-
-                        Dispatcher.Invoke(() => {
-                            lblStatus.Content = "Added console: " + sc.Name;
-                        });
-                        Console.WriteLine("Added console: " + sc.Name);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "No data received for consoles, check your credentials in Settings.",
-                        "No data received",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error
-                        );
-                }
+                MyData.DownloadConsoles();
             });
-
-
-            pbMain.Maximum = MyData.myData.consoles.Count - 1;
-
-            var progress = new Progress<int>(value => pbMain.Value = value);
 
             await Task.Run(() =>
             {
+                pbMain.Maximum = MyData.myData.consoles.Count - 1;
+
+                var progress = new Progress<int>(value => pbMain.Value = value);
+
                 for (int i = 0; i < MyData.myData.consoles.Count; i++)
                 {
                     updateStatus(string.Format("Downloading list of {0} games... ", MyData.myData.consoles[i].Name));
@@ -786,6 +756,62 @@ namespace RAProject
                 updateStatus("Data lists download complete.");
             });
         }
+        //private void downloadConsoles()
+        //{
+        //    Console.WriteLine("Downloading console data...");
+
+
+        //    // Fetch console list
+        //    string url = Requests.Consoles.getConsoleIDs();
+        //    string json = Requests.FetchJSON(url);
+        //    dynamic data = JsonConvert.DeserializeObject(json);
+
+        //    if (data["console"][0] != null)
+        //    {
+        //        if (MyData.myData == null)
+        //        {
+        //            MyData.myData = new DataFile();
+        //        }
+
+        //        // Create list of consoles
+        //        MyData.myData.consoles = new List<SupportedConsole>();
+
+        //        foreach (JObject j in data["console"][0])
+        //        {
+        //            // Create console object
+        //            SupportedConsole sc = new SupportedConsole(j);
+
+        //            // Add console to list
+        //            MyData.myData.consoles.Add(sc);
+
+
+        //            Dispatcher.Invoke(() => {
+        //                lblStatus.Content = "Added console: " + sc.Name;
+        //            });
+        //            Console.WriteLine("Added console: " + sc.Name);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show(
+        //            "No data received for consoles, check your credentials in Settings.",
+        //            "No data received",
+        //            MessageBoxButton.OK,
+        //            MessageBoxImage.Error
+        //            );
+        //    }
+        //}
+        
+
+
+
+
+
+
+
+
+
+
 
         private void miDownloadAllData_Click(object sender, RoutedEventArgs e)
         {
@@ -799,7 +825,27 @@ namespace RAProject
 
         private void dgGames_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            Console.WriteLine("Double clicked game");
 
+
+
+            // Get selected game
+            Game selectedGame = (Game) dgGames.SelectedItem;
+            MyData.myData.currentGame = selectedGame;
+
+            if (selectedGame.Achievements.Count == 0)
+            {
+                selectedGame.DownloadAchievements();
+            }
+
+            // Populate achievement data grid
+            populateAchievementsDataGrid(selectedGame);
+
+            // Switch selected tab to achievements
+            tabControl.SelectedIndex = 3;
+
+            // Prevent event from bubbling and re-triggering this method
+            e.Handled = true;
         }
 
         private void dgGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -809,7 +855,39 @@ namespace RAProject
             Game game = (Game)dgGames.SelectedItem;
 
             if (game != null)
+            {
                 lblGameTitle.Content = game.Title;
+                MyData.myData.currentGame = game;
+            }
+        }
+
+        private void btnDownloadConsoleGames_Click(object sender, RoutedEventArgs e)
+        {
+            // Get selected game
+            ConsoleDataRow selectedConsoleRow = (ConsoleDataRow) dgConsoleList.SelectedItem;
+            SupportedConsole selectedConsole = null;
+
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                if (console.Name == selectedConsoleRow.ConsoleName)
+                {
+                    selectedConsole = console;
+                    break;
+                }
+            }
+
+            updateStatus(string.Format("Downloading {0} games list...", selectedConsole.Name));
+
+            selectedConsole.DownloadConsoleGames();
+
+            updateStatus(string.Format("{0} games list downloaded.", selectedConsole.Name));
+
+            populateConsoleDataGrid();
+        }
+
+        private void btnDownloadAchievements_Click(object sender, RoutedEventArgs e)
+        {
+            MyData.myData.currentGame.DownloadAchievements();
         }
     }
 }

@@ -562,6 +562,7 @@
                                     <Label Content="Release Year" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
                                     <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
                                 </WrapPanel>
+                                <Button x:Name="btnDownloadConsoleGames" Content="Download Games" VerticalAlignment="Bottom" Height="39" Margin="10" Click="btnDownloadConsoleGames_Click"/>
 
                             </StackPanel>
                         </Border>
@@ -627,7 +628,16 @@
                                       ScrollViewer.VerticalScrollBarVisibility="Auto" 
                                       Style="{DynamicResource DataGridStyle1}" 
                                       RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" 
-                                      IsReadOnly="True" MinWidth="600" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.IsSharedSizeScope="True" MaxWidth="700" MouseDown="dgGames_MouseDown" MouseDoubleClick="dgGames_MouseDoubleClick" SelectionChanged="dgGames_SelectionChanged">
+                                      IsReadOnly="True" 
+                                      MinWidth="600" 
+                                      HorizontalContentAlignment="Stretch" 
+                                      VerticalContentAlignment="Stretch" 
+                                      Grid.IsSharedSizeScope="True" 
+                                      MaxWidth="700" 
+                                      MouseDown="dgGames_MouseDown" 
+                                      MouseDoubleClick="dgGames_MouseDoubleClick" 
+                                      SelectionChanged="dgGames_SelectionChanged"
+                                      >
                                 <DataGrid.RowStyle>
                                     <Style TargetType="{x:Type DataGridRow}">
                                         <Setter Property="Background" Value="Transparent"/>
@@ -647,6 +657,29 @@
                                 <Image x:Name="imgGamee" Height="200"/>
                                 <Label x:Name="lblGameTitle" HorizontalContentAlignment="Center" Content="Game Title" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
 
+                                <Separator Margin="0,-2,0,20" />
+                                <WrapPanel>
+                                    <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Content="Release Year" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <Button x:Name="btnDownloadAchievements" Content="Download Achievements" VerticalAlignment="Bottom" Height="39" Margin="10" Click="btnDownloadAchievements_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </DockPanel>
+                </TabItem>
+
+
+                <TabItem x:Name="tabAchievements" Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
+                    <DockPanel Margin="0,0,0,34" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
+                        <Border DockPanel.Dock="Right" Width="500" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Right" Padding="10" UseLayoutRounding="True" BorderThickness="2" BorderBrush="White" >
+                            <StackPanel>
+                                <Image x:Name="imgSelectedAchievementBadge" Height="200" Source="Resources/Consoles/gba.png"/>
+                                <Label x:Name="lblSelectedAchievementTitle" HorizontalContentAlignment="Center" Content="Console Name" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
+
                                 <Separator Margin="0,20" />
                                 <WrapPanel>
                                     <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
@@ -659,13 +692,52 @@
 
                             </StackPanel>
                         </Border>
+
+                        <Border DockPanel.Dock="Top" BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
+                            <Label Content="Achievements" Foreground="White" HorizontalContentAlignment="Center"/>
+                        </Border>
+
+
+                        <Grid DockPanel.Dock="Left" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                            <Border BorderBrush="White" Margin="10" BorderThickness="2" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <DataGrid x:Name="dgAchievementList"
+                                              Margin="10,0,10,10" 
+                                              SelectionChanged="dgConsoleList_SelectionChanged" 
+                                              Panel.ZIndex="1" SelectionMode="Single" 
+                                              Background="Transparent" 
+                                              Sorting="dgConsoleList_Sorting"       
+                                              ScrollViewer.CanContentScroll="True" 
+                                              ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                              Style="{DynamicResource DataGridStyle1}" 
+                                              RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" 
+                                              MouseDoubleClick="dgConsoleList_MouseDoubleClick" IsReadOnly="True">
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="{x:Type DataGridRow}">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsSelected" Value="True" >
+                                                    <Setter Property="Background" Value="Gainsboro" />
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Width="*" Binding="{Binding ConsoleName}" Header="Name"/>
+                                        <DataGridTextColumn Width="60" Binding="{Binding GamesCount}" Header="Games"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
+                        </Grid>
+
+
+
                     </DockPanel>
                 </TabItem>
 
 
-                <TabItem x:Name="tabAchievements" Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
-                    <WrapPanel Background="#FF00575A"/>
-                </TabItem>
                 <TabItem x:Name="tabLeaderBoard" Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
                     <WrapPanel Background="#FF00575A">
                         <DataGrid x:Name="dgLeaderBoard" Margin="10" Panel.ZIndex="1" SelectionMode="Single" Background="Transparent" Sorting="dgConsoleList_Sorting" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" IsReadOnly="True">

@@ -18,21 +18,6 @@ TTTTTT  T:::::T  TTTTTTooooooooooo          D:::::D    D:::::D    ooooooooooo   
       T:::::::::T    oo:::::::::::oo      D::::::::::::DDD      oo:::::::::::oo      L::::::::::::::::::::::Li::::::i s:::::::::::ss          tt:::::::::::tt
       TTTTTTTTTTT      ooooooooooo        DDDDDDDDDDDDD           ooooooooooo        LLLLLLLLLLLLLLLLLLLLLLLLiiiiiiii  sssssssssss              ttttttttttt  
            
-KNOWN BUGS:
-===========
-
-
-UN-IMPLEMENTED REQUIREMENTS:
-============================
-    
-    - Merge Sort algorithm
-        - algorithm present, not implemented
-    - Dynamic data structure
-        - Doubly Linked List?
-    - Hashing techniques
-        - Store user's username and API key in hashtable
-
-
 
 CURRENT FEATURES TO COMPLETE:
 =============================
@@ -56,19 +41,13 @@ CURRENT FEATURES TO COMPLETE:
             - Developer
             + all details available from RA database
         - YouTube videos? 
-    - Achivement view
-    - Leader Board
-        - Populate on tab click
-            - Possibly add user avatars?
-                - Maybe not if never returned properly in JSONs, explore other user JSONs
+
+
     - Settings
         - Pick theme colours
             - Use extended WPF controls library
             - <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/> ... this is key to global colours
-    - Help
-        - Fix display issues with the HTML
-            - Possibly because IE is prob being used instead of chrome
-            - Try to find solution without launching in default browser (which is usually chrome or firefox)
+
     
 
                                                                                                                                                              

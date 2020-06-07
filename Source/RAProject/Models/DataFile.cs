@@ -13,6 +13,7 @@ namespace RAProject.Models
 
         public User currentUser;
         public SupportedConsole currentConsole;
+        public Game currentGame;
 
         public DataFile()
         {

@@ -106,17 +106,6 @@ namespace RAProject.Connection
 
         public struct Games
         {
-            public static string getGameInfoBasic(string gameID)
-            {
-                return String.Format(
-                    "{0}{1}?user={2}&key={3}&game={4}&mode=json",
-                    Constants.BASE_URL,
-                    Constants.QueryTypes.WEB_GAME_INFO_BASIC,
-                    Properties.Settings.Default.Credential_Username,
-                    Properties.Settings.Default.Credential_APIKey,
-                    gameID
-                    );
-            }
             public static string GetBoxArtURL(string gameID)
             {
                 Console.WriteLine("Getting BoxArt URL for {0}", gameID);
@@ -131,6 +120,41 @@ namespace RAProject.Connection
                 string boxArtURL = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org";
                 boxArtURL += game.ImageBoxArt;
                 return boxArtURL;
+            }
+            public static string getGameInfoBasic(string gameID)
+            {
+                return String.Format(
+                    "{0}{1}?user={2}&key={3}&game={4}&mode=json",
+                    Constants.BASE_URL,
+                    Constants.QueryTypes.WEB_GAME_INFO_BASIC,
+                    Properties.Settings.Default.Credential_Username,
+                    Properties.Settings.Default.Credential_APIKey,
+                    gameID
+                    );
+            }
+
+            public static string getGameInfoExtended(string gameID)
+            {
+                    return String.Format(
+                        "{0}{1}?user={2}&key={3}&game={4}&mode=json",
+                        Constants.BASE_URL,
+                        Constants.QueryTypes.WEB_GAME_INFO_EXTENDED,
+                        Properties.Settings.Default.Credential_Username,
+                        Properties.Settings.Default.Credential_APIKey,
+                        gameID
+                        );
+            }
+
+            public static string getGameInfoExtendedProgress(string gameID)
+            {
+                return String.Format(
+                        "{0}{1}?user={2}&key={3}&game={4}&mode=json",
+                        Constants.BASE_URL,
+                        Constants.QueryTypes.WEB_GAME_INFO_AND_PROGRESS,
+                        Properties.Settings.Default.Credential_Username,
+                        Properties.Settings.Default.Credential_APIKey,
+                        gameID
+                        );
             }
         }
         public struct Users

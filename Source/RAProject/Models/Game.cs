@@ -99,16 +99,35 @@ namespace RAProject.Models
             {
                 ID = (string)j["GameID"];
             }
+        }
 
+        public void DownloadAchievements()
+        {
+            string url = Requests.Games.getGameInfoExtendedProgress(this.ID);
+            string json = Requests.FetchJSON(url);
+            dynamic data = JsonConvert.DeserializeObject(json);
 
+            if (!hasAchievements)
+                return;
 
+            if (data != null)
+            {
+                if (data["Achievements"] == null)
+                {
+                    this.hasAchievements = false;
+                }
+                else
+                {
+                    if (this.Achievements == null)                    
+                        this.Achievements = new List<Achievement>();
 
-
-
-            //if (Title == "Super Mario World")
-            //{
-                
-            //}
+                    foreach (JProperty a in data["Achievements"])
+                    {
+                        Achievement ac = new Achievement(a.Value);
+                        this.Achievements.Add(ac);
+                    }
+                }                
+            }
         }
 
         //public void downloadGameData()
