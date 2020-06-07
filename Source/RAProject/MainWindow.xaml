@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:RAProject"
         xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Name="wndMain" x:Class="RAProject.MainWindow"
         mc:Ignorable="d"
-        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1079" FontFamily="Bahnschrift Light" Loaded="wndMain_Loaded">
+        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1079" FontFamily="Bahnschrift Light">
     <Window.Resources>
         <Style TargetType="{x:Type DataGridRow}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -456,8 +456,8 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Resources>
-            <ToolBar Background="Teal" VerticalAlignment="Top" Margin="0" Height="45">
-                <TextBox x:Name="txtSearchQuery" Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White" Text="Enter search query..." Height="26" Margin="0,5,0,9" FontFamily="Bahnschrift Light"/>
+            <ToolBar x:Name="toolBarMain" Background="Teal" VerticalAlignment="Top" Margin="0" Height="45">
+                <TextBox x:Name="txtSearchQuery" Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White" Text="Enter search query..." Height="26" Margin="0,5,0,9" FontFamily="Bahnschrift Light" GotFocus="txtSearchQuery_GotFocus" KeyDown="txtSearchQuery_KeyDown"/>
                 <ComboBox x:Name="cmbSearchCategory" SelectedIndex="0" Width="150" Height="30" FontFamily="Bahnschrift Light" FontSize="16" >
                     <ComboBoxItem Content="Consoles" HorizontalAlignment="Left" Width="92"/>
                     <ComboBoxItem Content="Games" HorizontalAlignment="Left" Width="92"/>
@@ -467,39 +467,19 @@
 
                 <Separator />
                 <Button x:Name="btnTest" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnTest_Click" Margin="0,5,0,0"/>
-                <Image x:Name="imgTest" Height="40" VerticalAlignment="Top" Width="100"/>
+                <RadioButton x:Name="rdoTextStyles" Content="Text Styles" Height="40" VerticalAlignment="Top" Width="130" Checked="rdoTextStyles_Checked"/>
+                <RadioButton x:Name="rdoVisualStyles" Content="Visual Styles" Height="45" VerticalAlignment="Top" Width="135" Checked="rdoVisualStyles_Checked" Margin="0,-5,0,0" IsChecked="True"/>
 
             </ToolBar>
-            <TabControl x:Name="tabControl" Margin="0,35,0,0" TabStripPlacement="Left" Background="Teal" BorderBrush="#00000000" SelectionChanged="tabControl_SelectionChanged" FontFamily="Bahnschrift Light" FontSize="14" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                <TabControl.Resources>
-                    <Style TargetType="{x:Type TabItem}">
-                        <Setter Property="FontSize" Value="16" />
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
+            <TabControl x:Name="tabControl" Margin="0,35,0,0" TabStripPlacement="Left" BorderBrush="#00000000" SelectionChanged="tabControl_SelectionChanged" FontFamily="Bahnschrift Light" FontSize="14" ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="Transparent">
 
-                                <ControlTemplate TargetType="{x:Type TabItem}">
-                                    <Grid>
-                                        <Border  x:Name="Border" Margin="0,0,-4,0" BorderThickness="1,1,1,1" CornerRadius="10,0,0,10" >
-                                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="12,2,12,2" RecognizesAccessKey="True"/>
-                                        </Border>
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="Border" Property="Background" Value="#FF00575A" />
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="False">
-                                            <Setter TargetName="Border" Property="Background" Value="Teal" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabControl.Resources>
 
-                <TabItem x:Name="tabUserProfile" Header="User Profile" Margin="0,0,0,0" Height="50" Width="150" FontSize="16" BorderThickness="3,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
-                    <WrapPanel Background="#FF00575A" ScrollViewer.CanContentScroll="True" >
+
+
+
+
+                <TabItem Style="{DynamicResource tabStylings}" x:Name="tabUserProfile" Header="User Profile" Margin="0,0,0,0" Height="50" Width="150" FontSize="16" BorderThickness="3,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                    <WrapPanel x:Name="bgUserProfile" Background="#FF00575A" ScrollViewer.CanContentScroll="True" >
                         <GroupBox x:Name="groupBox" Header="User Profile" Height="188" VerticalAlignment="Top" Margin="10,0,10,10" Width="400" Foreground="White" HorizontalAlignment="Left">
                             <Grid>
                                 <Image x:Name="imgUserAvatar" HorizontalAlignment="Left" Height="150" Margin="5,6,0,0" VerticalAlignment="Top" Width="150" Panel.ZIndex="2"/>
@@ -546,8 +526,19 @@
 
                     </WrapPanel>
                 </TabItem>
-                <TabItem x:Name="tabConsoles" Header="Consoles" Margin="0,0,0,0" Height="50" Width="150" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
-                    <DockPanel Margin="0,0,0,34" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
+
+
+
+
+
+
+                <TabItem Style="{StaticResource tabStylings}" x:Name="tabConsoles" Header="Consoles" Margin="0,0,0,0" Height="50" Width="150" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                    <DockPanel x:Name="bgConsoles" Margin="0,0,0,34" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
+
+                        <Border DockPanel.Dock="Top" BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
+                            <Label Content="Available Consoles" Foreground="White" HorizontalContentAlignment="Center"/>
+                        </Border>
+
                         <Border DockPanel.Dock="Right" Width="500" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Right" Padding="10" UseLayoutRounding="True" BorderThickness="2" BorderBrush="White" >
                             <StackPanel>
                                 <Image x:Name="imgConsole" Height="200" Source="Resources/Consoles/gba.png"/>
@@ -567,14 +558,8 @@
                             </StackPanel>
                         </Border>
 
-                        <Border DockPanel.Dock="Top" BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
-                            <Label Content="Available Consoles" Foreground="White" HorizontalContentAlignment="Center"/>
-                        </Border>
-
-
-                        <Grid DockPanel.Dock="Left" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
-                            <Border BorderBrush="White" Margin="10" BorderThickness="2" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                <DataGrid x:Name="dgConsoleList"
+                        <Border DockPanel.Dock="Left"  BorderBrush="White" Margin="10" BorderThickness="2" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <DataGrid x:Name="dgConsoleList"
                                               Margin="10,0,10,10" 
                                               SelectionChanged="dgConsoleList_SelectionChanged" 
                                               Panel.ZIndex="1" SelectionMode="Single" 
@@ -586,40 +571,61 @@
                                               Style="{DynamicResource DataGridStyle1}" 
                                               RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" 
                                               MouseDoubleClick="dgConsoleList_MouseDoubleClick" IsReadOnly="True">
-                                    <DataGrid.RowStyle>
-                                        <Style TargetType="{x:Type DataGridRow}">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsSelected" Value="True" >
-                                                    <Setter Property="Background" Value="Gainsboro" />
-                                                    <Setter Property="Foreground" Value="Red"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGrid.RowStyle>
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Width="*" Binding="{Binding ConsoleName}" Header="Name"/>
-                                        <DataGridTextColumn Width="60" Binding="{Binding GamesCount}" Header="Games"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Border>
-                        </Grid>
-
-
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="{x:Type DataGridRow}">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True" >
+                                                <Setter Property="Background" Value="Gainsboro" />
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="*" Binding="{Binding ConsoleName}" Header="Name"/>
+                                    <DataGridTextColumn Width="60" Binding="{Binding GamesCount}" Header="Games"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
 
                     </DockPanel>
-
                 </TabItem>
 
 
-                <TabItem x:Name="tabGames" Header="Games" Margin="0,0,0,0" Height="50" Width="150">
-                    <DockPanel Margin="0,0,0,34" Background="#FF00575A" >
+                <TabItem Style="{DynamicResource tabStylings}" x:Name="tabGames" Header="Games" Margin="0,0,0,0" Height="50" Width="150" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                    <DockPanel x:Name="bgGames" Margin="0,0,0,34" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
+
                         <Border DockPanel.Dock="Top"  BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
                             <ComboBox x:Name="cmbConsoleSelection" Background="#0000575A" Foreground="Black" SelectionChanged="cmbConsoleSelection_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Margin="10,0" Height="26" Style="{DynamicResource ComboBoxStyle1}"/>
                         </Border>
-                        <Border DockPanel.Dock="Left" Margin="10">
-                            <DataGrid x:Name="dgGames" 
+
+
+
+                        <Border DockPanel.Dock="Right" Width="500" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Right" Padding="10" UseLayoutRounding="True" BorderThickness="2" BorderBrush="White"  >
+                            <StackPanel>
+                                <Image x:Name="imgGame" Height="200"/>
+                                <Label x:Name="lblGameTitle" HorizontalContentAlignment="Center" Content="Game Title" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
+
+                                <Separator Margin="0,-2,0,20" />
+                                <WrapPanel>
+                                    <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Content="Release Year" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <Button x:Name="btnDownloadAchievements" Content="Download Game Data" VerticalAlignment="Bottom" Height="39" Margin="10" Click="btnDownloadAchievements_Click"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border DockPanel.Dock="Left"  BorderBrush="White" Margin="10" BorderThickness="2" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                            <Grid>
+
+                                <DataGrid x:Name="dgGames" 
                                       Panel.ZIndex="1" 
                                       SelectionMode="Single" 
                                       Background="Transparent" 
@@ -633,60 +639,59 @@
                                       HorizontalContentAlignment="Stretch" 
                                       VerticalContentAlignment="Stretch" 
                                       Grid.IsSharedSizeScope="True" 
-                                      MaxWidth="700" 
-                                      MouseDown="dgGames_MouseDown" 
                                       MouseDoubleClick="dgGames_MouseDoubleClick" 
-                                      SelectionChanged="dgGames_SelectionChanged"
+                                      SelectionChanged="dgGames_SelectionChanged" Width="10" Height="10"
                                       >
-                                <DataGrid.RowStyle>
-                                    <Style TargetType="{x:Type DataGridRow}">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="Foreground" Value="White"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsSelected" Value="True" >
-                                                <Setter Property="Background" Value="Gainsboro" />
-                                                <Setter Property="Foreground" Value="Red"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </DataGrid.RowStyle>
-                            </DataGrid>
-                        </Border>
-                        <Border DockPanel.Dock="Right" Panel.ZIndex="1" Margin="10" BorderBrush="White" BorderThickness="2" >
-                            <StackPanel>
-                                <Image x:Name="imgGamee" Height="200"/>
-                                <Label x:Name="lblGameTitle" HorizontalContentAlignment="Center" Content="Game Title" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="{x:Type DataGridRow}">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsSelected" Value="True" >
+                                                    <Setter Property="Background" Value="Gainsboro" />
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                </DataGrid>
 
-                                <Separator Margin="0,-2,0,20" />
-                                <WrapPanel>
-                                    <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
-                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
-                                </WrapPanel>
-                                <WrapPanel>
-                                    <Label Content="Release Year" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
-                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
-                                </WrapPanel>
-                                <Button x:Name="btnDownloadAchievements" Content="Download Achievements" VerticalAlignment="Bottom" Height="39" Margin="10" Click="btnDownloadAchievements_Click"/>
-                            </StackPanel>
+                                <WrapPanel x:Name="wrapGames" Margin="10" Background="#00FF0000" />
+
+
+                            </Grid>
                         </Border>
+
                     </DockPanel>
                 </TabItem>
 
 
-                <TabItem x:Name="tabAchievements" Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
-                    <DockPanel Margin="0,0,0,34" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
+
+
+
+
+
+
+
+
+
+
+
+                <TabItem Style="{DynamicResource tabStylings}" x:Name="tabAchievements" Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
+                    <DockPanel x:Name="bgAchievements" Margin="0,0,0,34" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
                         <Border DockPanel.Dock="Right" Width="500" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Right" Padding="10" UseLayoutRounding="True" BorderThickness="2" BorderBrush="White" >
                             <StackPanel>
                                 <Image x:Name="imgSelectedAchievementBadge" Height="200" Source="Resources/Consoles/gba.png"/>
                                 <Label x:Name="lblSelectedAchievementTitle" HorizontalContentAlignment="Center" Content="Console Name" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
 
                                 <Separator Margin="0,20" />
+                                <Label x:Name="lblAchievementDescription" Foreground="White" Margin="0,0,0,50" />
                                 <WrapPanel>
-                                    <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="Date Earned:" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
                                     <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <Label Content="Release Year" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
+                                    <Label Content="Date Hardcore Earned:" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
                                     <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
                                 </WrapPanel>
 
@@ -702,16 +707,13 @@
                             <Border BorderBrush="White" Margin="10" BorderThickness="2" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                 <DataGrid x:Name="dgAchievementList"
                                               Margin="10,0,10,10" 
-                                              SelectionChanged="dgConsoleList_SelectionChanged" 
                                               Panel.ZIndex="1" SelectionMode="Single" 
-                                              Background="Transparent" 
-                                              Sorting="dgConsoleList_Sorting"       
+                                              Background="Transparent"       
                                               ScrollViewer.CanContentScroll="True" 
                                               ScrollViewer.VerticalScrollBarVisibility="Auto" 
                                               ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                               Style="{DynamicResource DataGridStyle1}" 
-                                              RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" 
-                                              MouseDoubleClick="dgConsoleList_MouseDoubleClick" IsReadOnly="True">
+                                              RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" IsReadOnly="True" SelectionChanged="dgAchievementList_SelectionChanged">
                                     <DataGrid.RowStyle>
                                         <Style TargetType="{x:Type DataGridRow}">
                                             <Setter Property="Background" Value="Transparent"/>
@@ -724,10 +726,6 @@
                                             </Style.Triggers>
                                         </Style>
                                     </DataGrid.RowStyle>
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Width="*" Binding="{Binding ConsoleName}" Header="Name"/>
-                                        <DataGridTextColumn Width="60" Binding="{Binding GamesCount}" Header="Games"/>
-                                    </DataGrid.Columns>
                                 </DataGrid>
                             </Border>
                         </Grid>
@@ -738,8 +736,8 @@
                 </TabItem>
 
 
-                <TabItem x:Name="tabLeaderBoard" Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
-                    <WrapPanel Background="#FF00575A">
+                <TabItem Style="{DynamicResource tabStylings}" x:Name="tabLeaderBoard" Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
+                    <WrapPanel x:Name="bgLeaderboard" Background="#FF00575A">
                         <DataGrid x:Name="dgLeaderBoard" Margin="10" Panel.ZIndex="1" SelectionMode="Single" Background="Transparent" Sorting="dgConsoleList_Sorting" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" IsReadOnly="True">
                             <DataGrid.RowStyle>
                                 <Style TargetType="{x:Type DataGridRow}">
@@ -756,133 +754,77 @@
                         </DataGrid>
                     </WrapPanel>
                 </TabItem>
-                <TabItem x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
+                <TabItem Style="{DynamicResource tabStylings}" x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
 
+                    <ScrollViewer>
+                        <StackPanel x:Name="bgSettings" ScrollViewer.VerticalScrollBarVisibility="Auto" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True" Background="#FF00575A">
 
-                    <TabControl Margin="0,35,0,0" TabStripPlacement="Left" Background="Teal" BorderBrush="#00000000" SelectionChanged="tabControl_SelectionChanged">
-                        <TabControl.Resources>
-                            <Style TargetType="{x:Type TabItem}">
-                                <Setter Property="FontSize" Value="16" />
-                                <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-
-                                        <ControlTemplate TargetType="{x:Type TabItem}">
-                                            <Grid>
-                                                <Border  x:Name="Border" Margin="0,0,-4,0" BorderThickness="1,1,1,1" CornerRadius="10,0,0,10" >
-                                                    <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="12,2,12,2" RecognizesAccessKey="True"/>
-                                                </Border>
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter TargetName="Border" Property="Background" Value="#FF00575A" />
-                                                </Trigger>
-                                                <Trigger Property="IsSelected" Value="False">
-                                                    <Setter TargetName="Border" Property="Background" Value="Teal" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </TabControl.Resources>
-                        <TabItem Header="Account" Width="200">
-                            <StackPanel>
-                                <GroupBox Header="Account Details" Margin="20,0,20,32">
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Label Content="Username" HorizontalAlignment="Right" Margin="14,13,0,0" Width="100" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                                            <TextBox x:Name="txtSettingsUsername" Margin="99,18,0,0" TextWrapping="Wrap" Text="RuggedRadius" Foreground="White" Background="Transparent" Width="315" Height="25" HorizontalAlignment="Left"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Label Content="API Key" HorizontalAlignment="Right" Margin="14,47,0,0" VerticalAlignment="Top" Width="100" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                                            <PasswordBox x:Name="txtSettingsAPIKey" Margin="99,52,0,0" Password="B28aNhBWut5BmBmIbsYrFPdpUJoa2Dmt" Background="Transparent" Foreground="White"/>
-                                        </StackPanel>
-                                        <Button x:Name="btnSaveCredentials" Margin="200, 50, 200, 20" Click="btnSaveCredentials_Click">Save</Button>
+                            <GroupBox Header="Account Details" Margin="20,0,20,32">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Username" HorizontalAlignment="Right" Margin="14,13,0,0" Width="100" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                                        <TextBox x:Name="txtSettingsUsername" Margin="99,18,0,0" TextWrapping="Wrap" Text="RuggedRadius" Foreground="White" Background="Transparent" Width="315" Height="25" HorizontalAlignment="Left"/>
                                     </StackPanel>
-                                </GroupBox>
-                            </StackPanel>
-                        </TabItem>
-                        <TabItem Header="Behaviour">
-                            <StackPanel>
-                                <GroupBox Header="On Application Startup" Margin="20,0,20,20" FontWeight="Bold">
-                                    <StackPanel>
-                                        <CheckBox x:Name="chkLoadOnStartup" Content="Load data file on startup" Foreground="White" FontWeight="Normal"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="API Key" HorizontalAlignment="Right" Margin="14,47,0,0" VerticalAlignment="Top" Width="100" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                                        <PasswordBox x:Name="txtSettingsAPIKey" Margin="99,52,0,0" Password="B28aNhBWut5BmBmIbsYrFPdpUJoa2Dmt" Background="Transparent" Foreground="White"/>
                                     </StackPanel>
-                                </GroupBox>
-                                <GroupBox Header="On Application Shutdown" Margin="20,0,20,20" FontWeight="Bold">
-                                    <Grid>
-                                        <CheckBox x:Name="chkSaveOnShutdown" Content="Save data file on shutdown" Foreground="White" FontWeight="Normal"/>
-                                    </Grid>
-                                </GroupBox>
-                            </StackPanel>
-                        </TabItem>
+                                    <Button x:Name="btnSaveCredentials" Margin="200, 50, 200, 20" Click="btnSaveCredentials_Click">Save</Button>
+                                </StackPanel>
+                            </GroupBox>
 
 
+                            <GroupBox Header="Data File Handling" Margin="20,0,20,20" FontWeight="Bold">
+                                <StackPanel>
+                                    <CheckBox x:Name="chkLoadOnStartup" Content="Load data file on startup" Foreground="White" FontWeight="Normal"/>
+                                    <CheckBox x:Name="chkSaveOnShutdown" Content="Save data file on shutdown" Foreground="White" FontWeight="Normal"/>
 
-                        <TabItem Header="Display">
-                            <StackPanel>
-                                <GroupBox Header="Theme Colour Settings" Margin="20,0,20,20" FontWeight="Bold">
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Label Content="Theme Colour Primary:" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Normal"/>
-                                            <xctk:DropDownButton Content="Select..." Margin="15" >
-                                                <xctk:DropDownButton.DropDownContent>
-                                                    <xctk:ColorCanvas />
-                                                </xctk:DropDownButton.DropDownContent>
-                                            </xctk:DropDownButton>
-                                        </StackPanel>
+                                </StackPanel>
+                            </GroupBox>
 
-                                        <StackPanel Orientation="Horizontal">
-                                            <Label Content="Theme Colour Secondary:" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Normal"/>
-                                            <xctk:DropDownButton Content="Select..." Margin="15" >
-                                                <xctk:DropDownButton.DropDownContent>
-                                                    <xctk:ColorCanvas />
-                                                </xctk:DropDownButton.DropDownContent>
-                                            </xctk:DropDownButton>
-                                        </StackPanel>
 
-                                        <StackPanel Orientation="Horizontal">
-                                            <Label Content="Border Colour:" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Normal"/>
-                                            <xctk:DropDownButton Content="Select..." Margin="15" >
-                                                <xctk:DropDownButton.DropDownContent>
-                                                    <xctk:ColorCanvas />
-                                                </xctk:DropDownButton.DropDownContent>
-                                            </xctk:DropDownButton>
-                                        </StackPanel>
+                            <GroupBox Header="Colour Settings" Margin="20,0,20,20" FontWeight="Bold">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Theme Colour Primary:" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Normal"/>
+                                        <xctk:ColorPicker x:Name="cpPrimaryColour" Margin="15" Width="201" SelectedColorChanged="cpPrimaryColour_SelectedColorChanged" />
                                     </StackPanel>
-                                </GroupBox>
-                            </StackPanel>
-                        </TabItem>
 
-
-                        <TabItem Header="Blank">
-                            <StackPanel>
-                                <GroupBox Header="Blank" Margin="20,0,20,20" FontWeight="Bold">
-                                    <StackPanel>
-                                        <Label Content="Blank"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Theme Colour Secondary:" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Normal"/>
+                                        <xctk:ColorPicker x:Name="cpSecondaryColour" Margin="15" Width="202" SelectedColorChanged="cpSecondaryColour_SelectedColorChanged" >
+                                        </xctk:ColorPicker>
                                     </StackPanel>
-                                </GroupBox>
-                            </StackPanel>
-                        </TabItem>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Border Colour:" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Normal"/>
+                                        <xctk:DropDownButton Content="Select..." Margin="15" >
+                                            <xctk:DropDownButton.DropDownContent>
+                                                <xctk:ColorCanvas />
+                                            </xctk:DropDownButton.DropDownContent>
+                                        </xctk:DropDownButton>
+                                    </StackPanel>
+                                </StackPanel>
+                            </GroupBox>
 
 
 
-                    </TabControl>
 
+
+                        </StackPanel>
+                    </ScrollViewer>
 
                 </TabItem>
-                <TabItem x:Name="tabHelp" Header="Help" Margin="0,0,0,0" Height="50" Width="150">
+                <TabItem Style="{DynamicResource tabStylings}" x:Name="tabHelp" Header="Help" Margin="0,0,0,0" Height="50" Width="150">
                     <WrapPanel Background="#FF00575A">
                         <WebBrowser Source="C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\Help\index.html" />
                     </WrapPanel>
                 </TabItem>
             </TabControl>
 
-            <StatusBar VerticalAlignment="Bottom" Background="Teal">
+            <StatusBar x:Name="statBarMain" VerticalAlignment="Bottom" Background="Teal">
                 <Label x:Name="lblStatus" Content="Label" Width="350" Foreground="#FF00CBCB" FontFamily="Bahnschrift Light"/>
                 <Separator Height="30" Margin="0" VerticalAlignment="Top" Width="3" Background="#FF00CBCB"/>
-                <Label x:Name="label1" Content="Label" Foreground="#FF00CBCB" Width="350" FontFamily="Bahnschrift Light"/>
                 <Separator Height="30" Margin="0" VerticalAlignment="Top" Width="3" Background="#FF00CBCB"/>
                 <ProgressBar x:Name="pbMain" Width="352" Height="25" />
             </StatusBar>

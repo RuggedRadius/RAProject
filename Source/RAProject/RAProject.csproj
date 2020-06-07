@@ -102,6 +102,7 @@
     <Compile Include="Utilities\InternetConnection.cs" />
     <Compile Include="Utilities\Search.cs" />
     <Compile Include="Utilities\Security.cs" />
+    <Compile Include="Utilities\Theme.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

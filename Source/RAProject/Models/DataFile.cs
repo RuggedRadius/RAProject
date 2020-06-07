@@ -20,5 +20,7 @@ namespace RAProject.Models
             consoles = new List<SupportedConsole>();            
             currentUser = new User();
         }
+
+
     }
 }

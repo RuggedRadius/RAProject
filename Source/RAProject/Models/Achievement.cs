@@ -10,20 +10,21 @@ namespace RAProject.Models
     public class Achievement
     {
         [JsonProperty("ID")]                    public string ID                    { get; set; }
+        [JsonProperty("Title")] public string Title { get; set; }
+        [JsonProperty("Description")] public string Description { get; set; }
+        [JsonProperty("DateEarned")] public string DateEarned { get; set; }
+        [JsonProperty("DateEarnedHardCore")] public string DateEarnedHardCore { get; set; }
         [JsonProperty("NumAwarded")]            public string NumAwarded            { get; set; }
         [JsonProperty("NumAwardedHardcore")]    public string NumAwardedHardcore    { get; set; }
-        [JsonProperty("Title")]                 public string Title                 { get; set; }
-        [JsonProperty("Description")]           public string Description           { get; set; }
         [JsonProperty("Points")]                public string Points                { get; set; }
-        [JsonProperty("TrueRatio")]             public string TrueRatio             { get; set; }
+        [JsonProperty("TrueRatio")] private string TrueRatio             { get; set; }
         [JsonProperty("Author")]                public string Author                { get; set; }
-        [JsonProperty("DateModified")]          public string DateModified          { get; set; }
-        [JsonProperty("DateCreated")]           public string DateCreated           { get; set; }
-        [JsonProperty("BadgeName")]             public string BadgeName             { get; set; }
-        [JsonProperty("DisplayOrder")]          public string DisplayOrder          { get; set; }
-        [JsonProperty("MemAddr")]               public string MemAddr               { get; set; }
-        [JsonProperty("DateEarned")]            public string DateEarned            { get; set; }
-        [JsonProperty("DateEarnedHardCore")]    public string DateEarnedHardCore    { get; set; }
+        [JsonProperty("DateModified")]          private string DateModified          { get; set; }
+        [JsonProperty("DateCreated")] private string DateCreated           { get; set; }
+        [JsonProperty("BadgeName")] private string BadgeName             { get; set; }
+        [JsonProperty("DisplayOrder")] private string DisplayOrder          { get; set; }
+        [JsonProperty("MemAddr")] private string MemAddr               { get; set; }
+
 
         public Image badge;
         

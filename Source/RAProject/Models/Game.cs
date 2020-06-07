@@ -130,133 +130,133 @@ namespace RAProject.Models
             }
         }
 
-        //public void downloadGameData()
-        //{
-        //    string url = Requests.requestURL(Constants.QueryTypes.WEB_GAME_INFO_AND_PROGRESS, this.ID);
-        //    string json = Requests.FetchJSON(url);
-        //    dynamic data = JsonConvert.DeserializeObject(json);
+        public void downloadGameData()
+        {
+            string url = Requests.Games.getGameInfoExtendedProgress(ID);// requestURL(Constants.QueryTypes.WEB_GAME_INFO_AND_PROGRESS, this.ID);
+            string json = Requests.FetchJSON(url);
+            dynamic data = JsonConvert.DeserializeObject(json);
 
 
-        //    if (data != null)
-        //    {
-        //        if (this.Console == null)
-        //        {
-        //            if (data["Console"] == null)
-        //            {
-        //                this.Console = "<No data>";
-        //            }
-        //            else
-        //            {
-        //                this.Console = data["Console"];
-        //            }
+            if (data != null)
+            {
+                if (this.Console == null)
+                {
+                    if (data["Console"] == null)
+                    {
+                        this.Console = "<No data>";
+                    }
+                    else
+                    {
+                        this.Console = data["Console"];
+                    }
 
-        //            System.Console.WriteLine(this.Title + " console updated.");
-        //        }
-        //        if (this.Publisher == null)
-        //        {
-        //            if (data["Publisher"] == null)
-        //            {
-        //                this.Publisher = "<No data>";
-        //            }
-        //            else
-        //            {
-        //                this.Publisher = data["Publisher"];
-        //            }
-        //            System.Console.WriteLine(this.Title + " publisher updated.");
-        //        }
-        //        if (this.Developer == null)
-        //        {
-        //            if (data["Developer"] == null)
-        //            {
-        //                this.Developer = "<No data>";
-        //            }
-        //            else
-        //            {
-        //                this.Developer = data["Developer"];
-        //            }
-        //            System.Console.WriteLine(this.Title + " developer updated.");
-        //        }
-        //        if (this.Released == null)
-        //        {
-        //            if (data["Released"] == null)
-        //            {
-        //                this.Released = "<No data>";
-        //            }
-        //            else
-        //            {
-        //                this.Released = data["Released"];
-        //            }
-        //            System.Console.WriteLine(this.Title + " release date updated.");
-        //        }
-        //        if (this.imgBoxArt == null)
-        //        {
-        //            if (data["ImageBoxArt"] == null)
-        //            {
-        //                //this.imgBoxArt = Properties.Resources.maxresdefault;
-        //            }
-        //            else
-        //            {
-        //                this.imgBoxArt = Requests.DownloadImageFromUrl(Requests.ImageURLs.Games.GetBoxArt(this.ID));
-        //            }
-        //        }
-        //        if (this.imgTitleScreen == null)
-        //        {
-        //            if (data["ImageTitle"] == null)
-        //            {
-        //                //this.imgTitleScreen = Properties.Resources.maxresdefault;
-        //            }
-        //            else
-        //            {
-        //                try
-        //                {
-        //                    this.imgTitleScreen = Requests.DownloadImageFromUrl(Requests.GetImageURL_byGameObject(this, 1));
-        //                }
-        //                catch (Exception ex)
-        //                { }
-        //            }
-        //        }
-        //        if (this.imgIngame == null)
-        //        {
-        //            if (data["ImageIngame"] == null)
-        //            {
-        //                //this.imgIngame = Properties.Resources.maxresdefault;
-        //            }
-        //            else
-        //            {
-        //                try
-        //                {
-        //                    this.imgIngame = Requests.DownloadImageFromUrl(Requests.GetImageURL_byGameObject(this, 2));
-        //                }
-        //                catch (Exception ex)
-        //                { // Image not available }
-        //                }
-        //            }
-        //            if (this.Achievements == null)
-        //            {
-        //                if (data["Achievements"] == null)
-        //                {
-        //                    this.hasAchievements = false;
-        //                }
-        //                else
-        //                {
-        //                    this.Achievements = new List<Achievement>();
+                    System.Console.WriteLine(this.Title + " console updated.");
+                }
+                if (this.Publisher == null)
+                {
+                    if (data["Publisher"] == null)
+                    {
+                        this.Publisher = "<No data>";
+                    }
+                    else
+                    {
+                        this.Publisher = data["Publisher"];
+                    }
+                    System.Console.WriteLine(this.Title + " publisher updated.");
+                }
+                if (this.Developer == null)
+                {
+                    if (data["Developer"] == null)
+                    {
+                        this.Developer = "<No data>";
+                    }
+                    else
+                    {
+                        this.Developer = data["Developer"];
+                    }
+                    System.Console.WriteLine(this.Title + " developer updated.");
+                }
+                if (this.Released == null)
+                {
+                    if (data["Released"] == null)
+                    {
+                        this.Released = "<No data>";
+                    }
+                    else
+                    {
+                        this.Released = data["Released"];
+                    }
+                    System.Console.WriteLine(this.Title + " release date updated.");
+                }
+                if (this.imgBoxArt == null)
+                {
+                    if (data["ImageBoxArt"] == null)
+                    {
+                        //this.imgBoxArt = Properties.Resources.maxresdefault;
+                    }
+                    else
+                    {
+                        this.imgBoxArt = downloadImage_BoxArt();
+                    }
+                }
+                if (this.imgTitleScreen == null)
+                {
+                    if (data["ImageTitle"] == null)
+                    {
+                        //this.imgTitleScreen = Properties.Resources.maxresdefault;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            this.imgTitleScreen = downloadImage_TitleScreen();
+                        }
+                        catch (Exception ex)
+                        { }
+                    }
+                }
+                if (this.imgIngame == null)
+                {
+                    if (data["ImageIngame"] == null)
+                    {
+                        //this.imgIngame = Properties.Resources.maxresdefault;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            this.imgIngame = downloadImage_InGame();
+                        }
+                        catch (Exception ex)
+                        { // Image not available }
+                        }
+                    }
+                    if (this.Achievements == null)
+                    {
+                        if (data["Achievements"] == null)
+                        {
+                            this.hasAchievements = false;
+                        }
+                        else
+                        {
+                            this.Achievements = new List<Achievement>();
 
-        //                    foreach (JProperty a in data["Achievements"])
-        //                    {
-        //                        Achievement ac = new Achievement(a.Value);
-        //                        this.Achievements.Add(ac);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            System.Console.WriteLine("Error: Could not download data.");
-        //        }
-        //    }
-        //}
+                            foreach (JProperty a in data["Achievements"])
+                            {
+                                Achievement ac = new Achievement(a.Value);
+                                this.Achievements.Add(ac);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    System.Console.WriteLine("Error: Could not download data.");
+                }
+            }
+        }
 
-        public void downloadImage_BoxArt()
+        public Image downloadImage_BoxArt()
         {
             System.Console.WriteLine("Downloading Box Art for {0}", Title);
             string reqURL = Requests.Games.getGameInfoBasic(ID);
@@ -264,23 +264,26 @@ namespace RAProject.Models
             dynamic data = JsonConvert.DeserializeObject(json);
             string boxArtURL = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageBoxArt"]);
             imgBoxArt = Requests.DownloadImageFromUrl(boxArtURL);
+            return imgBoxArt;
         }
-        public void downloadImage_InGame() {
+        public Image downloadImage_InGame() {
             System.Console.WriteLine("Downloading InGame Art for {0}", Title);
             string reqURL = Requests.Games.getGameInfoBasic(ID);
             string json = Requests.FetchJSON(reqURL); // Here is slow
             dynamic data = JsonConvert.DeserializeObject(json);
             string boxArtURL = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageInGame"]);
-            imgBoxArt = Requests.DownloadImageFromUrl(boxArtURL);
+            imgIngame = Requests.DownloadImageFromUrl(boxArtURL);
+            return imgIngame;
         }
-        public void downloadImage_TitleScreen()
+        public Image downloadImage_TitleScreen()
         {
             System.Console.WriteLine("Downloading TitleScreen Art for {0}", Title);
             string reqURL = Requests.Games.getGameInfoBasic(ID);
             string json = Requests.FetchJSON(reqURL); // Here is slow
             dynamic data = JsonConvert.DeserializeObject(json);
             string boxArtURL = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageTitle"]);
-            imgBoxArt = Requests.DownloadImageFromUrl(boxArtURL);
+            imgTitleScreen = Requests.DownloadImageFromUrl(boxArtURL);
+            return imgTitleScreen;
         }
 
 
