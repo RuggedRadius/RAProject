@@ -635,12 +635,11 @@
                                       Style="{DynamicResource DataGridStyle1}" 
                                       RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" 
                                       IsReadOnly="True" 
-                                      MinWidth="600" 
                                       HorizontalContentAlignment="Stretch" 
                                       VerticalContentAlignment="Stretch" 
                                       Grid.IsSharedSizeScope="True" 
                                       MouseDoubleClick="dgGames_MouseDoubleClick" 
-                                      SelectionChanged="dgGames_SelectionChanged" Width="10" Height="10"
+                                      SelectionChanged="dgGames_SelectionChanged"
                                       >
                                     <DataGrid.RowStyle>
                                         <Style TargetType="{x:Type DataGridRow}">
@@ -656,7 +655,7 @@
                                     </DataGrid.RowStyle>
                                 </DataGrid>
 
-                                <WrapPanel x:Name="wrapGames" Margin="10" Background="#00FF0000" />
+                                <WrapPanel x:Name="wrapGames" Margin="5" Background="#00FF0000" />
 
 
                             </Grid>

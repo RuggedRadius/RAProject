@@ -403,12 +403,13 @@ namespace RAProject
 
                     tabControl.SelectedIndex = 2;
 
+                    MyData.myData.currentConsole = console;
+
                     // Prevent event from bubbling and re-triggering this method
                     e.Handled = true;
                     return;
                 }
             }
-
 
             Console.WriteLine("Double CLICK!!!!");
         }
@@ -420,18 +421,24 @@ namespace RAProject
         #endregion
 
         #region Games Tab
-        private void displayTab_Games() {
+        private void displayTab_Games() 
+        {
             populateSelectConsoleComboBox();
         }
         private void populateGamesTab(SupportedConsole console)
         {
+            Console.WriteLine("Populating games tab...");
+
+            // Ensure selected style is used
+            //applyVisualStyles();
+
             if (rdoVisualStyles.IsChecked == true)
             {
                 populateGamesWrapPanel(console);
             }
             else
             {
-                populateGamesTab(console);
+                populateGamesDataGrid(console);
             }
         }
 
@@ -455,6 +462,7 @@ namespace RAProject
 
                         newImageTile.Width = 200;
                         newImageTile.Height = 320;
+                        newImageTile.Margin = new Thickness(10);
 
                         Task.Run(() => {
                             string url = Requests.Games.GetBoxArtURL(game.ID);
@@ -481,7 +489,6 @@ namespace RAProject
                 }
             });
         }
-
         private void populateGamesDataGrid(SupportedConsole console) {
 
             Dispatcher.Invoke(() =>
@@ -490,6 +497,7 @@ namespace RAProject
                 dgGames.ItemsSource = console.games;
             });
         }
+
         private void populateSelectConsoleComboBox()
         {
             // Clear combo box
@@ -501,6 +509,7 @@ namespace RAProject
                 cmbConsoleSelection.Items.Add(console.Name);
             }
         }
+
         private void dgGames_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Console.WriteLine("Double clicked game");
@@ -525,7 +534,6 @@ namespace RAProject
             // Prevent event from bubbling and re-triggering this method
             e.Handled = true;
         }
-
         private void dgGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Console.WriteLine("Selection chnged");
@@ -569,7 +577,6 @@ namespace RAProject
             int selIndex = dgGames.SelectedIndex;
             Game game = (Game)dgGames.SelectedItem;
         }
-
 
         private async void cmbConsoleSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -953,8 +960,6 @@ namespace RAProject
 
             wrapGames.IsEnabled = true;
 
-            //wrapGames
-
             dgGames.Visibility = Visibility.Hidden;
             dgAchievementList.Visibility = Visibility.Hidden;
 
@@ -995,14 +1000,71 @@ namespace RAProject
             bgSettings.Background = new SolidColorBrush(Theme.secondaryColour);
 
         }
+        private void applyVisualStyles()
+        {
+            if (rdoVisualStyles.IsChecked == true)
+            {
+                showVisualStyles();
+            }
+            else
+            {
+                hideVisualStyles();
+            }
+            if (tabControl != null)
+            {
+                switch (tabControl.SelectedIndex)
+                {
+                    case 0:
+                        // User Profile
+                        //displayTab_UserProfile();
+                        break;
+
+                    case 1:
+                        // Consoles
+                        //displayTab_Consoles();
+                        break;
+
+                    case 2:
+                        // Games
+                        populateGamesTab(MyData.myData.currentConsole);
+                        break;
+
+                    case 3:
+                        // Achievements
+                        displayTab_Achievements();
+                        break;
+
+                    case 4:
+                        // Leader Board
+                        displayTab_LeaderBoard();
+                        break;
+
+                    case 5:
+                        // Settings
+                        displayTab_Settings();
+                        break;
+
+                    case 6:
+                        // Help
+                        displayTab_Help();
+                        break;
+
+                    default:
+                        Console.WriteLine("No tab selected");
+                        break;
+                }
+            }
+        }
         private void rdoVisualStyles_Checked(object sender, RoutedEventArgs e)
         {
-            showVisualStyles();
+            applyVisualStyles();
+            //showVisualStyles();
         }
 
         private void rdoTextStyles_Checked(object sender, RoutedEventArgs e)
         {
-            hideVisualStyles();
+            applyVisualStyles();
+            //hideVisualStyles();
         }
         #endregion
 
