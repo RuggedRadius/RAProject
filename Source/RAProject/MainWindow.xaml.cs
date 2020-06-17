@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Brushes = System.Windows.Media.Brushes;
@@ -420,6 +421,13 @@ namespace RAProject
         }
         #endregion
 
+
+
+
+
+
+
+
         #region Games Tab
         private void displayTab_Games() 
         {
@@ -449,47 +457,35 @@ namespace RAProject
             Dispatcher.Invoke(() => {
                 foreach (Game game in console.games)
                 {
-                    if (game.imgBoxArt == null)
-                        game.downloadGameData();
-                    //game.downloadImage_BoxArt();
-
-
-                    if (game.imgBoxArt != null)
+                    Task.Run(() =>
                     {
-                        // Create UI element
-                        var newImageTile = new System.Windows.Controls.Image();
+                        if (game.imgBoxArt == null)
+                            game.downloadImage_BoxArt();
 
+                        // Create image
+                        Dispatcher.Invoke(() => { 
+                            System.Windows.Controls.Image newImageTile = ImageConversion.ConvertDrawingImageToWPFImage(game.imgBoxArt);
 
-                        newImageTile.Width = 200;
-                        newImageTile.Height = 320;
-                        newImageTile.Margin = new Thickness(10);
+                            // Size image
+                            newImageTile.Width = 200;
+                            newImageTile.Height = 320;
+                            newImageTile.Margin = new Thickness(10);
 
-                        Task.Run(() => {
-                            string url = Requests.Games.GetBoxArtURL(game.ID);
+                            // Add ID as tag
+                            newImageTile.Tag = game.ID;
 
-                            Dispatcher.Invoke(() => {
-                                newImageTile.Source = new BitmapImage(new Uri(url));
-                            });
-                            
+                            // Add click event handler
+                            newImageTile.MouseDown += NewImageTile_MouseDown;
+
+                            // Add to games wrap panel
+                            wrapGames.Children.Add(newImageTile);
                         });
-
-
-
-
-                        // Add click event handler
-                        // ...
-
-                        // Add to games wrap panel
-                        wrapGames.Children.Add(newImageTile);
-                    }
-                    else
-                    {
-                        Console.WriteLine("No Box Art for " + game.Title);
-                    }
+                    });
                 }
             });
         }
-        private void populateGamesDataGrid(SupportedConsole console) {
+        private void populateGamesDataGrid(SupportedConsole console)
+        {
 
             Dispatcher.Invoke(() =>
             {
@@ -498,58 +494,17 @@ namespace RAProject
             });
         }
 
-        private void populateSelectConsoleComboBox()
+        private void populateGameInfoPanel(Game game)
         {
-            // Clear combo box
-            cmbConsoleSelection.Items.Clear();
-
-            // Populate combo box
-            foreach (SupportedConsole console in MyData.myData.consoles)
-            {
-                cmbConsoleSelection.Items.Add(console.Name);
-            }
-        }
-
-        private void dgGames_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Console.WriteLine("Double clicked game");
-
-
-
-            // Get selected game
-            Game selectedGame = (Game)dgGames.SelectedItem;
-            MyData.myData.currentGame = selectedGame;
-
-            if (selectedGame.Achievements.Count == 0)
-            {
-                selectedGame.DownloadAchievements();
-            }
-
-            // Populate achievement data grid
-            populateAchievementsDataGrid(selectedGame);
-
-            // Switch selected tab to achievements
-            tabControl.SelectedIndex = 3;
-
-            // Prevent event from bubbling and re-triggering this method
-            e.Handled = true;
-        }
-        private void dgGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Console.WriteLine("Selection chnged");
-            // Get selected game
-            Game selectedGame = (Game)dgGames.SelectedItem;
-            MyData.myData.currentGame = selectedGame;
-
             System.Drawing.Image gameArt = null;
-            if (selectedGame.imgBoxArt == null)
+            if (game.imgBoxArt == null)
             {
-                //gameArt = selectedGame.downloadImage_BoxArt();
+                gameArt = game.downloadImage_BoxArt();
 
             }
             else
             {
-                gameArt = selectedGame.imgBoxArt;
+                gameArt = game.imgBoxArt;
             }
 
             // Set image
@@ -566,16 +521,144 @@ namespace RAProject
                 ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
                 imgGame.Source = WpfBitmap;
-
-                // Set title
-                lblConsoleName.Content = selectedGame.Title;
-
-                // Set details
             }
 
+            // Set details
+            if (string.IsNullOrEmpty(game.Developer) ||
+                string.IsNullOrEmpty(game.Released) ||
+                string.IsNullOrEmpty(game.Publisher) ||
+                string.IsNullOrEmpty(game.Title))
+            {
+                game.downloadGameData();
+            }
+
+            // Set title
+            lblConsoleName.Content = game.Title;
+
+            // Set details
+            lblGameTitle.Content = game.Title;
+            lblGames_Developer.Content = game.Developer;
+            lblGames_Publisher.Content = game.Publisher;
+            lblGames_Released.Content = game.Released;
+        }
+
+
+
+        private void NewImageTile_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+            {
+                Console.WriteLine("Double clicked");
+
+                
+
+                // Get selected game
+                Game selectedGame = null;
+                foreach (Game game in MyData.myData.currentConsole.games)
+                {
+                    if (game.ID == ((System.Windows.Controls.Image)sender).Tag.ToString())
+                    {
+                        selectedGame = game;
+                    }
+                }
+
+                if (selectedGame != null)
+                {
+                    // Populate achievement data grid
+                    populateAchievementsTab(selectedGame);
+
+                    // Switch selected tab to achievements
+                    tabControl.SelectedIndex = 3;
+
+                    // Prevent event from bubbling and re-triggering this method
+                    e.Handled = true;
+                }
+                else
+                {
+                    Console.WriteLine("ERROR: Could not find selected game");
+                }
+
+                return;
+            }
+
+
+            System.Windows.Controls.Image tile = (System.Windows.Controls.Image)sender;
+            Game clickedGame = null;
+            foreach (Game game in MyData.myData.currentConsole.games)
+            {
+                if (game.ID == tile.Tag.ToString())
+                {
+                    clickedGame = game;
+                }
+            }
+
+            if (clickedGame != null)
+            {
+                MyData.myData.currentGame = clickedGame;
+                Console.WriteLine(clickedGame.Title + " tile clicked");
+                populateGameInfoPanel(clickedGame);
+            }
+            else
+            {
+                Console.WriteLine("ERROR: Unknown tile clicked " + tile.Tag);
+            }
+        }
+
+        
+
+        private void populateSelectConsoleComboBox()
+        {
+            // Clear combo box
+            cmbConsoleSelection.Items.Clear();
+
+            // Populate combo box
+            foreach (SupportedConsole console in MyData.myData.consoles)
+            {
+                cmbConsoleSelection.Items.Add(console.Name);
+            }
+        }
+
+        private void dgGames_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (!dgGames.IsEnabled)
+                return;
+
+            Console.WriteLine("Double clicked game");
+
+
+
+            // Get selected game
+            Game selectedGame = (Game)dgGames.SelectedItem;
+            MyData.myData.currentGame = selectedGame;
+
+            if (selectedGame.Achievements.Count == 0)
+            {
+                selectedGame.DownloadAchievements();
+            }
+
+            // Populate achievement data grid
+            populateAchievementsTab(selectedGame);
+
+            // Switch selected tab to achievements
+            tabControl.SelectedIndex = 3;
+
+            // Prevent event from bubbling and re-triggering this method
+            e.Handled = true;
+        }
+        private void dgGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dgAchievementList.SelectedIndex < 0)
+                return;
+
+            Console.WriteLine("Selection chnged");
+            // Get selected game
+            Game selectedGame = (Game)dgGames.SelectedItem;
+            MyData.myData.currentGame = selectedGame;
+
+            // Display game info
+            populateGameInfoPanel(selectedGame);
+
             Console.WriteLine("Mouse clicked game");
-            int selIndex = dgGames.SelectedIndex;
-            Game game = (Game)dgGames.SelectedItem;
         }
 
         private async void cmbConsoleSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -620,9 +703,57 @@ namespace RAProject
         private void displayTab_Achievements() { 
 
         }
+        private void populateAchievementsTab(Game game)
+        {
+            if (rdoVisualStyles.IsChecked == true)
+            {
+                populateAchievementsWrapPanel(game);
+            }
+            else
+            {
+                populateAchievementsDataGrid(game);
+            }
+        }
         private void populateAchievementsDataGrid(Game game)
         {
             dgAchievementList.ItemsSource = game.Achievements;
+        }
+        private void populateAchievementsWrapPanel(Game game)
+        {
+            Console.WriteLine("Outputting visual style games...");
+
+            if (game.Achievements.Count == 0)
+                game.DownloadAchievements();
+
+            Dispatcher.Invoke(() => {
+                foreach (Achievement achievement in game.Achievements)
+                {
+                    // Create UI element
+                    var newImageTile = ImageConversion.ConvertDrawingImageToWPFImage(achievement.getBadge());
+
+                    if (achievement.badge != null)
+                    {
+                        // Size image
+                        int tileSize = 200;
+                        newImageTile.Width = tileSize;
+                        newImageTile.Height = tileSize;
+                        newImageTile.Margin = new Thickness(10);
+
+                        // Add ID as tag
+                        newImageTile.Tag = achievement.ID;
+
+                        // Add click event handler
+                        newImageTile.MouseDown += NewImageTile_MouseDown;
+
+                        // Add to games wrap panel
+                        wrapAchievements.Children.Add(newImageTile);
+                    }
+                    else
+                    {
+                        Console.WriteLine("No achievement Badge for " + achievement.Title);
+                    }
+                }
+            });
         }
         private void dgAchievementList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -955,15 +1086,13 @@ namespace RAProject
 
             Console.WriteLine("Showing visual styles");
 
-            dgGames.IsEnabled = false;
-            dgAchievementList.IsEnabled = false;
+            // Hide data grids
+            hideUIElement(dgGames);
+            hideUIElement(dgAchievementList);
 
-            wrapGames.IsEnabled = true;
-
-            dgGames.Visibility = Visibility.Hidden;
-            dgAchievementList.Visibility = Visibility.Hidden;
-
-            wrapGames.Visibility = Visibility.Visible;
+            // Show wrap panels
+            showUIElement(wrapGames);
+            showUIElement(wrapAchievements);
         }
 
         private void hideVisualStyles()
@@ -973,16 +1102,28 @@ namespace RAProject
 
             Console.WriteLine("Hiding visual styles");
 
-            dgGames.IsEnabled = true;
-            dgAchievementList.IsEnabled = true;
+            // Show data-grids
+            showUIElement(dgGames);
+            showUIElement(dgAchievementList);
 
-            wrapGames.IsEnabled = false;
-
-            dgGames.Visibility = Visibility.Visible;
-            dgAchievementList.Visibility = Visibility.Visible;
-
-            wrapGames.Visibility = Visibility.Hidden;
+            // Hide wrap panels
+            hideUIElement(wrapGames);            
+            hideUIElement(wrapAchievements);            
         }
+
+        private void showUIElement(UIElement elem)
+        {
+            elem.IsEnabled = true;
+            elem.Visibility = Visibility.Visible;
+            Panel.SetZIndex(elem, 1);
+        }
+        private void hideUIElement(UIElement elem)
+        {
+            elem.IsEnabled = false;
+            elem.Visibility = Visibility.Hidden;
+            Panel.SetZIndex(elem, -1);
+        }
+
 
         private void applyTheme()
         {
@@ -1014,11 +1155,6 @@ namespace RAProject
             {
                 switch (tabControl.SelectedIndex)
                 {
-                    case 0:
-                        // User Profile
-                        //displayTab_UserProfile();
-                        break;
-
                     case 1:
                         // Consoles
                         //displayTab_Consoles();
@@ -1031,22 +1167,7 @@ namespace RAProject
 
                     case 3:
                         // Achievements
-                        displayTab_Achievements();
-                        break;
-
-                    case 4:
-                        // Leader Board
-                        displayTab_LeaderBoard();
-                        break;
-
-                    case 5:
-                        // Settings
-                        displayTab_Settings();
-                        break;
-
-                    case 6:
-                        // Help
-                        displayTab_Help();
+                        populateAchievementsTab(MyData.myData.currentGame);
                         break;
 
                     default:

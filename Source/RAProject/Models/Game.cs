@@ -256,6 +256,24 @@ namespace RAProject.Models
             }
         }
 
+        public void downloadAllImages()
+        {
+            System.Console.WriteLine("Downloading Box Art for {0}", Title);
+            string reqURL = Requests.Games.getGameInfoBasic(ID);
+            string json = Requests.FetchJSON(reqURL); // Here is slow
+            dynamic data = JsonConvert.DeserializeObject(json);
+            string url;
+
+            url = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageBoxArt"]);
+            imgBoxArt = Requests.DownloadImageFromUrl(url);
+
+            url = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageInGame"]);
+            imgIngame = Requests.DownloadImageFromUrl(url);
+
+            url = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageTitle"]);
+            imgTitleScreen = Requests.DownloadImageFromUrl(url);
+        }
+
         public Image downloadImage_BoxArt()
         {
             System.Console.WriteLine("Downloading Box Art for {0}", Title);

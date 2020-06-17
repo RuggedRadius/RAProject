@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace RAProject.Utilities
 {
@@ -14,6 +15,7 @@ namespace RAProject.Utilities
     {
         public static System.Windows.Controls.Image ConvertDrawingImageToWPFImage(System.Drawing.Image gdiImg)
         {
+            
             System.Windows.Controls.Image img = new System.Windows.Controls.Image();
 
             Bitmap bmp = new Bitmap(gdiImg);

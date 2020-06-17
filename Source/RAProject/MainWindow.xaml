@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:RAProject"
         xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Name="wndMain" x:Class="RAProject.MainWindow"
         mc:Ignorable="d"
-        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1079" FontFamily="Bahnschrift Light">
+        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1104" FontFamily="Bahnschrift Light">
     <Window.Resources>
         <Style TargetType="{x:Type DataGridRow}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -610,12 +610,16 @@
 
                                 <Separator Margin="0,-2,0,20" />
                                 <WrapPanel>
-                                    <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
-                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                    <Label Content="Developer" HorizontalContentAlignment="Center" Foreground="White" Width="180" FontWeight="Bold" />
+                                    <Label x:Name="lblGames_Developer" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <Label Content="Release Year" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
-                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                    <Label Content="Released" HorizontalContentAlignment="Center" Foreground="White" Width="180" FontWeight="Bold" />
+                                    <Label x:Name="lblGames_Released" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Content="Publisher" HorizontalContentAlignment="Center" Foreground="White" Width="180" FontWeight="Bold" />
+                                    <Label x:Name="lblGames_Publisher" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
                                 </WrapPanel>
                                 <Button x:Name="btnDownloadAchievements" Content="Download Game Data" VerticalAlignment="Bottom" Height="39" Margin="10" Click="btnDownloadAchievements_Click"/>
                             </StackPanel>
@@ -623,7 +627,7 @@
 
                         <Border DockPanel.Dock="Left"  BorderBrush="White" Margin="10" BorderThickness="2" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
 
-                            <Grid>
+                            <Grid ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
 
                                 <DataGrid x:Name="dgGames" 
                                       Panel.ZIndex="1" 
@@ -655,7 +659,7 @@
                                     </DataGrid.RowStyle>
                                 </DataGrid>
 
-                                <WrapPanel x:Name="wrapGames" Margin="5" Background="#00FF0000" />
+                                <WrapPanel x:Name="wrapGames" Panel.ZIndex="1" Margin="5" Background="#00FF0000" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" />
 
 
                             </Grid>
@@ -704,7 +708,10 @@
 
                         <Grid DockPanel.Dock="Left" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                             <Border BorderBrush="White" Margin="10" BorderThickness="2" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                <DataGrid x:Name="dgAchievementList"
+
+                                <Grid>
+
+                                    <DataGrid x:Name="dgAchievementList"
                                               Margin="10,0,10,10" 
                                               Panel.ZIndex="1" SelectionMode="Single" 
                                               Background="Transparent"       
@@ -713,19 +720,25 @@
                                               ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                               Style="{DynamicResource DataGridStyle1}" 
                                               RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" IsReadOnly="True" SelectionChanged="dgAchievementList_SelectionChanged">
-                                    <DataGrid.RowStyle>
-                                        <Style TargetType="{x:Type DataGridRow}">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsSelected" Value="True" >
-                                                    <Setter Property="Background" Value="Gainsboro" />
-                                                    <Setter Property="Foreground" Value="Red"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGrid.RowStyle>
-                                </DataGrid>
+                                        <DataGrid.RowStyle>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True" >
+                                                        <Setter Property="Background" Value="Gainsboro" />
+                                                        <Setter Property="Foreground" Value="Red"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGrid.RowStyle>
+                                    </DataGrid>
+
+                                    <WrapPanel x:Name="wrapAchievements" Margin="5">
+                                        
+                                    </WrapPanel>
+                                </Grid>
+                                
                             </Border>
                         </Grid>
 

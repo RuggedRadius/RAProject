@@ -56,6 +56,16 @@ namespace RAProject.Models
             }
         }
 
+        public Image getBadge()
+        {
+            if (badge == null)
+            {
+                Console.WriteLine("Downloading badge for " + BadgeName);
+                badge = fetchBadge();
+            }
+            return badge;
+        }
+
         public string GetBadgeUrl()
         {
             if (this.DateEarned != null)
@@ -67,7 +77,7 @@ namespace RAProject.Models
                 return String.Format("http://retroachievements.org/Badge/{0}_lock.png", this.BadgeName);
             }
         }
-        public Image downloadBadge()
+        public Image fetchBadge()
         {
             return Requests.DownloadImageFromUrl(GetBadgeUrl());
         }
