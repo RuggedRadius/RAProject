@@ -81,7 +81,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\ConsoleDataRow.cs" />
     <Compile Include="Models\DataFile.cs" />
-    <Compile Include="Models\TopUser.cs" />
+    <Compile Include="Models\User\TopUser.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -95,7 +95,6 @@
     <Compile Include="Utilities\ConsoleInformation.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\Data.cs" />
-    <Compile Include="Utilities\FileHandling.cs" />
     <Compile Include="Utilities\ImageConversion.cs" />
     <Compile Include="Utilities\MergeSort.cs" />
     <Compile Include="Utilities\Requests.cs" />
@@ -121,8 +120,8 @@
     <Compile Include="Models\SupportedConsole.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\MyData.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Models\User_LastActivity.cs" />
+    <Compile Include="Models\User\User.cs" />
+    <Compile Include="Models\User\User_LastActivity.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -46,5 +46,29 @@ namespace RAProject.Properties {
                 this["Credential_APIKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LoadOnStartUp {
+            get {
+                return ((bool)(this["LoadOnStartUp"]));
+            }
+            set {
+                this["LoadOnStartUp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SaveOnExit {
+            get {
+                return ((bool)(this["SaveOnExit"]));
+            }
+            set {
+                this["SaveOnExit"] = value;
+            }
+        }
     }
 }

@@ -68,6 +68,8 @@ namespace RAProject
 
             applyTheme();
 
+     
+
             initialised = true;
             updateStatus("Browser initialised");
         }
@@ -227,21 +229,21 @@ namespace RAProject
         #region Console Tab
         private void displayTab_Consoles()
         {            
-            populateConsoleList();
+            //populateConsoleList();
             populateConsoleDataGrid();
         }
-        private void populateConsoleList()
-        {
-            // Clear list
-            cmbConsoleSelection.Items.Clear();
+        //private void populateConsoleList()
+        //{
+        //    // Clear list
+        //    cmbConsoleSelection.Items.Clear();
 
-            // Populate list with each downloaded console
-            foreach (SupportedConsole console in MyData.myData.consoles)
-            {
-                // Add to list box
-                cmbConsoleSelection.Items.Add(console.Name);
-            }
-        }
+        //    // Populate list with each downloaded console
+        //    foreach (SupportedConsole console in MyData.myData.consoles)
+        //    {
+        //        // Add to list box
+        //        cmbConsoleSelection.Items.Add(console.Name);
+        //    }
+        //}
         public void populateConsoleDataGrid()
         {
             dgConsoleList.Items.Clear();
@@ -266,26 +268,30 @@ namespace RAProject
         }
         private void populateConsoleInfo (SupportedConsole console)
         {
-            //// Set image
-            System.Drawing.Image consoleImage = ConsoleInformation.getConsoleImage(console);
+            Dispatcher.Invoke(() => {
+                // Set image
+                System.Drawing.Image consoleImage = ConsoleInformation.getConsoleImage(console);
 
-            if (consoleImage == null)
-            {
-                Console.WriteLine("Image not found...");
-            }
-            else
-            {
-                Bitmap bmp = new Bitmap(consoleImage);
-                IntPtr hBitmap = bmp.GetHbitmap();
-                ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                if (consoleImage == null)
+                {
+                    Console.WriteLine("Image not found...");
+                }
+                else
+                {
+                    Bitmap bmp = new Bitmap(consoleImage);
+                    IntPtr hBitmap = bmp.GetHbitmap();
+                    ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-                imgConsole.Source = WpfBitmap;
+                    imgConsole.Source = WpfBitmap;
 
-                // Set title
-                lblConsoleName.Content = console.Name;
+                    // Set title
+                    lblConsoleName.Content = console.Name;
 
-                // Set details
-            }
+                    // Set details
+                    lblConsoleGamesCount.Content = console.games.Count.ToString();
+                }
+            });
+
         }
         private void btnDownloadConsoleGames_Click(object sender, RoutedEventArgs e)
         {
@@ -314,53 +320,53 @@ namespace RAProject
 
 
 
-        private void lstConsoles_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (cmbConsoleSelection.SelectedIndex < 0)
-                return;
+        //private void lstConsoles_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        //{
+        //    if (cmbConsoleSelection.SelectedIndex < 0)
+        //        return;
 
-            // Get console from name
-            string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
-            Console.WriteLine("{0} double-clicked.", listValue);
+        //    // Get console from name
+        //    string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
+        //    Console.WriteLine("{0} double-clicked.", listValue);
 
-            // Search for selected console
-            foreach (SupportedConsole console in MyData.myData.consoles)
-            {
-                if (console.Name == listValue)
-                {
-                    // Populate console information panel
-                    populateConsoleInfo(console);
-                }
-            }
+        //    // Search for selected console
+        //    foreach (SupportedConsole console in MyData.myData.consoles)
+        //    {
+        //        if (console.Name == listValue)
+        //        {
+        //            // Populate console information panel
+        //            populateConsoleInfo(console);
+        //        }
+        //    }
 
-            // Select Games Tab, and populate it
-            tabControl.SelectedIndex = 2;
+        //    // Select Games Tab, and populate it
+        //    tabControl.SelectedIndex = 2;
 
 
-        }
-        private void lstConsoles_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Console.WriteLine("Mouse down...");
-            if (e.ClickCount >= 2)
-            {
-                // Double click
-                string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
-                Console.WriteLine("{0} double-clicked.", listValue);
+        //}
+        //private void lstConsoles_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        //{
+        //    Console.WriteLine("Mouse down...");
+        //    if (e.ClickCount >= 2)
+        //    {
+        //        // Double click
+        //        string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
+        //        Console.WriteLine("{0} double-clicked.", listValue);
 
-                // Search for selected console
-                foreach (SupportedConsole console in MyData.myData.consoles)
-                {
-                    if (console.Name == listValue)
-                    {
-                        // Populate console information panel
-                        populateConsoleInfo(console);
-                    }
-                }
+        //        // Search for selected console
+        //        foreach (SupportedConsole console in MyData.myData.consoles)
+        //        {
+        //            if (console.Name == listValue)
+        //            {
+        //                // Populate console information panel
+        //                populateConsoleInfo(console);
+        //            }
+        //        }
 
-                // Select Games Tab, and populate it
-                tabControl.SelectedIndex = 2;
-            }
-        }
+        //        // Select Games Tab, and populate it
+        //        tabControl.SelectedIndex = 2;
+        //    }
+        //}
 
         private void dgConsoleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -431,21 +437,33 @@ namespace RAProject
         #region Games Tab
         private void displayTab_Games() 
         {
-            populateSelectConsoleComboBox();
+            //populateSelectConsoleComboBox();
         }
         private void populateGamesTab(SupportedConsole console)
         {
             Console.WriteLine("Populating games tab...");
 
+            if (console.games.Count == 0)
+            {
+                console.DownloadConsoleGames();
+            }
             // Ensure selected style is used
             //applyVisualStyles();
 
             if (rdoVisualStyles.IsChecked == true)
             {
+                wrapGames.Visibility = Visibility.Visible;
+
+                dgGames.Visibility = Visibility.Hidden;
+
                 populateGamesWrapPanel(console);
             }
             else
             {
+                dgGames.Visibility = Visibility.Visible;
+
+                wrapGames.Visibility = Visibility.Hidden;
+
                 populateGamesDataGrid(console);
             }
         }
@@ -455,6 +473,10 @@ namespace RAProject
             Console.WriteLine("Outputting visual style games...");
 
             Dispatcher.Invoke(() => {
+                // Clear wrap panel
+                wrapGames.Children.Clear();
+
+                // Populate
                 foreach (Game game in console.games)
                 {
                     Task.Run(() =>
@@ -467,8 +489,8 @@ namespace RAProject
                             System.Windows.Controls.Image newImageTile = ImageConversion.ConvertDrawingImageToWPFImage(game.imgBoxArt);
 
                             // Size image
-                            newImageTile.Width = 200;
-                            newImageTile.Height = 320;
+                            newImageTile.Width = 100;
+                            newImageTile.Height = 160;
                             newImageTile.Margin = new Thickness(10);
 
                             // Add ID as tag
@@ -494,7 +516,7 @@ namespace RAProject
             });
         }
 
-        private void populateGameInfoPanel(Game game)
+        private void FillGameInfoPanel(Game game)
         {
             System.Drawing.Image gameArt = null;
             if (game.imgBoxArt == null)
@@ -542,7 +564,17 @@ namespace RAProject
             lblGames_Released.Content = game.Released;
         }
 
+        //private void populateSelectConsoleComboBox()
+        //{
+        //    // Clear combo box
+        //    cmbConsoleSelection.Items.Clear();
 
+        //    // Populate combo box
+        //    foreach (SupportedConsole console in MyData.myData.consoles)
+        //    {
+        //        cmbConsoleSelection.Items.Add(console.Name);
+        //    }
+        //}
 
         private void NewImageTile_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -596,7 +628,7 @@ namespace RAProject
             {
                 MyData.myData.currentGame = clickedGame;
                 Console.WriteLine(clickedGame.Title + " tile clicked");
-                populateGameInfoPanel(clickedGame);
+                FillGameInfoPanel(clickedGame);
             }
             else
             {
@@ -604,19 +636,6 @@ namespace RAProject
             }
         }
 
-        
-
-        private void populateSelectConsoleComboBox()
-        {
-            // Clear combo box
-            cmbConsoleSelection.Items.Clear();
-
-            // Populate combo box
-            foreach (SupportedConsole console in MyData.myData.consoles)
-            {
-                cmbConsoleSelection.Items.Add(console.Name);
-            }
-        }
 
         private void dgGames_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -647,76 +666,95 @@ namespace RAProject
         }
         private void dgGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (dgAchievementList.SelectedIndex < 0)
+            if (dgGames.SelectedIndex < 0)
                 return;
 
             Console.WriteLine("Selection chnged");
+
             // Get selected game
             Game selectedGame = (Game)dgGames.SelectedItem;
             MyData.myData.currentGame = selectedGame;
 
             // Display game info
-            populateGameInfoPanel(selectedGame);
+            FillGameInfoPanel(selectedGame);
 
             Console.WriteLine("Mouse clicked game");
         }
 
-        private async void cmbConsoleSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cmbConsoleSelection.SelectedIndex < 0)
-                return;
+        //private async void cmbConsoleSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (cmbConsoleSelection.SelectedIndex < 0)
+        //        return;
 
-            // Get console from name
-            string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
-            Console.WriteLine("{0} clicked.", listValue);
+        //    // Get console from name
+        //    string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
+        //    Console.WriteLine("{0} clicked.", listValue);
 
-            // Search for selected console
-            foreach (SupportedConsole console in MyData.myData.consoles)
-            {
-                if (console.Name == listValue)
-                {
-                    // Populate games list for selected console
-                    await Task.Run(() => {
-                        populateGamesTab(console);
-                    });
-                    MyData.myData.currentConsole = console;
-                    break;
-                }
-            }
-        }
+        //    // Search for selected console
+        //    foreach (SupportedConsole console in MyData.myData.consoles)
+        //    {
+        //        if (console.Name == listValue)
+        //        {
+        //            // Populate games list for selected console
+        //            await Task.Run(() => {
+        //                populateGamesTab(console);
+        //            });
+        //            MyData.myData.currentConsole = console;
+        //            break;
+        //        }
+        //    }
+        //}
 
         private void btnDownloadAchievements_Click(object sender, RoutedEventArgs e)
         {
-            MyData.myData.currentGame.DownloadAchievements();
-            MyData.myData.currentGame.downloadImage_BoxArt();
+            if (MyData.myData.currentGame != null)
+            {
+                MyData.myData.currentGame.DownloadAchievements();
+                MyData.myData.currentGame.downloadImage_BoxArt();
 
-            dgGames.SelectedIndex--;
-            dgGames.SelectedIndex++;
-            //MyData.myData.currentGame.downloadImage_InGame();
-            //MyData.myData.currentGame.downloadImage_TitleScreen();
+                dgGames.SelectedIndex--;
+                dgGames.SelectedIndex++;
+            }
+            else
+            {
+                MessageBox.Show(
+                    "No current game selected.",
+                    "No current game",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                    );
+            }
         }
 
 
         #endregion
 
         #region Achievements Tab
-        private void displayTab_Achievements() { 
+        //private void displayTab_Achievements() { 
 
-        }
+        //}
         private void populateAchievementsTab(Game game)
         {
             if (rdoVisualStyles.IsChecked == true)
             {
+                dgAchievementList.Visibility = Visibility.Hidden;
                 populateAchievementsWrapPanel(game);
             }
             else
             {
+                wrapAchievements.Visibility = Visibility.Hidden;
                 populateAchievementsDataGrid(game);
             }
         }
         private void populateAchievementsDataGrid(Game game)
         {
-            dgAchievementList.ItemsSource = game.Achievements;
+            if (game.Achievements.Count == 0)
+                game.DownloadAchievements();
+
+            Dispatcher.Invoke(() =>
+            {
+                dgAchievementList.ItemsSource = game.Achievements;
+            });
         }
         private void populateAchievementsWrapPanel(Game game)
         {
@@ -725,35 +763,61 @@ namespace RAProject
             if (game.Achievements.Count == 0)
                 game.DownloadAchievements();
 
-            Dispatcher.Invoke(() => {
+            Dispatcher.Invoke(() => 
+            {
+                // Clear wrap panel
+                wrapAchievements.Children.Clear();
+
+                // Populate
                 foreach (Achievement achievement in game.Achievements)
                 {
-                    // Create UI element
-                    var newImageTile = ImageConversion.ConvertDrawingImageToWPFImage(achievement.getBadge());
+                    Task.Run(() => {                     
+                        // Create UI element
+                        var newImageTile = ImageConversion.ConvertDrawingImageToWPFImage(achievement.getBadge());
 
-                    if (achievement.badge != null)
-                    {
-                        // Size image
-                        int tileSize = 200;
-                        newImageTile.Width = tileSize;
-                        newImageTile.Height = tileSize;
-                        newImageTile.Margin = new Thickness(10);
+                        if (achievement.badge != null)
+                        {
+                            Dispatcher.Invoke(() => 
+                            {
+                                // Size image
+                                int tileSize = 100;
+                                newImageTile.Width = tileSize;
+                                newImageTile.Height = tileSize;
+                                newImageTile.Margin = new Thickness(10);
 
-                        // Add ID as tag
-                        newImageTile.Tag = achievement.ID;
+                                // Add ID as tag
+                                newImageTile.Tag = achievement.ID;
 
-                        // Add click event handler
-                        newImageTile.MouseDown += NewImageTile_MouseDown;
+                                // Add click event handler
+                                newImageTile.MouseDown += AchievementTile_MouseDown;
 
-                        // Add to games wrap panel
-                        wrapAchievements.Children.Add(newImageTile);
-                    }
-                    else
-                    {
-                        Console.WriteLine("No achievement Badge for " + achievement.Title);
-                    }
+                                // Add to games wrap panel
+                                wrapAchievements.Children.Add(newImageTile);
+                            });
+                        }
+                        else
+                        {
+                            Console.WriteLine("No achievement Badge for " + achievement.Title);
+                        }
+                    });
                 }
             });
+        }
+        
+        private void FillAchievementDetails(Achievement achievement)
+        {
+            // Set badge image
+            imgSelectedAchievementBadge.Source = new BitmapImage(new Uri(achievement.GetBadgeUrl()));
+
+            // Title
+            lblSelectedAchievementTitle.Content = achievement.Title;
+
+            // Description
+            lblAchievementDescription.Content = achievement.Description;
+
+            // Dates
+            lblDateEarned.Content = achievement.DateEarned;
+            lblDateHardcore.Content = achievement.DateEarnedHardCore;
         }
         private void dgAchievementList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -764,6 +828,33 @@ namespace RAProject
             lblAchievementDescription.Content = seletedAchievement.Description;
 
             imgSelectedAchievementBadge.Source = new BitmapImage(new Uri(seletedAchievement.GetBadgeUrl())); // seletedAchievement.badge;
+        }
+        private void AchievementTile_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // Get achievement game
+            Achievement selectedAchievement = null;
+            foreach (Achievement achievement in MyData.myData.currentGame.Achievements)
+            {
+                if (achievement.ID == ((System.Windows.Controls.Image)sender).Tag.ToString())
+                {
+                    selectedAchievement = achievement;
+                }
+            }
+
+            if (selectedAchievement != null)
+            {
+                // Populate achievement data grid
+                FillAchievementDetails(selectedAchievement);
+
+                // Prevent event from bubbling and re-triggering this method
+                e.Handled = true;
+            }
+            else
+            {
+                Console.WriteLine("ERROR: Could not find selected achievement");
+            }
+
+            return;
         }
 
         #endregion
@@ -1027,9 +1118,55 @@ namespace RAProject
                     // Games
                     case 1:
                         Game searchGame = Search.SearchGames(txtSearchQuery.Text);
+                        MyData.myData.currentGame = searchGame;
+
+                        SupportedConsole console = Search.SearchConsoles(searchGame.ConsoleName);
                         if (searchGame != null)
                         {
-                            MessageBox.Show(searchGame.Title + " on " + searchGame.ConsoleName);
+                            // Switch to console tab
+                            tabControl.SelectedIndex = 2;
+
+                            // Populate games tab
+                            populateGamesTab(console);
+
+
+                            if (rdoTextStyles.IsChecked == true)
+                            {
+                                // Focus datagrid
+                                dgGames.Focus();
+
+                                // Highlight search result
+                                for (int i = 0; i < dgGames.Items.Count; i++)
+                                {
+                                    if (((Game)dgGames.Items[i]).Title == searchGame.Title)
+                                    {
+                                        dgGames.SelectedIndex = i;
+                                        break;
+                                    }
+                                }
+
+                                // Scroll into view
+                                dgGames.ScrollIntoView(searchGame);
+                            }
+                            else
+                            {
+                                wrapGames.Focus();
+
+                                //for (int i = 0; i < wrapGames.Children.Count; i++)
+                                //{
+                                //    if (((System.Windows.Controls.Image)wrapGames.Children[i]).Tag.Equals(searchGame.ID))
+                                //    {
+                                //        wrapGames..SelectedIndex = i;
+                                //        break;
+                                //    }
+                                //}
+
+                                
+                            }
+
+
+
+
                         }
                         else
                         {
@@ -1137,7 +1274,7 @@ namespace RAProject
             bgConsoles.Background = new SolidColorBrush(Theme.secondaryColour);
             bgGames.Background = new SolidColorBrush(Theme.secondaryColour);
             bgAchievements.Background = new SolidColorBrush(Theme.secondaryColour);
-            bgLeaderboard.Background = new SolidColorBrush(Theme.secondaryColour);
+            //bgLeaderboard.Background = new SolidColorBrush(Theme.secondaryColour);
             bgSettings.Background = new SolidColorBrush(Theme.secondaryColour);
 
         }
@@ -1187,8 +1324,8 @@ namespace RAProject
             applyVisualStyles();
             //hideVisualStyles();
         }
-        #endregion
 
+        #endregion
 
     }
 }

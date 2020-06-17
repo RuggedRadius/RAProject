@@ -12,6 +12,7 @@ namespace RAProject.Models
     {
         [JsonProperty("ID")]            public string ID                        { get; set; }
         [JsonProperty("Title")]         public string Title                     { get; set; }
+        public int AchievementCount                     { get; set; }
         [JsonProperty("ForumTopicID")]  private string ForumTopicID              { get; set; }
         [JsonProperty("ConsoleID")] public string ConsoleID                 { get; set; }
         [JsonProperty("ConsoleName")]   public string ConsoleName               { get; set; }
@@ -128,6 +129,9 @@ namespace RAProject.Models
                     }
                 }                
             }
+
+            // Update achievements count
+            AchievementCount = Achievements.Count;
         }
 
         public void downloadGameData()

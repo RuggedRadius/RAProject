@@ -546,13 +546,10 @@
 
                                 <Separator Margin="0,20" />
                                 <WrapPanel>
-                                    <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
-                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                    <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="200" FontWeight="Bold" />
+                                    <Label x:Name="lblConsoleGamesCount" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="200" />
                                 </WrapPanel>
-                                <WrapPanel>
-                                    <Label Content="Release Year" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
-                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
-                                </WrapPanel>
+                                <WrapPanel/>
                                 <Button x:Name="btnDownloadConsoleGames" Content="Download Games" VerticalAlignment="Bottom" Height="39" Margin="10" Click="btnDownloadConsoleGames_Click"/>
 
                             </StackPanel>
@@ -597,8 +594,9 @@
                 <TabItem Style="{DynamicResource tabStylings}" x:Name="tabGames" Header="Games" Margin="0,0,0,0" Height="50" Width="150" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <DockPanel x:Name="bgGames" Margin="0,0,0,34" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
 
-                        <Border DockPanel.Dock="Top"  BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
-                            <ComboBox x:Name="cmbConsoleSelection" Background="#0000575A" Foreground="Black" SelectionChanged="cmbConsoleSelection_SelectionChanged" MouseDoubleClick="lstConsoles_MouseDoubleClick" MouseDown="lstConsoles_MouseDown" Panel.ZIndex="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Margin="10,0" Height="26" Style="{DynamicResource ComboBoxStyle1}"/>
+
+                        <Border DockPanel.Dock="Top" BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
+                            <Label Content="Available Games" Foreground="White" HorizontalContentAlignment="Center"/>
                         </Border>
 
 
@@ -659,8 +657,9 @@
                                     </DataGrid.RowStyle>
                                 </DataGrid>
 
-                                <WrapPanel x:Name="wrapGames" Panel.ZIndex="1" Margin="5" Background="#00FF0000" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" />
-
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <WrapPanel x:Name="wrapGames" Panel.ZIndex="1" Margin="5" Background="#00FF0000" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" />
+                                </ScrollViewer>
 
                             </Grid>
                         </Border>
@@ -682,28 +681,29 @@
 
                 <TabItem Style="{DynamicResource tabStylings}" x:Name="tabAchievements" Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
                     <DockPanel x:Name="bgAchievements" Margin="0,0,0,34" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
+                        <Border DockPanel.Dock="Top" BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
+                            <Label Content="Achievements" Foreground="White" HorizontalContentAlignment="Center"/>
+                        </Border>
+
                         <Border DockPanel.Dock="Right" Width="500" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Right" Padding="10" UseLayoutRounding="True" BorderThickness="2" BorderBrush="White" >
                             <StackPanel>
-                                <Image x:Name="imgSelectedAchievementBadge" Height="200" Source="Resources/Consoles/gba.png"/>
+                                <Image x:Name="imgSelectedAchievementBadge" Height="200" />
                                 <Label x:Name="lblSelectedAchievementTitle" HorizontalContentAlignment="Center" Content="Console Name" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
 
                                 <Separator Margin="0,20" />
                                 <Label x:Name="lblAchievementDescription" Foreground="White" Margin="0,0,0,50" />
                                 <WrapPanel>
-                                    <Label Content="Date Earned:" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
-                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                    <Label Content="Date Earned:" HorizontalContentAlignment="Center" Foreground="White" Width="200" FontWeight="Bold" />
+                                    <Label x:Name="lblDateEarned" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <Label Content="Date Hardcore Earned:" HorizontalContentAlignment="Center" Foreground="White" Width="240" FontWeight="Bold" />
-                                    <Label Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                    <Label Content="Date Hardcore Earned:" HorizontalContentAlignment="Center" Foreground="White" Width="200" FontWeight="Bold" />
+                                    <Label x:Name="lblDateHardcore" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
                                 </WrapPanel>
 
                             </StackPanel>
                         </Border>
 
-                        <Border DockPanel.Dock="Top" BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
-                            <Label Content="Achievements" Foreground="White" HorizontalContentAlignment="Center"/>
-                        </Border>
 
 
                         <Grid DockPanel.Dock="Left" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
@@ -734,9 +734,10 @@
                                         </DataGrid.RowStyle>
                                     </DataGrid>
 
-                                    <WrapPanel x:Name="wrapAchievements" Margin="5">
-                                        
-                                    </WrapPanel>
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <WrapPanel x:Name="wrapAchievements" Margin="5">
+                                        </WrapPanel>
+                                    </ScrollViewer>
                                 </Grid>
                                 
                             </Border>
@@ -749,22 +750,22 @@
 
 
                 <TabItem Style="{DynamicResource tabStylings}" x:Name="tabLeaderBoard" Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
-                    <WrapPanel x:Name="bgLeaderboard" Background="#FF00575A">
-                        <DataGrid x:Name="dgLeaderBoard" Margin="10" Panel.ZIndex="1" SelectionMode="Single" Background="Transparent" Sorting="dgConsoleList_Sorting" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" IsReadOnly="True">
-                            <DataGrid.RowStyle>
-                                <Style TargetType="{x:Type DataGridRow}">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsSelected" Value="True" >
-                                            <Setter Property="Background" Value="Gainsboro" />
-                                            <Setter Property="Foreground" Value="#FF00EEB8"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGrid.RowStyle>
-                        </DataGrid>
-                    </WrapPanel>
+                    <ScrollViewer HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="#FF00575A">
+                        <DataGrid x:Name="dgLeaderBoard" Margin="10" Panel.ZIndex="1" SelectionMode="Single" Background="#FF00575A" Sorting="dgConsoleList_Sorting" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" IsReadOnly="True" ColumnWidth="*" Width="888">
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Setter Property="Background" Value="#FF00575A"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True" >
+                                        <Setter Property="Background" Value="Gainsboro" />
+                                        <Setter Property="Foreground" Value="#FF00EEB8"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+                    </ScrollViewer>
                 </TabItem>
                 <TabItem Style="{DynamicResource tabStylings}" x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
 

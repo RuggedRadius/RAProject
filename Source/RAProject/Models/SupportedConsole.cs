@@ -36,7 +36,15 @@ namespace RAProject.Models
             //});
         }
 
+        public string getReleased()
+        {
+            if (released == null || string.IsNullOrEmpty(released))
+            {
+                
+            }
 
+            return released;
+        }
 
 
 

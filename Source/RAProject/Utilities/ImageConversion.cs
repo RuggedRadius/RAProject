@@ -15,18 +15,20 @@ namespace RAProject.Utilities
     {
         public static System.Windows.Controls.Image ConvertDrawingImageToWPFImage(System.Drawing.Image gdiImg)
         {
-            
-            System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+            System.Windows.Controls.Image img = null; 
+            Application.Current.Dispatcher.Invoke((Action)delegate {
+                Bitmap bmp = new Bitmap(gdiImg);
+                IntPtr hBitmap = bmp.GetHbitmap();
+                ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-            Bitmap bmp = new Bitmap(gdiImg);
-            IntPtr hBitmap = bmp.GetHbitmap();
-            ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                img = new System.Windows.Controls.Image();
+                img.Source = WpfBitmap;
+                img.Width = 500;
+                img.Height = 500;
+                img.Stretch = Stretch.Fill;
 
-            img.Source = WpfBitmap;
-            img.Width = 500;
-            img.Height = 500;
-            img.Stretch = Stretch.Fill;
-
+                
+            });
             return img;
         }
     }
