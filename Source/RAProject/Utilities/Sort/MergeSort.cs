@@ -48,9 +48,9 @@ namespace RAProject.Utilities
             }
         }
 
-        static public void DoMerge_Consoles(SupportedConsole[] numbers, int left, int mid, int right)
+        static public void DoMerge_Consoles(GameConsole[] numbers, int left, int mid, int right)
         {
-            SupportedConsole[] temp = new SupportedConsole[numbers.Length];
+            GameConsole[] temp = new GameConsole[numbers.Length];
             int left_end, num_elements, tmp_pos;
 
             left_end = (mid - 1);
@@ -77,7 +77,7 @@ namespace RAProject.Utilities
                 right--;
             }
         }
-        public static void Consoles_Rescursive(SupportedConsole[] numbers, int left, int right)
+        public static void Consoles_Rescursive(GameConsole[] numbers, int left, int right)
         {
             int mid;
 

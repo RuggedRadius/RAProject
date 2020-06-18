@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace RAProject.Models
 {
     [Serializable]
-    public class SupportedConsole
+    public class GameConsole
     {
         [JsonProperty("ID")]    public string ID { get; set; }
         [JsonProperty("Name")]  public string Name { get; set; }
@@ -25,7 +25,7 @@ namespace RAProject.Models
 
 
 
-        public SupportedConsole(JToken j)
+        public GameConsole(JToken j)
         {            
             ID = (string)j["ID"];
             Name = (string)j["Name"];

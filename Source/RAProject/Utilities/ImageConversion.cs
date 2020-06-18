@@ -31,5 +31,12 @@ namespace RAProject.Utilities
             });
             return img;
         }
+
+        public static ImageSource ImageToSource (Image img)
+        {
+            Bitmap bmp = new Bitmap(img);
+            IntPtr hBitmap = bmp.GetHbitmap();
+            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        }
     }
 }

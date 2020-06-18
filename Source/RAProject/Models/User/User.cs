@@ -28,7 +28,9 @@ namespace RAProject.Models
         [JsonProperty("Rank")] public long Rank { get; set; }
         [JsonProperty("UserPic")] public string UserPic { get; set; }
 
+        public Game lastGame;
         public List<Game> RecentlyPlayedGames;
+        public List<Achievement> RecentAchievements;
         public Image userAvatar;
 
         private Hashtable credentials;
@@ -79,11 +81,89 @@ namespace RAProject.Models
             credentials.Add(username, pwdHash);
         }
 
+        public bool getRecentAchievements()
+        {
+            Console.WriteLine("Fetching user's recent achievements...");
+
+            // Initialise a new list of games
+            RecentAchievements = new List<Achievement>();
+
+            // Fetch JSON Data
+            string url = Requests.Users.getLastWeekAcheivements();
+            string jsonString = Requests.FetchJSON(url);
+            dynamic data = JsonConvert.DeserializeObject(jsonString);
+
+            int maxCounter = 10;
+            if (data["achievement"][0] != null)
+            {
+                // For each game found...
+                foreach (JObject achievement in data["achievement"][0])
+                {
+                    if (maxCounter > 0)
+                    {
+                        // Create game
+                        Achievement newAchievement = new Achievement(achievement);
+
+                        // Adds Game object to user's list of recently played games
+                        RecentAchievements.Add(newAchievement);
+
+                        maxCounter--;
+
+                        Console.WriteLine("Added to user's recently achieved list: " + newAchievement.Title);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public void getRank()
+        {
+            // Determine URL
+            string url = Requests.Users.getUserSummary();
+
+            // Fetch user JSON data
+            string jsonString = Requests.FetchJSON(url);
+
+            // Deserialize JSON into object
+            dynamic data = JsonConvert.DeserializeObject(jsonString);
 
 
+        }
+
+        public void getLastGame()
+        {
+            // Determine URL
+            string url = Requests.Users.getUserSummary();
+
+            // Fetch user JSON data
+            string jsonString = Requests.FetchJSON(url);
+
+            // Deserialize JSON into object
+            dynamic data = JsonConvert.DeserializeObject(jsonString);
+
+            score = (string)data["Points"];
+            trueratio = (string)data["trueratio"];
+
+            if (data["LastGameID"] != null)
+            {
+                LastGameId = (int)data["LastGameID"];
+            }
+        }
+
+
+
+        /// <summary>
+        /// Actually the mega fetch atm....
+        /// </summary>
+        /// <returns></returns>
         public bool getRecentGames()
         {
-            Console.WriteLine("Fetching {0}'s recently played games...");
+            Console.WriteLine("Fetching {0}'s recently played games...", Properties.Settings.Default.Credential_Username);
 
             // Initialise a new list of games
             RecentlyPlayedGames = new List<Game>();
@@ -99,14 +179,41 @@ namespace RAProject.Models
                 // For each game found...
                 foreach (JObject game in data["RecentlyPlayed"])
                 {
+                    // Search for existing game
+                    Game newGame = RAProject.Utilities.Search.SearchGames(game["Title"].ToString());
+
                     // Create game
-                    Game newGame = new Game(game);
+                    if (newGame == null)
+                    {
+                        Console.WriteLine("Game not found locally, creating new record..");
+                        newGame = new Game(game);
+                    }
 
                     // Adds Game object to user's list of recently played games
                     RecentlyPlayedGames.Add(newGame);
 
                     Console.WriteLine("Added to user's recently played list: " + newGame.Title);
                 }
+            }
+
+            score = (string)data["Points"];
+            trueratio = (string)data["trueratio"];
+            Rank = (long)data["Rank"];
+
+            if (data["LastGameID"] != null)
+            {
+                LastGameId = (int)data["LastGameID"];
+            }
+
+            if (data["LastGame"] != null)
+            {
+                lastGame = new Game(data["LastGame"]);
+            }
+
+            if (data["UserPic"] != null)
+            {
+                UserPic = "http://retroachievements.org";
+                UserPic += data["UserPic"].ToString();
             }
 
             return true;

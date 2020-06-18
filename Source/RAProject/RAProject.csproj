@@ -58,6 +58,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9e7cd3b544a090dc, processorArchitecture=MSIL">
+      <HintPath>packages\WpfAnimatedGif.2.0.0\lib\net40\WpfAnimatedGif.dll</HintPath>
+    </Reference>
     <Reference Include="Xceed.Wpf.AvalonDock, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <HintPath>packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
     </Reference>
@@ -94,12 +97,11 @@
     </Compile>
     <Compile Include="Utilities\ConsoleInformation.cs" />
     <Compile Include="Utilities\Constants.cs" />
-    <Compile Include="Utilities\Data.cs" />
     <Compile Include="Utilities\ImageConversion.cs" />
-    <Compile Include="Utilities\MergeSort.cs" />
+    <Compile Include="Utilities\Sort\MergeSort.cs" />
     <Compile Include="Utilities\Requests.cs" />
     <Compile Include="Utilities\InternetConnection.cs" />
-    <Compile Include="Utilities\Search.cs" />
+    <Compile Include="Utilities\Search\Search.cs" />
     <Compile Include="Utilities\Security.cs" />
     <Compile Include="Utilities\Theme.cs" />
     <Page Include="MainWindow.xaml">
@@ -117,7 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Achievement.cs" />
-    <Compile Include="Models\SupportedConsole.cs" />
+    <Compile Include="Models\GameConsole.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\MyData.cs" />
     <Compile Include="Models\User\User.cs" />
@@ -205,6 +207,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\loading.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

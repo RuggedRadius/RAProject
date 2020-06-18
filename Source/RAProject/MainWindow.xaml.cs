@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +19,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WpfAnimatedGif;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 
@@ -57,7 +59,7 @@ namespace RAProject
                 updateStatus("Data loaded from local file.");
 
                 // Populate user profle
-                populateUserDetails();
+                FillUserDetails();
 
                 // Populate consoles
                 populateConsoleDataGrid();
@@ -94,20 +96,22 @@ namespace RAProject
 
             await Task.Run(() =>
             {
-                pbMain.Maximum = MyData.myData.consoles.Count - 1;
+                Dispatcher.Invoke(() => {
+                    pbMain.Maximum = MyData.myData.consoles.Count - 1;
 
-                var progress = new Progress<int>(value => pbMain.Value = value);
+                    var progress = new Progress<int>(value => pbMain.Value = value);
 
-                for (int i = 0; i < MyData.myData.consoles.Count; i++)
-                {
-                    updateStatus(string.Format("Downloading list of {0} games... ", MyData.myData.consoles[i].Name));
+                    for (int i = 0; i < MyData.myData.consoles.Count; i++)
+                    {
+                        updateStatus(string.Format("Downloading list of {0} games... ", MyData.myData.consoles[i].Name));
 
-                    MyData.myData.consoles[i].DownloadConsoleGames();
+                        MyData.myData.consoles[i].DownloadConsoleGames();
 
-                    ((IProgress<int>)progress).Report(i);
-                }
+                        ((IProgress<int>)progress).Report(i);
+                    }
 
-                updateStatus("Data lists download complete.");
+                    updateStatus("Data lists download complete.");
+                });
             });
         }
 
@@ -128,50 +132,57 @@ namespace RAProject
                 }
             }
 
-            //if (initialised)
-            //{
-            //    switch (tabControl.SelectedIndex)
-            //    {
-            //        case 0:
-            //            // User Profile
-            //            displayTab_UserProfile();
-            //            break;
+            if (tabControl.SelectedIndex > -1) // initialised && 
+            {
+                switch (tabControl.SelectedIndex)
+                {
+                    case 0:
+                        // User Profile
+                        displayTab_UserProfile();
+                        break;
 
-            //        case 1:
-            //            // Consoles
-            //            displayTab_Consoles();
-            //            break;
+                    case 1:
+                        // Consoles
+                        displayTab_Consoles();
+                        break;
 
-            //        case 2:
-            //            // Games
-            //            displayTab_Games();
-            //            break;
+                    case 2:
+                        // Games
+                        
+                        if (MyData.myData.currentConsole != null)
+                        {
+                            populateGamesTab(MyData.myData.currentConsole);
+                        }
+                        break;
 
-            //        case 3:
-            //            // Achievements
-            //            displayTab_Achievements();
-            //            break;
+                    case 3:
+                        // Achievements
+                        if (MyData.myData.currentGame != null)
+                        {
+                            populateAchievementsTab(MyData.myData.currentGame);
+                        }
+                        break;
 
-            //        case 4:
-            //            // Leader Board
-            //            displayTab_LeaderBoard();
-            //            break;
+                    case 4:
+                        // Leader Board
+                        displayTab_LeaderBoard();
+                        break;
 
-            //        case 5:
-            //            // Settings
-            //            displayTab_Settings();
-            //            break;
+                    case 5:
+                        // Settings
+                        displayTab_Settings();
+                        break;
 
-            //        case 6:
-            //            // Help
-            //            displayTab_Help();
-            //            break;
+                    case 6:
+                        // Help
+                        displayTab_Help();
+                        break;
 
-            //        default:
-            //            Console.WriteLine("No tab selected");
-            //            break;
-            //    }
-            //}
+                    default:
+                        Console.WriteLine("No tab selected");
+                        break;
+                }
+            }
         }
 
         // DEBUG ONLY
@@ -181,7 +192,7 @@ namespace RAProject
 
             // Populate games data grid test
             int consoleNumber = 2;
-            SupportedConsole console = MyData.myData.consoles[consoleNumber];
+            GameConsole console = MyData.myData.consoles[consoleNumber];
             Console.WriteLine(console.Name);
             if (console.games.Count < 1)
             {
@@ -229,7 +240,6 @@ namespace RAProject
         #region Console Tab
         private void displayTab_Consoles()
         {            
-            //populateConsoleList();
             populateConsoleDataGrid();
         }
         //private void populateConsoleList()
@@ -259,14 +269,18 @@ namespace RAProject
             }
 
             // Populate list with each downloaded console
-            foreach (SupportedConsole console in MyData.myData.consoles)
+            foreach (GameConsole console in MyData.myData.consoles)
             {
+                // Filter non-games, don't know why they exist in the db.. they must have their reasons
+                if (console.Name == "Events" || console.Name == "Hubs" || console.Name == "[Unused]")
+                    continue;
+
                 // Add to datagrid
                 dgConsoleList.Items.Add(new ConsoleDataRow(console.Name, console.released, console.games.Count));
             }
 
         }
-        private void populateConsoleInfo (SupportedConsole console)
+        private void populateConsoleInfo (GameConsole console)
         {
             Dispatcher.Invoke(() => {
                 // Set image
@@ -297,9 +311,9 @@ namespace RAProject
         {
             // Get selected game
             ConsoleDataRow selectedConsoleRow = (ConsoleDataRow)dgConsoleList.SelectedItem;
-            SupportedConsole selectedConsole = null;
+            GameConsole selectedConsole = null;
 
-            foreach (SupportedConsole console in MyData.myData.consoles)
+            foreach (GameConsole console in MyData.myData.consoles)
             {
                 if (console.Name == selectedConsoleRow.ConsoleName)
                 {
@@ -382,7 +396,7 @@ namespace RAProject
             Console.WriteLine("{0} clicked.", consoleName);
 
             // Search for selected console
-            foreach (SupportedConsole console in MyData.myData.consoles)
+            foreach (GameConsole console in MyData.myData.consoles)
             {
                 if (console.Name == consoleName)
                 {
@@ -401,7 +415,7 @@ namespace RAProject
             string consoleName = row.ConsoleName;
 
             // Search for selected console
-            foreach (SupportedConsole console in MyData.myData.consoles)
+            foreach (GameConsole console in MyData.myData.consoles)
             {
                 if (console.Name == consoleName)
                 {
@@ -427,19 +441,29 @@ namespace RAProject
         }
         #endregion
 
-
-
-
-
-
-
-
         #region Games Tab
-        private void displayTab_Games() 
+        private void SetLoadingLabels()
         {
-            //populateSelectConsoleComboBox();
+            string loadingString = "Loading...";
+
+            Dispatcher.Invoke(() => {
+                // Image
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.UriSource = new Uri("Resources/loading.gif", UriKind.Relative);
+                image.EndInit();
+                ImageBehavior.SetAnimatedSource(imgGame, image);
+
+                // Labels
+                lblConsoleName.Content = loadingString;
+                lblGameTitle.Content = loadingString;
+                lblGames_Developer.Content = loadingString;
+                lblGames_Publisher.Content = loadingString;
+                lblGames_Released.Content = loadingString;
+            });
         }
-        private void populateGamesTab(SupportedConsole console)
+
+        private void populateGamesTab(GameConsole console)
         {
             Console.WriteLine("Populating games tab...");
 
@@ -468,45 +492,87 @@ namespace RAProject
             }
         }
 
-        private void populateGamesWrapPanel(SupportedConsole console)
+        private async void populateGamesWrapPanel(GameConsole console)
         {
             Console.WriteLine("Outputting visual style games...");
 
-            Dispatcher.Invoke(() => {
+
+            Dispatcher.Invoke(async () =>
+            {
                 // Clear wrap panel
                 wrapGames.Children.Clear();
 
                 // Populate
                 foreach (Game game in console.games)
                 {
-                    Task.Run(() =>
+                    if (tabControl.SelectedIndex == 2)
                     {
-                        if (game.imgBoxArt == null)
-                            game.downloadImage_BoxArt();
+                        await Task.Run(async () =>
+                        {
+                            if (game.imgBoxArt == null)
+                                game.downloadImage_BoxArt();
 
-                        // Create image
-                        Dispatcher.Invoke(() => { 
-                            System.Windows.Controls.Image newImageTile = ImageConversion.ConvertDrawingImageToWPFImage(game.imgBoxArt);
+                            // Create image
+                            Dispatcher.Invoke(() => {
+                                System.Windows.Controls.Image newImageTile = ImageConversion.ConvertDrawingImageToWPFImage(game.imgBoxArt);
 
-                            // Size image
-                            newImageTile.Width = 100;
-                            newImageTile.Height = 160;
-                            newImageTile.Margin = new Thickness(10);
+                                // Size image
+                                DetermineBoxArtSize(newImageTile, console);
 
-                            // Add ID as tag
-                            newImageTile.Tag = game.ID;
+                                // Add uniform margin
+                                newImageTile.Margin = new Thickness(10);
 
-                            // Add click event handler
-                            newImageTile.MouseDown += NewImageTile_MouseDown;
+                                // Add ID as tag
+                                newImageTile.Tag = game.ID;
 
-                            // Add to games wrap panel
-                            wrapGames.Children.Add(newImageTile);
+                                // Add click event handler
+                                newImageTile.MouseDown += GameTile_MouseDown;
+
+                                // Add to games wrap panel
+                                wrapGames.Children.Add(newImageTile);
+                            });
                         });
-                    });
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             });
+
+            Console.WriteLine("Populating {0} games completed/stopped", console.Name);
         }
-        private void populateGamesDataGrid(SupportedConsole console)
+        private void DetermineBoxArtSize(System.Windows.Controls.Image img, GameConsole console)
+        {
+            switch (console.Name)
+            {
+                case ConsoleInformation.ConsoleNames.GameBoy:
+                    img.Width = 100;
+                    img.Height = 100;
+                    break;
+
+                case ConsoleInformation.ConsoleNames.GameBoyAdvance:
+                    img.Width = 100;
+                    img.Height = 100;
+                    break;
+
+                case ConsoleInformation.ConsoleNames.GameBoyColor:
+                    img.Width = 100;
+                    img.Height = 100;
+                    break;
+
+                case ConsoleInformation.ConsoleNames.SNES:
+                    img.Width = 160;
+                    img.Height = 100;
+                    break;
+
+                default:
+                    img.Width = 100;
+                    img.Height = 160;
+                    break;
+            }
+        }
+        private void populateGamesDataGrid(GameConsole console)
         {
 
             Dispatcher.Invoke(() =>
@@ -516,67 +582,83 @@ namespace RAProject
             });
         }
 
-        private void FillGameInfoPanel(Game game)
+        private async void FillGameInfoPanel(Game game)
         {
-            System.Drawing.Image gameArt = null;
-            if (game.imgBoxArt == null)
-            {
-                gameArt = game.downloadImage_BoxArt();
+            // Set all fields to loading status
+            SetLoadingLabels();
 
-            }
-            else
-            {
-                gameArt = game.imgBoxArt;
-            }
+            // Load details
+            await LoadGameDetails(game);
 
-            // Set image
-            imgGame.Source = null;
-
-            if (gameArt == null)
-            {
-                Console.WriteLine("Image not found...");
-            }
-            else
-            {
-                Bitmap bmp = new Bitmap(gameArt);
-                IntPtr hBitmap = bmp.GetHbitmap();
-                ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                imgGame.Source = WpfBitmap;
-            }
-
-            // Set details
-            if (string.IsNullOrEmpty(game.Developer) ||
-                string.IsNullOrEmpty(game.Released) ||
-                string.IsNullOrEmpty(game.Publisher) ||
-                string.IsNullOrEmpty(game.Title))
-            {
-                game.downloadGameData();
-            }
-
-            // Set title
-            lblConsoleName.Content = game.Title;
-
-            // Set details
-            lblGameTitle.Content = game.Title;
-            lblGames_Developer.Content = game.Developer;
-            lblGames_Publisher.Content = game.Publisher;
-            lblGames_Released.Content = game.Released;
+            // Load art
+            await LoadGameBoxArt(game);
         }
 
-        //private void populateSelectConsoleComboBox()
-        //{
-        //    // Clear combo box
-        //    cmbConsoleSelection.Items.Clear();
+        private Task LoadGameBoxArt(Game game)
+        {
+            return Task.Factory.StartNew(() => {
+                
+                System.Drawing.Image gameArt = null;
+                if (game.imgBoxArt == null)
+                {
+                    gameArt = game.downloadImage_BoxArt();
+                }
+                else
+                {
+                    gameArt = game.imgBoxArt;
+                }
 
-        //    // Populate combo box
-        //    foreach (SupportedConsole console in MyData.myData.consoles)
-        //    {
-        //        cmbConsoleSelection.Items.Add(console.Name);
-        //    }
-        //}
+                Dispatcher.Invoke(() => {
+                    // Reset UI image
+                    imgGame.Source = null;
+                });
 
-        private void NewImageTile_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+                // Set image
+                if (gameArt == null)
+                {
+                    Console.WriteLine("Image not found...");
+                }
+                else
+                {
+                    Dispatcher.Invoke(() => {
+                        // Create new source
+                        Bitmap bmp = new Bitmap(gameArt);
+                        IntPtr hBitmap = bmp.GetHbitmap();
+                        ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        
+                        // Turn off animated gif
+                        ImageBehavior.SetAnimatedSource(imgGame, null);
+
+                        // Set new source
+                        imgGame.Source = WpfBitmap;
+                    });
+                }
+            });
+        }
+
+        private Task LoadGameDetails(Game game)
+        {
+            return Task.Factory.StartNew(() => {                
+                // Check details for null
+                if (string.IsNullOrEmpty(game.Developer) ||
+                string.IsNullOrEmpty(game.Released) ||
+                string.IsNullOrEmpty(game.Publisher) ||
+                string.IsNullOrEmpty(game.Title)) {
+                    game.downloadGameData();
+                }
+
+                // Fill details
+                Dispatcher.Invoke(() => {
+                    lblConsoleName.Content = game.ConsoleName;
+                    lblGameTitle.Content = game.Title;
+                    lblGames_Developer.Content = game.Developer;
+                    lblGames_Publisher.Content = game.Publisher;
+                    lblGames_Released.Content = game.Released;
+                });
+            });
+        }
+
+        private void GameTile_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
             {
@@ -676,34 +758,13 @@ namespace RAProject
             MyData.myData.currentGame = selectedGame;
 
             // Display game info
-            FillGameInfoPanel(selectedGame);
+            Task.Run(() =>
+            {
+                FillGameInfoPanel(selectedGame);
+            });            
 
             Console.WriteLine("Mouse clicked game");
-        }
-
-        //private async void cmbConsoleSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (cmbConsoleSelection.SelectedIndex < 0)
-        //        return;
-
-        //    // Get console from name
-        //    string listValue = (string)cmbConsoleSelection.Items.GetItemAt(cmbConsoleSelection.SelectedIndex);
-        //    Console.WriteLine("{0} clicked.", listValue);
-
-        //    // Search for selected console
-        //    foreach (SupportedConsole console in MyData.myData.consoles)
-        //    {
-        //        if (console.Name == listValue)
-        //        {
-        //            // Populate games list for selected console
-        //            await Task.Run(() => {
-        //                populateGamesTab(console);
-        //            });
-        //            MyData.myData.currentConsole = console;
-        //            break;
-        //        }
-        //    }
-        //}
+        }     
 
         private void btnDownloadAchievements_Click(object sender, RoutedEventArgs e)
         {
@@ -745,6 +806,9 @@ namespace RAProject
                 wrapAchievements.Visibility = Visibility.Hidden;
                 populateAchievementsDataGrid(game);
             }
+
+            // Show game details
+            FillGameDetails(game);
         }
         private void populateAchievementsDataGrid(Game game)
         {
@@ -804,6 +868,30 @@ namespace RAProject
             });
         }
         
+        private void FillGameDetails(Game game)
+        {
+            if (game.imgBoxArt == null)
+            {
+                game.downloadAsyncBoxArt();
+            }
+
+            // Set game info
+            imgGameBoxArt.Source = ImageConversion.ImageToSource(game.imgBoxArt);
+            lblSelectedGameTitle.Content = game.Title;
+
+            // Progress bar
+            pbAchievementsTotal.Maximum = game.Achievements.Count;
+            int completedCount = 0;
+            foreach (Achievement ach in game.Achievements)
+            {
+                if (!string.IsNullOrEmpty(ach.DateEarned) || !string.IsNullOrEmpty(ach.DateEarnedHardcore))
+                {
+                    completedCount++;
+                }
+            }
+            pbAchievementsTotal.Value = completedCount;
+        }
+
         private void FillAchievementDetails(Achievement achievement)
         {
             // Set badge image
@@ -817,17 +905,19 @@ namespace RAProject
 
             // Dates
             lblDateEarned.Content = achievement.DateEarned;
-            lblDateHardcore.Content = achievement.DateEarnedHardCore;
+            lblDateHardcore.Content = achievement.DateEarnedHardcore;
+
+            lblAuthor.Content = achievement.Author;
+            lblNumAwarded.Content = achievement.NumAwarded;
+            lblNumAwardedHardcore.Content = achievement.NumAwardedHardcore;
+            lblPoints.Content = achievement.Points;
         }
         private void dgAchievementList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Achievement seletedAchievement = (Achievement)dgAchievementList.SelectedItem;
-
-            lblSelectedAchievementTitle.Content = seletedAchievement.Title;
-
-            lblAchievementDescription.Content = seletedAchievement.Description;
-
-            imgSelectedAchievementBadge.Source = new BitmapImage(new Uri(seletedAchievement.GetBadgeUrl())); // seletedAchievement.badge;
+            if (dgAchievementList.SelectedItem != null)
+            {
+                FillAchievementDetails((Achievement)dgAchievementList.SelectedItem);
+            }
         }
         private void AchievementTile_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -897,48 +987,183 @@ namespace RAProject
         #region User Tab
         private async void displayTab_UserProfile() 
         {
-            await Task.Run(() => {
+            Console.WriteLine("DISPLAYING USER PROFILE");
+
+            await Task.Run(() =>
+            {
                 Dispatcher.Invoke(() =>
                 {
-                    if (MyData.myData == null)
-                    {
-                        Console.WriteLine("No myData, this shouldn't happen");
-                    }
-
                     // Check user object exists, if not create it and fetch it's data
                     if (MyData.myData.currentUser == null)
                     {
                         Console.WriteLine("No user found in myData.");
                         MyData.myData.currentUser = new User();
                     }
-
-                    // Populate fields with user data
-                    populateUserDetails();
-                    populateRecentlyPlayedGames();
                 });
             });
 
-  
+            // Populate fields with user data
+            FillUserDetails();
+
+            populateRankAndScore();
+
+            //populateRecentlyPlayedGames();
+
+            populateRecentAchievements();
         }
 
-        private void populateUserDetails()
+        private void populateRankAndScore()
         {
-            Console.WriteLine("Populating user details...");
+            Dispatcher.Invoke(() => {
 
-            // Update status
-            lblStatus.Content = "Populating user details...";
+                MyData.myData.currentUser.getRecentGames();
 
-            // Update label
-            lblUsername.Content = Properties.Settings.Default.Credential_Username;
+                lblUserScore.Content = MyData.myData.currentUser.score;
 
-            if (MyData.myData != null && MyData.myData.currentUser.userAvatar == null)
+                lblUserRank.Content = string.Format("#{0}", MyData.myData.currentUser.Rank);
+
+
+                // Clear wrap panel
+                Dispatcher.Invoke(() =>
+                {
+                    wrpRecentlyPlayed.Children.Clear();
+                });
+
+                // For each game in list
+                foreach (Game game in MyData.myData.currentUser.RecentlyPlayedGames)
+                {
+                    Task.Run(() =>
+                    {
+
+
+                        System.Windows.Controls.Image img = null;
+
+                        // Download game's Box Art, if necessary
+                        if (game.imgBoxArt == null)
+                        {
+                            // Download the box art
+                            game.downloadImage_BoxArt();
+                        }
+                        // Create image object for BoxArt
+                        img = ConvertDrawingImageToWPFImage(game.imgBoxArt);
+
+                        Dispatcher.Invoke(() =>
+                        {
+                            //Size object
+                            img.Height = 150;
+                            img.Width = 150;
+                            img.Tag = game.ID;
+
+                            // Add click event handler
+                            img.AddHandler(MouseDownEvent, new RoutedEventHandler(RecentlyPlayedGame_Click));
+
+                            // Add object to wrap panel
+                            wrpRecentlyPlayed.Children.Add(img);
+
+                        });
+                    });
+                }
+            });
+
+            
+
+            
+        }
+
+        private void populateRecentAchievements()
+        {
+            Console.WriteLine("Populating recent achievements...");
+
+            // Fetch list of user's recently played games
+            if (MyData.myData.currentUser.RecentAchievements == null)
             {
-                // Fetch user avatar
-                MyData.myData.currentUser.fetchUserAvatar();
+                MyData.myData.currentUser.getRecentAchievements();
             }
 
-            // Update User Profile Avatar
-            imgUserAvatar.Source = new BitmapImage(new Uri(MyData.myData.currentUser.UserPic));
+            // Clear wrap panel
+            Dispatcher.Invoke(() =>
+            {
+                wrpRecentAchievements.Children.Clear();
+
+                if (MyData.myData.currentUser.RecentAchievements.Count == 0)
+                {
+                    Label newLabel = new Label();
+                    newLabel.Content = "No achievements in the last week :(";
+                    newLabel.Foreground = new SolidColorBrush(Colors.White);
+                    newLabel.Margin = new Thickness(60);
+                    wrpRecentAchievements.Children.Add(newLabel);
+                }
+            });
+
+
+
+            // For each game in list
+            foreach (Achievement achievement in MyData.myData.currentUser.RecentAchievements)
+            {
+                Task.Run(() =>
+                {
+                    System.Windows.Controls.Image img = null;
+
+                    // Download game's Box Art, if necessary
+                    if (achievement.badge == null)
+                    {
+                        // Download the box art
+                        achievement.fetchBadge();
+                    }
+                    // Create image object for BoxArt
+                    img = ConvertDrawingImageToWPFImage(achievement.badge);
+
+                    Dispatcher.Invoke(() =>
+                    {
+                        //Size object
+                        img.Height = 100;
+                        img.Width = 100;
+                        img.Tag = achievement.ID;
+
+                        // Add click event handler
+                        img.AddHandler(MouseDownEvent, new RoutedEventHandler(RecentAchievement_Click));
+
+                        // Add object to wrap panel
+                        wrpRecentAchievements.Children.Add(img);
+                    });
+                });
+            }
+        }
+
+        private void RecentAchievement_Click(object sender, RoutedEventArgs e)
+        {
+            // Game BoxArt clicked
+            System.Windows.Controls.Image img = (System.Windows.Controls.Image)sender;
+            string achievementID = img.Tag.ToString();
+
+            Console.WriteLine("Achievement ID {0} clicked.", achievementID);
+        }
+
+        private async void FillUserDetails()
+        {
+            Console.WriteLine("Populating user details...");
+            // Update status
+            Dispatcher.Invoke(() => 
+            {
+                lblStatus.Content = "Populating user details...";
+
+                // Update label
+                lblUsername.Content = Properties.Settings.Default.Credential_Username;
+            });
+
+            await Task.Run(() =>
+            {
+                if (MyData.myData != null && MyData.myData.currentUser.userAvatar == null)
+                {
+                    // Fetch user avatar
+                    MyData.myData.currentUser.fetchUserAvatar();
+                }
+
+                // Update User Profile Avatar
+                Dispatcher.Invoke(() => {
+                    imgUserAvatar.Source = new BitmapImage(new Uri(MyData.myData.currentUser.UserPic));
+                });
+            });
         }
         private void populateRecentlyPlayedGames()
         {
@@ -950,32 +1175,6 @@ namespace RAProject
                 MyData.myData.currentUser.getRecentGames();
             }
 
-            // Clear wrap panel
-            wrpRecentlyPlayed.Children.Clear();
-
-            // For each game in list
-            foreach (Game game in MyData.myData.currentUser.RecentlyPlayedGames)
-            {
-                // Download game's Box Art, if necessary
-                if (game.imgBoxArt == null)
-                {
-                    game.downloadImage_BoxArt();
-                }
-
-                //Create image object for BoxArt
-                System.Windows.Controls.Image img = ConvertDrawingImageToWPFImage(game.imgBoxArt);                
-
-                //Size object
-                img.Height = 150;
-                img.Width = 150;
-                img.Tag = game.ID;
-
-                // Add click event handler
-                img.AddHandler(MouseDownEvent, new RoutedEventHandler(RecentlyPlayedGame_Click));
-
-                // Add object to wrap panel
-                wrpRecentlyPlayed.Children.Add(img);
-            }
         }
 
         private void RecentlyPlayedGame_Click(object sender, RoutedEventArgs e)
@@ -992,17 +1191,22 @@ namespace RAProject
         {
 
 
-            System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+            System.Windows.Controls.Image img = null;
 
-            //convert System.Drawing.Image to WPF image
-            Bitmap bmp = new Bitmap(gdiImg);
-            IntPtr hBitmap = bmp.GetHbitmap();
-            ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            Dispatcher.Invoke(() => {
+                img = new System.Windows.Controls.Image();
 
-            img.Source = WpfBitmap;
-            img.Width = 500;
-            img.Height = 600;
-            img.Stretch = Stretch.Fill;
+                //convert System.Drawing.Image to WPF image
+                Bitmap bmp = new Bitmap(gdiImg);
+                IntPtr hBitmap = bmp.GetHbitmap();
+                ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                img.Source = WpfBitmap;
+                img.Width = 500;
+                img.Height = 600;
+                img.Stretch = Stretch.Fill;
+            });
+
             return img;
         }
         #endregion
@@ -1073,7 +1277,15 @@ namespace RAProject
         #region Help Tab
         private void displayTab_Help()
         {
+            //string pathToHTMLHelpFile = @"Help/index.html";
+            //Uri helpPath = new Uri(pathToHTMLHelpFile, UriKind.Relative);
+            //Uri AbsolutePath = Uri.
+            //System.Diagnostics.Process.Start("Chrome", new Uri(pathToHTMLHelpFile, UriKind.Relative).ToString());
 
+            string exeFile = new System.Uri(Assembly.GetEntryAssembly().CodeBase).AbsolutePath;
+            string Dir = Path.GetDirectoryName(exeFile);
+            string path = Path.GetFullPath(Path.Combine(Dir, @"..\..\Help\index.html"));
+            System.Diagnostics.Process.Start(path);
         }
         #endregion
 
@@ -1092,7 +1304,7 @@ namespace RAProject
                 {
                     // Consoles
                     case 0:
-                        SupportedConsole searchConsole = Search.SearchConsoles(txtSearchQuery.Text);
+                        GameConsole searchConsole = Search.SearchConsoles(txtSearchQuery.Text);
                         if (searchConsole != null)
                         {
                             // Switch to console tab
@@ -1117,12 +1329,20 @@ namespace RAProject
 
                     // Games
                     case 1:
+                        // Search for game named EXACTLY as search query
                         Game searchGame = Search.SearchGames(txtSearchQuery.Text);
-                        MyData.myData.currentGame = searchGame;
 
-                        SupportedConsole console = Search.SearchConsoles(searchGame.ConsoleName);
                         if (searchGame != null)
                         {
+
+                            // Update current game
+                            MyData.myData.currentGame = searchGame;
+
+                            // Find relevant console
+                            GameConsole console = Search.SearchConsoles(searchGame.Console);
+                            MyData.myData.currentConsole = console;
+
+
                             // Switch to console tab
                             tabControl.SelectedIndex = 2;
 
@@ -1152,21 +1372,10 @@ namespace RAProject
                             {
                                 wrapGames.Focus();
 
-                                //for (int i = 0; i < wrapGames.Children.Count; i++)
-                                //{
-                                //    if (((System.Windows.Controls.Image)wrapGames.Children[i]).Tag.Equals(searchGame.ID))
-                                //    {
-                                //        wrapGames..SelectedIndex = i;
-                                //        break;
-                                //    }
-                                //}
-
+                                // Some how scroll down to cover image
+                                // ...
                                 
                             }
-
-
-
-
                         }
                         else
                         {
@@ -1315,14 +1524,14 @@ namespace RAProject
         }
         private void rdoVisualStyles_Checked(object sender, RoutedEventArgs e)
         {
-            applyVisualStyles();
-            //showVisualStyles();
+            if (initialised)
+                applyVisualStyles();
         }
 
         private void rdoTextStyles_Checked(object sender, RoutedEventArgs e)
         {
-            applyVisualStyles();
-            //hideVisualStyles();
+            if (initialised)
+                applyVisualStyles();
         }
 
         #endregion

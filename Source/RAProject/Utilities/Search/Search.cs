@@ -10,10 +10,8 @@ namespace RAProject.Utilities
     public class Search
     {
         // Binary Search Methods
-        private static SupportedConsole BinarySearch_Consoles(SupportedConsole[] inputArray, string key, int min, int max)
+        private static GameConsole BinarySearch_Consoles(GameConsole[] inputArray, string key, int min, int max)
         {
-            Console.WriteLine("Searching...");
-
             if (min > max)
             {
                 // Not found
@@ -39,8 +37,6 @@ namespace RAProject.Utilities
         }
         private static Game BinarySearch_Games(Game[] inputArray, string key, int min, int max)
         {
-            Console.WriteLine("Searching...");
-
             if (min > max)
             {
                 // Not found
@@ -93,15 +89,15 @@ namespace RAProject.Utilities
         }
 
         // Fetch arrays of data
-        public static SupportedConsole[] getAllConsoles()
+        public static GameConsole[] getAllConsoles()
         {
             // Create list
-            List<SupportedConsole> results = new List<SupportedConsole>();
+            var results = new LinkedList<GameConsole>();
 
             // Populate list
-            foreach (SupportedConsole console in MyData.myData.consoles)
+            foreach (GameConsole console in MyData.myData.consoles)
             {
-                results.Add(console);
+                results.AddLast(console);
             }
 
             // Return list converted to an array
@@ -110,14 +106,14 @@ namespace RAProject.Utilities
         public static Game[] getAllGames()
         {
             // Create list
-            List<Game> results = new List<Game>();
+            LinkedList<Game> results = new LinkedList<Game>();
 
             // Populate list
-            foreach (SupportedConsole console in MyData.myData.consoles)
+            foreach (GameConsole console in MyData.myData.consoles)
             {
                 foreach (Game game in console.games)
                 {
-                    results.Add(game);
+                    results.AddLast(game);
                 }
             }
 
@@ -127,26 +123,21 @@ namespace RAProject.Utilities
         public static Achievement[] getAllAchievements()
         {
             // Create list
-            List<Achievement> results = new List<Achievement>();
+            LinkedList<Achievement> results = new LinkedList<Achievement>();
 
             // Populate list
-            foreach (SupportedConsole console in MyData.myData.consoles)
+            foreach (GameConsole console in MyData.myData.consoles)
             {
                 foreach (Game game in console.games)
                 {
-                    int counter = 0;
-
                     foreach (Achievement acheivement in game.Achievements)
                     {
-                        results.Add(acheivement);
-                        counter++;
+                        results.AddLast(acheivement);
                     }
-
-                    Console.WriteLine(counter + " achievements for " + game.Title);
                 }
             }
 
-            Console.WriteLine(results.Count + " total achievements.");
+            Console.WriteLine(results.Count + " achievements added to search list.");
 
             // Return list converted to an array
             return results.ToArray();
@@ -155,10 +146,10 @@ namespace RAProject.Utilities
 
 
         // Public-facing methods
-        public static SupportedConsole SearchConsoles(string query)
+        public static GameConsole SearchConsoles(string query)
         {
             // Get data
-            SupportedConsole[] input = getAllConsoles();
+            GameConsole[] input = getAllConsoles();
 
             // Sort data
             MergeSort.Consoles_Rescursive(input, 0, input.Length - 1);

@@ -91,12 +91,12 @@ namespace RAProject.Models
                 }
 
                 // Create list of consoles
-                myData.consoles = new List<SupportedConsole>();
+                myData.consoles = new List<GameConsole>();
 
                 foreach (JObject j in data["console"][0])
                 {
                     // Create console object
-                    SupportedConsole sc = new SupportedConsole(j);
+                    GameConsole sc = new GameConsole(j);
 
                     // Add console to list
                     myData.consoles.Add(sc);

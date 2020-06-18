@@ -6,8 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RAProject"
         xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Name="wndMain" x:Class="RAProject.MainWindow"
-        mc:Ignorable="d"
-        Title="RetroAchievements Browser" Background="Teal" Height="652" Width="1104" FontFamily="Bahnschrift Light">
+    xmlns:gif="http://wpfanimatedgif.codeplex.com"    
+    mc:Ignorable="d"
+        Title="RetroAchievements Browser" Background="Teal" Height="872" Width="1104" FontFamily="Bahnschrift Light">
     <Window.Resources>
         <Style TargetType="{x:Type DataGridRow}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -458,7 +459,7 @@
             </Grid.Resources>
             <ToolBar x:Name="toolBarMain" Background="Teal" VerticalAlignment="Top" Margin="0" Height="45">
                 <TextBox x:Name="txtSearchQuery" Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White" Text="Enter search query..." Height="26" Margin="0,5,0,9" FontFamily="Bahnschrift Light" GotFocus="txtSearchQuery_GotFocus" KeyDown="txtSearchQuery_KeyDown"/>
-                <ComboBox x:Name="cmbSearchCategory" SelectedIndex="0" Width="150" Height="30" FontFamily="Bahnschrift Light" FontSize="16" >
+                <ComboBox x:Name="cmbSearchCategory" SelectedIndex="1" Width="179" Height="30" FontFamily="Bahnschrift Light" FontSize="16" Margin="0,5" >
                     <ComboBoxItem Content="Consoles" HorizontalAlignment="Left" Width="92"/>
                     <ComboBoxItem Content="Games" HorizontalAlignment="Left" Width="92"/>
                     <ComboBoxItem Content="Achievements" HorizontalAlignment="Left" Width="92"/>
@@ -466,9 +467,8 @@
                 <Button x:Name="btnSearch" Content="Search" Foreground="White" FontSize="14" Height="32" Margin="0,0,0,8" Width="85" Click="btnSearch_Click" />
 
                 <Separator />
-                <Button x:Name="btnTest" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnTest_Click" Margin="0,5,0,0"/>
-                <RadioButton x:Name="rdoTextStyles" Content="Text Styles" Height="40" VerticalAlignment="Top" Width="130" Checked="rdoTextStyles_Checked"/>
-                <RadioButton x:Name="rdoVisualStyles" Content="Visual Styles" Height="45" VerticalAlignment="Top" Width="135" Checked="rdoVisualStyles_Checked" Margin="0,-5,0,0" IsChecked="True"/>
+                <RadioButton x:Name="rdoTextStyles" Content="Text Styles" VerticalAlignment="Stretch" Width="135" Checked="rdoTextStyles_Checked" IsChecked="True" Foreground="White" Height="45" Margin="0,-5,0,0"/>
+                <RadioButton x:Name="rdoVisualStyles" Content="Visual Styles [Alpha]" Height="45" VerticalAlignment="Top" Width="135" Checked="rdoVisualStyles_Checked" Margin="0,-5,0,0" Foreground="White"/>
 
             </ToolBar>
             <TabControl x:Name="tabControl" Margin="0,35,0,0" TabStripPlacement="Left" BorderBrush="#00000000" SelectionChanged="tabControl_SelectionChanged" FontFamily="Bahnschrift Light" FontSize="14" ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="Transparent">
@@ -484,23 +484,16 @@
                             <Grid>
                                 <Image x:Name="imgUserAvatar" HorizontalAlignment="Left" Height="150" Margin="5,6,0,0" VerticalAlignment="Top" Width="150" Panel.ZIndex="2"/>
                                 <Label x:Name="lblUsername" Content="Label" HorizontalAlignment="Left" Margin="168,6,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontSize="20" Panel.ZIndex="1" Background="#00000000"/>
+                                <Label Content="Rank" HorizontalAlignment="Left" Margin="194,58,0,0" VerticalAlignment="Top" Foreground="White" Width="65" FontWeight="Bold"/>
+                                <Label x:Name="lblUserRank" Content="-" HorizontalAlignment="Left" Margin="264,57,0,0" VerticalAlignment="Top" Foreground="White" Width="65"/>
+                                <Label Content="Score" HorizontalAlignment="Left" Margin="194,87,0,0" VerticalAlignment="Top" Foreground="White" Width="65" FontWeight="Bold"/>
+                                <Label x:Name="lblUserScore" Content="-" HorizontalAlignment="Left" Margin="259,87,0,0" VerticalAlignment="Top" Foreground="White" Width="65" FontWeight="Bold"/>
                             </Grid>
                         </GroupBox>
 
 
                         <GroupBox Header="Recent Achievements" Margin="10,0,10,10">
                             <WrapPanel x:Name="wrpRecentAchievements" Height="Auto" Width="Auto">
-                                <WrapPanel.Resources>
-                                    <Style TargetType="{x:Type Image}">
-                                        <Setter Property="Margin" Value="10,10" />
-                                    </Style>
-                                </WrapPanel.Resources>
-                            </WrapPanel>
-                        </GroupBox>
-
-
-                        <GroupBox Header="Statistics" Margin="10,0,10,10">
-                            <WrapPanel x:Name="wrpStatistics" Height="Auto" Width="Auto">
                                 <WrapPanel.Resources>
                                     <Style TargetType="{x:Type Image}">
                                         <Setter Property="Margin" Value="10,10" />
@@ -681,30 +674,56 @@
 
                 <TabItem Style="{DynamicResource tabStylings}" x:Name="tabAchievements" Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
                     <DockPanel x:Name="bgAchievements" Margin="0,0,0,34" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
-                        <Border DockPanel.Dock="Top" BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
-                            <Label Content="Achievements" Foreground="White" HorizontalContentAlignment="Center"/>
-                        </Border>
 
-                        <Border DockPanel.Dock="Right" Width="500" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Right" Padding="10" UseLayoutRounding="True" BorderThickness="2" BorderBrush="White" >
-                            <StackPanel>
+                        <StackPanel DockPanel.Dock="Right" >
+                            <Border DockPanel.Dock="Right" Width="500" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Right" Padding="10" UseLayoutRounding="True" BorderThickness="2" BorderBrush="White" >
+                                <StackPanel VerticalAlignment="Top">
+                                    <Image x:Name="imgGameBoxArt" Height="200" />
+                                    <Label x:Name="lblSelectedGameTitle" HorizontalContentAlignment="Center" Content="Game Title" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
+                                    
+                                <ProgressBar x:Name="pbAchievementsTotal" Height="30" Margin="20,10,20,10" />    
+                                </StackPanel>
+                            </Border>
+
+                            <Border Width="500" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Right" Padding="10" UseLayoutRounding="True" BorderThickness="2" BorderBrush="White" >
+                            
+                                <StackPanel VerticalAlignment="Top">
                                 <Image x:Name="imgSelectedAchievementBadge" Height="200" />
                                 <Label x:Name="lblSelectedAchievementTitle" HorizontalContentAlignment="Center" Content="Console Name" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
 
                                 <Separator Margin="0,20" />
-                                <Label x:Name="lblAchievementDescription" Foreground="White" Margin="0,0,0,50" />
+                                <Label x:Name="lblAchievementDescription" Foreground="White" Margin="0,0,0,20" FontStyle="Italic" />
                                 <WrapPanel>
-                                    <Label Content="Date Earned:" HorizontalContentAlignment="Center" Foreground="White" Width="200" FontWeight="Bold" />
-                                    <Label x:Name="lblDateEarned" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                    <Label Content="Date Earned:" HorizontalContentAlignment="Right" Foreground="White" Width="200" FontWeight="Bold" />
+                                    <Label x:Name="lblDateEarned" Content="-" Foreground="White" Width="240" />
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <Label Content="Date Hardcore Earned:" HorizontalContentAlignment="Center" Foreground="White" Width="200" FontWeight="Bold" />
-                                    <Label x:Name="lblDateHardcore" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
+                                    <Label Content="Date Hardcore Earned:" HorizontalContentAlignment="Right" Foreground="White" Width="200" FontWeight="Bold" />
+                                    <Label x:Name="lblDateHardcore" Content="-" Foreground="White" Width="240" />
                                 </WrapPanel>
-
+                                <WrapPanel>
+                                    <Label Content="Author:" HorizontalContentAlignment="Right" Foreground="White" Width="200" FontWeight="Bold" />
+                                    <Label x:Name="lblAuthor" Content="-" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Content="Points:" HorizontalContentAlignment="Right" Foreground="White" Width="200" FontWeight="Bold" />
+                                    <Label x:Name="lblPoints" Content="-" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Content="Total Awarded:" HorizontalContentAlignment="Right" Foreground="White" Width="200" FontWeight="Bold" />
+                                    <Label x:Name="lblNumAwarded" Content="-" Foreground="White" Width="240" />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Content="Hardcore Awarded:" HorizontalContentAlignment="Right" Foreground="White" Width="200" FontWeight="Bold" />
+                                    <Label x:Name="lblNumAwardedHardcore" Content="-" Foreground="White" Width="240" />
+                                </WrapPanel>
                             </StackPanel>
                         </Border>
+                        </StackPanel>
 
-
+                        <Border DockPanel.Dock="Top" BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
+                            <Label Content="Achievements" Foreground="White" HorizontalContentAlignment="Center"/>
+                        </Border>
 
                         <Grid DockPanel.Dock="Left" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                             <Border BorderBrush="White" Margin="10" BorderThickness="2" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -739,7 +758,7 @@
                                         </WrapPanel>
                                     </ScrollViewer>
                                 </Grid>
-                                
+
                             </Border>
                         </Grid>
 
@@ -752,19 +771,19 @@
                 <TabItem Style="{DynamicResource tabStylings}" x:Name="tabLeaderBoard" Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
                     <ScrollViewer HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="#FF00575A">
                         <DataGrid x:Name="dgLeaderBoard" Margin="10" Panel.ZIndex="1" SelectionMode="Single" Background="#FF00575A" Sorting="dgConsoleList_Sorting" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{DynamicResource DataGridStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" IsReadOnly="True" ColumnWidth="*" Width="888">
-                        <DataGrid.RowStyle>
-                            <Style TargetType="{x:Type DataGridRow}">
-                                <Setter Property="Background" Value="#FF00575A"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True" >
-                                        <Setter Property="Background" Value="Gainsboro" />
-                                        <Setter Property="Foreground" Value="#FF00EEB8"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
-                    </DataGrid>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="{x:Type DataGridRow}">
+                                    <Setter Property="Background" Value="#FF00575A"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True" >
+                                            <Setter Property="Background" Value="Gainsboro" />
+                                            <Setter Property="Foreground" Value="#FF00EEB8"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                        </DataGrid>
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Style="{DynamicResource tabStylings}" x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
@@ -772,7 +791,7 @@
                     <ScrollViewer>
                         <StackPanel x:Name="bgSettings" ScrollViewer.VerticalScrollBarVisibility="Auto" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True" Background="#FF00575A">
 
-                            <GroupBox Header="Account Details" Margin="20,0,20,32">
+                            <GroupBox Header="Account Details" Margin="100,50,100,25">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Username" HorizontalAlignment="Right" Margin="14,13,0,0" Width="100" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
@@ -787,7 +806,7 @@
                             </GroupBox>
 
 
-                            <GroupBox Header="Data File Handling" Margin="20,0,20,20" FontWeight="Bold">
+                            <GroupBox Header="Data File Handling" Margin="100,25" FontWeight="Bold">
                                 <StackPanel>
                                     <CheckBox x:Name="chkLoadOnStartup" Content="Load data file on startup" Foreground="White" FontWeight="Normal"/>
                                     <CheckBox x:Name="chkSaveOnShutdown" Content="Save data file on shutdown" Foreground="White" FontWeight="Normal"/>
@@ -796,7 +815,7 @@
                             </GroupBox>
 
 
-                            <GroupBox Header="Colour Settings" Margin="20,0,20,20" FontWeight="Bold">
+                            <GroupBox Header="Colour Settings" Margin="100,25" FontWeight="Bold">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Theme Colour Primary:" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Normal"/>
@@ -828,11 +847,7 @@
                     </ScrollViewer>
 
                 </TabItem>
-                <TabItem Style="{DynamicResource tabStylings}" x:Name="tabHelp" Header="Help" Margin="0,0,0,0" Height="50" Width="150">
-                    <WrapPanel Background="#FF00575A">
-                        <WebBrowser Source="C:\Users\Ben\Documents\GitHub\RAProject\Source\RAProject\Help\index.html" />
-                    </WrapPanel>
-                </TabItem>
+
             </TabControl>
 
             <StatusBar x:Name="statBarMain" VerticalAlignment="Bottom" Background="Teal">

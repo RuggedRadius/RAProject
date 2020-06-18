@@ -9,15 +9,15 @@ namespace RAProject.Models
     public class DataFile
     {
         // Attributes
-        public List<SupportedConsole> consoles;
+        public List<GameConsole> consoles;
 
         public User currentUser;
-        public SupportedConsole currentConsole;
+        public GameConsole currentConsole;
         public Game currentGame;
 
         public DataFile()
         {
-            consoles = new List<SupportedConsole>();            
+            consoles = new List<GameConsole>();            
             currentUser = new User();
         }
 

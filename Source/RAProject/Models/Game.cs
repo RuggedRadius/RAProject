@@ -4,6 +4,9 @@ using RAProject.Connection;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace RAProject.Models
 {
@@ -276,6 +279,42 @@ namespace RAProject.Models
 
             url = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageTitle"]);
             imgTitleScreen = Requests.DownloadImageFromUrl(url);
+        }
+
+        public Task downloadAsyncBoxArt()
+        {
+            return Task.Factory.StartNew(() => {
+
+                string boxArtURL = null;
+
+                // Get image URL if required
+                if (ImageBoxArt == null || string.IsNullOrEmpty(ImageBoxArt))
+                {
+                    System.Console.WriteLine("Fetching Box Art URL for {0}", Title);
+
+                    string reqURL = Requests.Games.getGameInfoBasic(ID);
+                    string json = Requests.FetchJSON(reqURL); // Here is slow
+                    dynamic data = JsonConvert.DeserializeObject(json);
+
+                    boxArtURL = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageBoxArt"]);
+                }
+                else
+                {
+                    boxArtURL = ImageBoxArt;
+                }
+
+                // Download image
+                using (WebClient client = new WebClient())
+                {
+                    System.Console.WriteLine("Downloading Box Art for {0}", Title);
+
+                    byte[] imgData = client.DownloadData(boxArtURL);
+                    using (var memStream = new MemoryStream(imgData))
+                    {
+                        imgBoxArt = Image.FromStream(memStream);
+                    }
+                }
+            });
         }
 
         public Image downloadImage_BoxArt()

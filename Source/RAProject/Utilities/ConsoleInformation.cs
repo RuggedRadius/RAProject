@@ -190,7 +190,7 @@ namespace RAProject.Modules
         }
 
         
-        public static Image getConsoleImage(SupportedConsole console)
+        public static Image getConsoleImage(GameConsole console)
         {
             try
             {

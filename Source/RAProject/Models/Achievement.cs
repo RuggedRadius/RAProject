@@ -12,8 +12,6 @@ namespace RAProject.Models
         [JsonProperty("ID")]                    public string ID                    { get; set; }
         [JsonProperty("Title")] public string Title { get; set; }
         [JsonProperty("Description")] public string Description { get; set; }
-        [JsonProperty("DateEarned")] public string DateEarned { get; set; }
-        [JsonProperty("DateEarnedHardCore")] public string DateEarnedHardCore { get; set; }
         [JsonProperty("NumAwarded")]            public string NumAwarded            { get; set; }
         [JsonProperty("NumAwardedHardcore")]    public string NumAwardedHardcore    { get; set; }
         [JsonProperty("Points")]                public string Points                { get; set; }
@@ -24,6 +22,8 @@ namespace RAProject.Models
         [JsonProperty("BadgeName")] private string BadgeName             { get; set; }
         [JsonProperty("DisplayOrder")] private string DisplayOrder          { get; set; }
         [JsonProperty("MemAddr")] private string MemAddr               { get; set; }
+        [JsonProperty("DateEarned")] public string DateEarned { get; set; }
+        [JsonProperty("DateEarnedHardCore")] public string DateEarnedHardcore { get; set; }
 
 
         public Image badge;
@@ -51,7 +51,7 @@ namespace RAProject.Models
 
                 if ((string)jo["DateEarnedHardCore"] != null)
                 {
-                    DateEarnedHardCore = (string)jo["DateEarnedHardCore"];
+                    DateEarnedHardcore = (string)jo["DateEarnedHardCore"];
                 }
             }
         }

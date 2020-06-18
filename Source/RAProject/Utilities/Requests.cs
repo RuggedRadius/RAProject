@@ -178,6 +178,28 @@ namespace RAProject.Connection
                     Properties.Settings.Default.Credential_APIKey
                     );
             }
+
+            public static string getLastWeekAcheivements()
+            {
+                DateTime currentDate = DateTime.Today;
+                DateTime lastWeek = DateTime.Today.AddDays(-7);
+
+                DateTimeOffset currentOffset = new DateTimeOffset(currentDate);
+                DateTimeOffset lastWeekOffset = new DateTimeOffset(lastWeek);
+
+                var unixCurrent = currentOffset.ToUnixTimeSeconds();
+                var unixLastWeek = lastWeekOffset.ToUnixTimeSeconds();
+
+                return String.Format(
+                    "https://ra.hfc-essentials.com/{0}?user={1}&key={2}&member={3}&startdate={4}&enddate={5}&mode=json",
+                    Constants.QueryTypes.WEB_USER_USER_ACHIEVEMENTS_BY_DATE_RANGE,
+                    Properties.Settings.Default.Credential_Username,
+                    Properties.Settings.Default.Credential_APIKey,
+                    "Adultery",
+                    unixLastWeek,
+                    unixCurrent
+                    );
+            }
         }
 
 
