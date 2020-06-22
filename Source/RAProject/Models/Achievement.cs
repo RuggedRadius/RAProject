@@ -28,30 +28,39 @@ namespace RAProject.Models
 
         public Image badge;
         
-        public Achievement (JToken jo)
+        public Achievement (JToken token)
         {
-            ID =                    (string) jo["ID"];
-            NumAwarded =            (string) jo["NumAwarded"];
-            NumAwardedHardcore =    (string) jo["NumAwardedHardcore"];
-            Title =                 (string) jo["Title"];
-            Description =           (string) jo["Description"];
-            Points =                (string) jo["Points"];
-            TrueRatio =             (string) jo["TruePoints"];
-            Author =                (string) jo["Author"];
-            DateModified =          (string) jo["DateModified"];
-            DateCreated =           (string) jo["DateCreated"];
-            BadgeName =             (string) jo["BadgeName"];
-            DisplayOrder =          (string) jo["DisplayOrder"];
-            MemAddr =               (string) jo["MemAddr"];
+            ID =                    (string) token["ID"];
+            NumAwarded =            (string) token["NumAwarded"];
+            NumAwardedHardcore =    (string) token["NumAwardedHardcore"];
+            Title =                 (string) token["Title"];
+            Description =           (string) token["Description"];
+            Points =                (string) token["Points"];
+            TrueRatio =             (string) token["TruePoints"];
+            Author =                (string) token["Author"];
+            DateModified =          (string) token["DateModified"];
+            DateCreated =           (string) token["DateCreated"];
+            BadgeName =             (string) token["BadgeName"];
+            DisplayOrder =          (string) token["DisplayOrder"];
+            MemAddr =               (string) token["MemAddr"];
 
-
-            if ((string) jo["DateEarned"] != null)
+            
+            if ((string)token["DateEarned"] != null)
             {
-                DateEarned = (string) jo["DateEarned"];
+                DateEarned = (string)token["DateEarned"];
 
-                if ((string)jo["DateEarnedHardCore"] != null)
+                if ((string)token["DateEarnedHardCore"] != null)
                 {
-                    DateEarnedHardcore = (string)jo["DateEarnedHardCore"];
+                    DateEarnedHardcore = (string)token["DateEarnedHardCore"];
+                }
+            }
+            else if ((string)token["DateAwarded"] != null)
+            {
+                DateEarned = (string)token["DateAwarded"];
+
+                if ((string)token["HardcoreAchieved"] != null)
+                {
+                    DateEarnedHardcore = (string)token["HardcoreAchieved"]; // Not tested!!
                 }
             }
         }
@@ -77,7 +86,8 @@ namespace RAProject.Models
                 return String.Format("http://retroachievements.org/Badge/{0}_lock.png", this.BadgeName);
             }
         }
-        public Image fetchBadge()
+        
+        private Image fetchBadge()
         {
             return Requests.DownloadImageFromUrl(GetBadgeUrl());
         }

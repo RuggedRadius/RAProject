@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:RAProject"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <FontFamily x:Key="bahnschrift">pack://application:,,,/Fonts/#Bahnschrift</FontFamily>
+        <FontFamily x:Key="retro">pack://application:,,,/Fonts/#retro</FontFamily>
 
 
         <Style TargetType="{x:Type TabItem}" x:Key="tabStylings">

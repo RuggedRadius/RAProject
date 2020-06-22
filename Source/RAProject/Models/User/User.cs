@@ -81,17 +81,12 @@ namespace RAProject.Models
             credentials.Add(username, pwdHash);
         }
 
-        public bool getRecentAchievements()
+        public bool getRecentAchievements(dynamic data)
         {
             Console.WriteLine("Fetching user's recent achievements...");
 
             // Initialise a new list of games
             RecentAchievements = new List<Achievement>();
-
-            // Fetch JSON Data
-            string url = Requests.Users.getLastWeekAcheivements();
-            string jsonString = Requests.FetchJSON(url);
-            dynamic data = JsonConvert.DeserializeObject(jsonString);
 
             int maxCounter = 10;
             if (data["achievement"][0] != null)
@@ -120,32 +115,8 @@ namespace RAProject.Models
 
             return true;
         }
-
-        public void getRank()
+        public void getLastGame(dynamic data)
         {
-            // Determine URL
-            string url = Requests.Users.getUserSummary();
-
-            // Fetch user JSON data
-            string jsonString = Requests.FetchJSON(url);
-
-            // Deserialize JSON into object
-            dynamic data = JsonConvert.DeserializeObject(jsonString);
-
-
-        }
-
-        public void getLastGame()
-        {
-            // Determine URL
-            string url = Requests.Users.getUserSummary();
-
-            // Fetch user JSON data
-            string jsonString = Requests.FetchJSON(url);
-
-            // Deserialize JSON into object
-            dynamic data = JsonConvert.DeserializeObject(jsonString);
-
             score = (string)data["Points"];
             trueratio = (string)data["trueratio"];
 
@@ -161,18 +132,12 @@ namespace RAProject.Models
         /// Actually the mega fetch atm....
         /// </summary>
         /// <returns></returns>
-        public bool getRecentGames()
+        public bool getRecentGames(dynamic data)
         {
             Console.WriteLine("Fetching {0}'s recently played games...", Properties.Settings.Default.Credential_Username);
 
             // Initialise a new list of games
             RecentlyPlayedGames = new List<Game>();
-
-            // Fetch JSON Data
-            string url = Requests.Users.getUserSummary(); 
-            string jsonString = Requests.FetchJSON(url);
-            dynamic data = JsonConvert.DeserializeObject(jsonString);
-
             
             if (data["RecentlyPlayed"][0] != null)
             {
@@ -235,7 +200,7 @@ namespace RAProject.Models
             return true;
         }
 
-        public void fetchUserData()
+        public dynamic fetchData()
         {
             // Determine URL
             string url = Requests.Users.getUserSummary();
@@ -244,7 +209,12 @@ namespace RAProject.Models
             string jsonString = Requests.FetchJSON(url);
 
             // Deserialize JSON into object
-            dynamic data = JsonConvert.DeserializeObject(jsonString);
+            return JsonConvert.DeserializeObject(jsonString);
+        }
+
+        public void fetchUserData()
+        {
+            dynamic data = fetchData();
 
             score = (string) data["score"];
             trueratio = (string) data["trueratio"];
@@ -268,6 +238,26 @@ namespace RAProject.Models
             {
                 UserPic = "http://retroachievements.org";
                 UserPic += data["UserPic"].ToString();
+            }
+
+            if (data["RecentAchievements"] != null)
+            {
+                // Init list
+                RecentAchievements = new List<Achievement>();
+
+                foreach (JToken gameSet in data["RecentAchievements"])
+                {
+                    foreach (JToken set in gameSet.Children())
+                    {
+                        foreach (JToken ach in set)
+                        {
+                            foreach (JToken woah in ach)
+                            {
+                                RecentAchievements.Add(new Achievement(woah));
+                            }
+                        }                        
+                    }
+                }
             }
         }
     }

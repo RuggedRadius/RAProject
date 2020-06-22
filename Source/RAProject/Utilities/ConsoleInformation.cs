@@ -365,7 +365,7 @@ namespace RAProject.Modules
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Image for {0} not found!", console.Name);
+                Console.WriteLine("Image for {0} not found!\n{1}", console.Name, ex.Message);
                 return null;
             }            
         }

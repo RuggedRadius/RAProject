@@ -7,33 +7,33 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Xceed.Wpf.Toolkit;
 
 namespace RAProject.Models
 {
     [Serializable]
     public class Game
     {
-        [JsonProperty("ID")]            public string ID                        { get; set; }
-        [JsonProperty("Title")]         public string Title                     { get; set; }
-        public int AchievementCount                     { get; set; }
-        [JsonProperty("ForumTopicID")]  private string ForumTopicID              { get; set; }
-        [JsonProperty("ConsoleID")] public string ConsoleID                 { get; set; }
-        [JsonProperty("ConsoleName")]   public string ConsoleName               { get; set; }
-        [JsonProperty("Flags")] private object Flags                     { get; set; }
-        [JsonProperty("ImageIcon")]     public string ImageIcon                 { get; set; }
-        [JsonProperty("GameIcon")]      public string GameIcon                  { get; set; }
-        [JsonProperty("ImageTitle")]    public string ImageTitle                { get; set; }
-        [JsonProperty("ImageIngame")]   public string ImageIngame               { get; set; }
-        [JsonProperty("ImageBoxArt")]   public string ImageBoxArt               { get; set; }
-        [JsonProperty("Publisher")]     public string Publisher                 { get; set; }
-        [JsonProperty("Developer")]     public string Developer                 { get; set; }
-        [JsonProperty("Genre")]         public string Genre                     { get; set; }
-        [JsonProperty("Released")]      public string Released                  { get; set; }
-        [JsonProperty("GameTitle")]     public string GameTitle                 { get; set; }
-        [JsonProperty("Console")]       public string Console                   { get; set; }
-        [JsonProperty("Achievements")]  public List<Achievement> Achievements   { get; set; }
-        [JsonProperty("LastPlayed")]    public string LastPlayed                { get; set; }
-
+        [JsonProperty("ID")] public string ID { get; set; }
+        [JsonProperty("Title")] public string Title { get; set; }
+        [JsonProperty("ForumTopicID")] private string ForumTopicID { get; set; }
+        [JsonProperty("ConsoleID")] public string ConsoleID { get; set; }
+        [JsonProperty("ConsoleName")] public string ConsoleName { get; set; }
+        [JsonProperty("Flags")] private object Flags { get; set; }
+        [JsonProperty("ImageIcon")] public string ImageIcon { get; set; }
+        [JsonProperty("GameIcon")] public string GameIcon { get; set; }
+        [JsonProperty("ImageTitle")] public string ImageTitle { get; set; }
+        [JsonProperty("ImageIngame")] public string ImageIngame { get; set; }
+        [JsonProperty("ImageBoxArt")] public string ImageBoxArt { get; set; }
+        [JsonProperty("Publisher")] public string Publisher { get; set; }
+        [JsonProperty("Developer")] public string Developer { get; set; }
+        [JsonProperty("Genre")] public string Genre { get; set; }
+        [JsonProperty("Released")] public string Released { get; set; }
+        [JsonProperty("GameTitle")] public string GameTitle { get; set; }
+        [JsonProperty("Console")] public string Console { get; set; }
+        [JsonProperty("Achievements")] public List<Achievement> Achievements { get; set; }
+        [JsonProperty("LastPlayed")] public string LastPlayed { get; set; }
+        public int AchievementCount { get; set; }
 
         public bool hasAchievements = true;
 
@@ -42,6 +42,7 @@ namespace RAProject.Models
         public Image imgBoxArt;
         public Image imgIcon;
 
+        #region Constructors
         public Game()
         {
             Achievements = new List<Achievement>();
@@ -82,17 +83,8 @@ namespace RAProject.Models
             if (j["Released"] != null)
                 Released = (string)j["Released"];
 
-
-
             // Create new list of achievements
             Achievements = new List<Achievement>();
-
-            // Populate achievements
-            //foreach (JProperty a in j["Achievements"])
-            //{
-            //    Achievement ac = new Achievement(a.Value);
-            //    this.Achievements.Add(ac);
-            //}
 
             // Extra attributes from other queries
             if (j["LastPlayed"] != null)
@@ -104,6 +96,7 @@ namespace RAProject.Models
                 ID = (string)j["GameID"];
             }
         }
+        #endregion  
 
         public void DownloadAchievements()
         {
@@ -197,45 +190,36 @@ namespace RAProject.Models
                 }
                 if (this.imgBoxArt == null)
                 {
-                    if (data["ImageBoxArt"] == null)
+                    if (data["ImageBoxArt"] != null)
                     {
-                        //this.imgBoxArt = Properties.Resources.maxresdefault;
-                    }
-                    else
-                    {
-                        this.imgBoxArt = downloadImage_BoxArt();
+                        this.imgBoxArt = fetchImage_BoxArt(data);
                     }
                 }
                 if (this.imgTitleScreen == null)
                 {
-                    if (data["ImageTitle"] == null)
-                    {
-                        //this.imgTitleScreen = Properties.Resources.maxresdefault;
-                    }
-                    else
+                    if (data["ImageTitle"] != null)
                     {
                         try
                         {
-                            this.imgTitleScreen = downloadImage_TitleScreen();
+                            this.imgTitleScreen = fetchImage_TitleScreen(data);
                         }
                         catch (Exception ex)
-                        { }
+                        {
+                            System.Console.WriteLine("Error downloading Title screen for {1}: {0}", ex.Message, this.Title);
+                        }
                     }
                 }
                 if (this.imgIngame == null)
                 {
-                    if (data["ImageIngame"] == null)
-                    {
-                        //this.imgIngame = Properties.Resources.maxresdefault;
-                    }
-                    else
+                    if (data["ImageIngame"] != null)
                     {
                         try
                         {
-                            this.imgIngame = downloadImage_InGame();
+                            this.imgIngame = fetchImage_InGame(data);
                         }
                         catch (Exception ex)
-                        { // Image not available }
+                        {
+                            System.Console.WriteLine("Error downloading in-game image for {1}: {0}", ex.Message, this.Title);
                         }
                     }
                     if (this.Achievements == null)
@@ -332,6 +316,7 @@ namespace RAProject.Models
             string reqURL = Requests.Games.getGameInfoBasic(ID);
             string json = Requests.FetchJSON(reqURL); // Here is slow
             dynamic data = JsonConvert.DeserializeObject(json);
+
             string boxArtURL = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageInGame"]);
             imgIngame = Requests.DownloadImageFromUrl(boxArtURL);
             return imgIngame;
@@ -348,5 +333,26 @@ namespace RAProject.Models
         }
 
 
+        public Image fetchImage_BoxArt(dynamic data)
+        {
+            System.Console.WriteLine("Downloading Box Art for {0}", Title);
+            string boxArtURL = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageBoxArt"]);
+            imgBoxArt = Requests.DownloadImageFromUrl(boxArtURL);
+            return imgBoxArt;
+        }
+        public Image fetchImage_TitleScreen(dynamic data)
+        {
+            System.Console.WriteLine("Downloading Title Screen Art for {0}", Title);
+            string boxArtURL = string.Format("https://s3-eu-west-1.amazonaws.com/i.retroachievements.org{0}", data["ImageTitle"]);
+            imgTitleScreen = Requests.DownloadImageFromUrl(boxArtURL);
+            return imgTitleScreen;
+        }
+        public Image fetchImage_InGame(dynamic data)
+        {
+            System.Console.WriteLine("Downloading InGame Art for {0}", Title);
+            string boxArtURL = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org" + data["ImageIngame"];
+            imgIngame = Requests.DownloadImageFromUrl(boxArtURL);
+            return imgIngame;
+        }
     }
 }

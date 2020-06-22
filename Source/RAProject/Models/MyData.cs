@@ -60,13 +60,13 @@ namespace RAProject.Models
                 }
                 catch (FileNotFoundException ex)
                 {
-                    Console.WriteLine("No data exists.");
+                    Console.WriteLine("No data exists: {0}", ex.Message);
                     myData = new DataFile();
                     return false;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error loading: {0}", dataFileName);
+                    Console.WriteLine("Error loading: {0}\n{1}", dataFileName, ex.Message);
                     myData = new DataFile();
                     return false;
                 }
@@ -112,6 +112,14 @@ namespace RAProject.Models
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                     );
+            }
+        }
+        public static void DownloadAllGames()
+        {
+            foreach (GameConsole console in MyData.myData.consoles)
+            {
+                Console.WriteLine("Downloading {0} games...", console.Name);
+                console.DownloadConsoleGames();
             }
         }
     }
