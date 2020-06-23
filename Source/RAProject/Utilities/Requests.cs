@@ -16,6 +16,11 @@ namespace RAProject.Connection
 {
     public static class Requests
     {
+        /// <summary>
+        /// Fetches JSON data from RetroAchievement servers.
+        /// </summary>
+        /// <param name="url">The URL of the request being made</param>
+        /// <returns>JSON data</returns>
         public static string FetchJSON (string url)
         {
             // Fetch JSON string
@@ -26,6 +31,12 @@ namespace RAProject.Connection
                 return jsonString;
             }
         }
+
+        /// <summary>
+        /// Downloads an image from a given URL.
+        /// </summary>
+        /// <param name="url">URL to download image from</param>
+        /// <returns>Image downloaded from given URL</returns>
         public static Image DownloadImageFromUrl(string url)
         {
             using (WebClient client = new WebClient())
@@ -65,7 +76,6 @@ namespace RAProject.Connection
                     );
             }
         }
-
         public struct Games
         {
             public static string GetBoxArtURL(string gameID)

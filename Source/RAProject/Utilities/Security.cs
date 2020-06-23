@@ -9,6 +9,11 @@ namespace RAProject.Utilities
 {
     class Security
     {
+        /// <summary>
+        /// Hashes the raw data parsed into the method.
+        /// </summary>
+        /// <param name="rawData">The raw data to hash</param>
+        /// <returns>A hashed value of the raw data parsed</returns>
         public static string ComputeSha256Hash(string rawData)
         {
             // Create a SHA256   
@@ -27,7 +32,5 @@ namespace RAProject.Utilities
                 return builder.ToString();
             }
         }
-
-
     }
 }

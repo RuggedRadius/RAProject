@@ -13,6 +13,11 @@ namespace RAProject.Utilities
 {
     public static class ImageConversion
     {
+        /// <summary>
+        /// Converts a System.Drawing.Image to a System.Windows.Controls.Image.
+        /// </summary>
+        /// <param name="gdiImg">System.Drawing.Image</param>
+        /// <returns>System.Windows.Controls.Image</returns>
         public static System.Windows.Controls.Image ConvertDrawingImageToWPFImage(System.Drawing.Image gdiImg)
         {
             System.Windows.Controls.Image img = null; 
@@ -32,6 +37,11 @@ namespace RAProject.Utilities
             return img;
         }
 
+        /// <summary>
+        /// Converts an image to an imageSource.
+        /// </summary>
+        /// <param name="img">Image to convert</param>
+        /// <returns>An imageSource of the image parsed</returns>
         public static ImageSource ImageToSource (Image img)
         {
             Bitmap bmp = new Bitmap(img);

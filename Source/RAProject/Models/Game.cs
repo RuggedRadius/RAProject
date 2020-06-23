@@ -132,10 +132,9 @@ namespace RAProject.Models
 
         public void downloadGameData()
         {
-            string url = Requests.Games.getGameInfoExtendedProgress(ID);// requestURL(Constants.QueryTypes.WEB_GAME_INFO_AND_PROGRESS, this.ID);
+            string url = Requests.Games.getGameInfoExtendedProgress(ID);
             string json = Requests.FetchJSON(url);
             dynamic data = JsonConvert.DeserializeObject(json);
-
 
             if (data != null)
             {

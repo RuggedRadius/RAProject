@@ -73,64 +73,6 @@ namespace RAProject.Modules
             public const string SuperCassetteVision = "Super Cassette Vision";
         }
 
-
-        //public struct ConsoleImages
-        //{
-        //    public static Image MegaDrive = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\megaDrive.png");
-        //    public static Image Nintendo64 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\n64.png");
-        //    public static Image SNES = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\snes.png");
-        //    public static Image GameBoy = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\gb.png");
-        //    public static Image GameBoyAdvance = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\gba.png");
-        //    public static Image GameBoyColor = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\gbc.png");
-        //    public static Image NES = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\nes.png");
-        //    public static Image PCEngine = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\PC_Engine.png");
-        //    public static Image SegaCD = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sega_cd.png");
-        //    public static Image _32X = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sega_32x.png");
-        //    public static Image MasterSystem = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sms.png");
-        //    public static Image PlayStation = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\ps1.png");
-        //    public static Image AtariLynx = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_lynx.png");
-        //    public static Image NeoGeoPocket = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\neo_geo.png");
-        //    public static Image GameGear = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\game_gear.png");
-        //    public static Image GameCube = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\gamecube.png");
-        //    public static Image AtariJaguar = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_jaguar.png");
-        //    public static Image NintendoDS = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\nintendo_ds.png");
-        //    public static Image Wii = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\wii.png");
-        //    public static Image WiiU = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\wii_u.png");
-        //    public static Image PlayStation2 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\ps2.png");
-        //    public static Image Xbox = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\xbox.png");
-        //    public static Image PokemonMini = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\pokemon_mini.png");
-        //    public static Image Atari2600 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_2600.png");
-        //    public static Image DOS = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\dos.png");
-        //    public static Image Arcade = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\arcade.png");
-        //    public static Image VirtualBoy = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\cirtual_boy.png");
-        //    public static Image MSX = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\msx.png");
-        //    public static Image Commodore64 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\c64.png");
-        //    public static Image ZX81 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\zx81.png");
-        //    public static Image Oric = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\oric.png");
-        //    public static Image SG_1000 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sg_1000.png");
-        //    public static Image VIC_20 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\vic-20.png");
-        //    public static Image Amiga = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\amiga.png");
-        //    public static Image AtariST = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_st.png");
-        //    public static Image AmstradCPC = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\amstrad_cpc.png");
-        //    public static Image AppleII = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\apple_ii.png");
-        //    public static Image Saturn = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\sega_saturn.png");
-        //    public static Image Dreamcast = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\dreamcast.png");
-        //    public static Image PlayStationPortable = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\psp.png");
-        //    public static Image PhilipsCD_i = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\philips_cd-i.png");
-        //    public static Image _3DOInteractiveMultiplayer = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\3do_interactive.png");
-        //    public static Image ColecoVision = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\colecovision.png");
-        //    public static Image Intellivision = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\intellivision.png");
-        //    public static Image Vectrex = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\vectrex.png");
-        //    public static Image PC8000_8800 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\pc-8000.png");
-        //    public static Image PC9800 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\pc-9800.png");
-        //    public static Image PC_FX = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\pc-fx.png");
-        //    public static Image Atari5200 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_5200.png");
-        //    public static Image Atari7800 = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\atari_7800.png");
-        //    public static Image X68K = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\x68k.png");
-        //    public static Image WonderSwan = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\wonderswan.png");
-        //    public static Image CassetteVision = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\Cassette_Vision.png");
-        //    public static Image SuperCassetteVision = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\super_Cassette_Vision.png");
-        //}
         public struct ConsoleImages
         {
             public static string MegaDrive = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\megaDrive.png"; // AppDomain.CurrentDomain.BaseDirectory + "images\\consoles\\megaDrive.png";
@@ -188,8 +130,12 @@ namespace RAProject.Modules
             public static string CassetteVision = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\Cassette Vision.png"; 
             public static string SuperCassetteVision = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "") + @"\Resources\Consoles\super Cassette Vision.png"; 
         }
-
         
+        /// <summary>
+        /// Get the images of the given console.
+        /// </summary>
+        /// <param name="console">Console of which to return an image of</param>
+        /// <returns>An image of the given console</returns>
         public static Image getConsoleImage(GameConsole console)
         {
             try

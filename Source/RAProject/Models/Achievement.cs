@@ -9,25 +9,31 @@ namespace RAProject.Models
     [Serializable]
     public class Achievement
     {
-        [JsonProperty("ID")]                    public string ID                    { get; set; }
+        [JsonProperty("ID")] public string ID { get; set; }
         [JsonProperty("Title")] public string Title { get; set; }
         [JsonProperty("Description")] public string Description { get; set; }
-        [JsonProperty("NumAwarded")]            public string NumAwarded            { get; set; }
-        [JsonProperty("NumAwardedHardcore")]    public string NumAwardedHardcore    { get; set; }
-        [JsonProperty("Points")]                public string Points                { get; set; }
-        [JsonProperty("TrueRatio")] private string TrueRatio             { get; set; }
-        [JsonProperty("Author")]                public string Author                { get; set; }
-        [JsonProperty("DateModified")]          private string DateModified          { get; set; }
-        [JsonProperty("DateCreated")] private string DateCreated           { get; set; }
-        [JsonProperty("BadgeName")] private string BadgeName             { get; set; }
-        [JsonProperty("DisplayOrder")] private string DisplayOrder          { get; set; }
-        [JsonProperty("MemAddr")] private string MemAddr               { get; set; }
+        [JsonProperty("NumAwarded")] public string NumAwarded { get; set; }
+        [JsonProperty("NumAwardedHardcore")] public string NumAwardedHardcore { get; set; }
+        [JsonProperty("Points")] public string Points { get; set; }
+        [JsonProperty("TrueRatio")] private string TrueRatio { get; set; }
+        [JsonProperty("Author")] public string Author { get; set; }
+        [JsonProperty("DateModified")] private string DateModified { get; set; }
+        [JsonProperty("DateCreated")] private string DateCreated { get; set; }
+        [JsonProperty("BadgeName")] private string BadgeName { get; set; }
+        [JsonProperty("DisplayOrder")] private string DisplayOrder { get; set; }
+        [JsonProperty("MemAddr")] private string MemAddr { get; set; }
         [JsonProperty("DateEarned")] public string DateEarned { get; set; }
         [JsonProperty("DateEarnedHardCore")] public string DateEarnedHardcore { get; set; }
 
-
+        /// <summary>
+        /// Fetches image of achievement's badge.
+        /// </summary>
         public Image badge;
         
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="token">JToken of de-serialised JSON data object</param>
         public Achievement (JToken token)
         {
             ID =                    (string) token["ID"];
@@ -65,6 +71,10 @@ namespace RAProject.Models
             }
         }
 
+        /// <summary>
+        /// Public method to get badge of achievement.
+        /// </summary>
+        /// <returns>Image of achievement's badge</returns>
         public Image getBadge()
         {
             if (badge == null)
@@ -75,6 +85,10 @@ namespace RAProject.Models
             return badge;
         }
 
+        /// <summary>
+        /// Get the URL of the achievement's badge.
+        /// </summary>
+        /// <returns>A string containing URL of achievement's badge</returns>
         public string GetBadgeUrl()
         {
             if (this.DateEarned != null)
@@ -86,7 +100,11 @@ namespace RAProject.Models
                 return String.Format("http://retroachievements.org/Badge/{0}_lock.png", this.BadgeName);
             }
         }
-        
+
+        /// <summary>
+        /// Method to get badge of achievement.
+        /// </summary>
+        /// <returns>Image of achievement's badge</returns>
         private Image fetchBadge()
         {
             return Requests.DownloadImageFromUrl(GetBadgeUrl());

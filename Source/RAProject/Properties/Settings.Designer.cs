@@ -25,7 +25,7 @@ namespace RAProject.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("RuggedRadius")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Credential_Username {
             get {
                 return ((string)(this["Credential_Username"]));
@@ -37,7 +37,7 @@ namespace RAProject.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("B28aNhBWut5BmBmIbsYrFPdpUJoa2Dmt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Credential_APIKey {
             get {
                 return ((string)(this["Credential_APIKey"]));

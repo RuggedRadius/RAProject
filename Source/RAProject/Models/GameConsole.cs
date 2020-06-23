@@ -15,47 +15,18 @@ namespace RAProject.Models
         [JsonProperty("Name")]  public string Name { get; set; }
 
         public List<Game> games;
-
-        Game game = new Game();
-
-
-        // Console Info
-        //public Image consoleImage { get; set; }
         public string released { get; set; }
-
-
 
         public GameConsole(JToken j)
         {            
             ID = (string)j["ID"];
             Name = (string)j["Name"];
-
             games = new List<Game>();
-            //Task.Run(() => {
-            //    DownloadConsoleGames();
-            //});
         }
 
-        public string getReleased()
-        {
-            if (released == null || string.IsNullOrEmpty(released))
-            {
-                
-            }
-
-            return released;
-        }
-
-
-
- 
-
-
-
-
-
-
-
+        /// <summary>
+        /// Downloads all games for current console.
+        /// </summary>
         public void DownloadConsoleGames()
         {
             Console.WriteLine("Downloading games list for {0}...", Name);

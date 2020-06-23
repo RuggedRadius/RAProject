@@ -15,12 +15,13 @@ namespace RAProject.Models
         public GameConsole currentConsole;
         public Game currentGame;
 
+        public string username;
+        public string apikey;
+
         public DataFile()
         {
             consoles = new List<GameConsole>();            
             currentUser = new User();
         }
-
-
     }
 }

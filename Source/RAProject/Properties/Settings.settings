@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="Credential_Username" Type="System.String" Scope="User">
-      <Value Profile="(Default)">RuggedRadius</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Credential_APIKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">B28aNhBWut5BmBmIbsYrFPdpUJoa2Dmt</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="LoadOnStartUp" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

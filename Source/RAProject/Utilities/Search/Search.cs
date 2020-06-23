@@ -62,8 +62,6 @@ namespace RAProject.Utilities
         }
         private static Achievement BinarySearch_Achievements(Achievement[] inputArray, string key, int min, int max)
         {
-            Console.WriteLine("Searching...");
-
             if (min > max)
             {
                 // Not found
@@ -72,12 +70,12 @@ namespace RAProject.Utilities
             else
             {
                 int mid = (min + max) / 2;
-                if (key.ToLower() == inputArray[mid].Title.ToLower())
+                if (key.Equals(inputArray[mid].ID)) //if (key.ToLower() == inputArray[mid].Title.ToLower())
                 {
                     // Found
                     return inputArray[mid];
                 }
-                else if (key.ToLower().CompareTo(inputArray[mid].Title.ToLower()) < 0)
+                else if (key.CompareTo(inputArray[mid].ID) < 0)
                 {
                     return BinarySearch_Achievements(inputArray, key, min, mid - 1);
                 }
@@ -137,7 +135,7 @@ namespace RAProject.Utilities
                 }
             }
 
-            Console.WriteLine(results.Count + " achievements added to search list.");
+            //Console.WriteLine(results.Count + " achievements added to search list.");
 
             // Return list converted to an array
             return results.ToArray();
@@ -178,6 +176,21 @@ namespace RAProject.Utilities
 
             // Binary search data
             return BinarySearch_Achievements(input, query, 0, input.Length - 1);
+        }
+
+        public static Achievement testSearch(string id)
+        {
+            // Get data
+            Achievement[] input = getAllAchievements();
+
+            foreach (Achievement a in input)
+            {
+                if (a.ID == id)
+                {
+                    return a;
+                }
+            }
+            return null;
         }
     }
 }

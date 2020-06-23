@@ -35,72 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MahApps.Metro.IconPacks, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.BoxIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.BoxIcons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Entypo, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Entypo.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.EvaIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.EvaIcons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.FeatherIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.FeatherIcons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.FontAwesome, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.FontAwesome.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Ionicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Ionicons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.JamIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.JamIcons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Material, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Material.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.MaterialDesign, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.MaterialDesign.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.MaterialLight, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.MaterialLight.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Microns, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Microns.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Modern, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Modern.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Octicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Octicons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.PicolIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.PicolIcons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.RPGAwesome, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.RPGAwesome.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.SimpleIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.SimpleIcons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Typicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Typicons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Unicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Unicons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.WeatherIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.WeatherIcons.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Zondicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Zondicons.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -145,13 +79,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Credentials.xaml.cs">
+      <DependentUpon>Credentials.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InitialisationWindow.xaml.cs">
       <DependentUpon>InitialisationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ConsoleDataRow.cs" />
     <Compile Include="Models\DataFile.cs" />
-    <Compile Include="Models\FocusTracker.cs" />
-    <Compile Include="Models\User\TopUser.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -171,6 +106,10 @@
     <Compile Include="Utilities\Search\Search.cs" />
     <Compile Include="Utilities\Security.cs" />
     <Compile Include="Utilities\Theme.cs" />
+    <Page Include="Credentials.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="InitialisationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -193,8 +132,7 @@
     <Compile Include="Models\GameConsole.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\MyData.cs" />
-    <Compile Include="Models\User\User.cs" />
-    <Compile Include="Models\User\User_LastActivity.cs" />
+    <Compile Include="Models\User.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +142,8 @@
     <Resource Include="Resources\maxresdefault.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\yoshi.png" />
+    <Resource Include="Resources\search-icon.png" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -212,7 +152,6 @@
     <Resource Include="Fonts\bahnschrift.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <None Include="Resources\download.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Consoles\3do_interactive.png" />

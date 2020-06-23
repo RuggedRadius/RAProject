@@ -6,10 +6,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:RAProject"
-        xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Name="wndMain" x:Class="RAProject.MainWindow"
+        
+    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Name="wndMain" x:Class="RAProject.MainWindow"
     xmlns:gif="http://wpfanimatedgif.codeplex.com"    
     mc:Ignorable="d"
-        Title="RetroAchievements Browser" Background="Teal" Height="872" Width="1104" FontFamily="Bahnschrift Light">
+        Title="RetroAchievements Browser" Background="Teal" Height="872" Width="1104" FontFamily="Bahnschrift Light" WindowState="Maximized">
     <Window.Resources>
         <Style TargetType="{x:Type DataGridRow}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -460,31 +461,32 @@
                 </Style>
             </Grid.Resources>
             <ToolBar x:Name="toolBarMain" Background="Teal" VerticalAlignment="Top" Margin="0">
-                <Button x:Name="btnSearch" Foreground="White" FontSize="14" Height="26" Margin="20,0,0,2" Click="btnSearch_Click" Cursor="Hand">
-                    <iconPacks:PackIconMaterial Kind="TextSearch"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <Button x:Name="btnSearch" Foreground="White" FontSize="14" Height="34" Margin="0,0,0,2" Click="btnSearch_Click" Cursor="Hand">
+                    <Image Source="Resources/search-icon.png" />
                 </Button>
                 <TextBox x:Name="txtSearchQuery" Width="250" Background="Transparent" Foreground="White" SelectionBrush="#FFFFA200" BorderBrush="White" Text="Enter search query..." Height="26" Margin="0,5,0,9" FontFamily="Bahnschrift Light" GotFocus="txtSearchQuery_GotFocus" KeyDown="txtSearchQuery_KeyDown"/>
-                <ComboBox x:Name="cmbSearchCategory" SelectedIndex="1" Width="179" HorizontalContentAlignment="Center" Height="26" FontFamily="Bahnschrift Light" FontSize="20" Margin="0,5,50,9" Background="Transparent" Foreground="White" FontWeight="Bold" OpacityMask="Teal" >
+                <ComboBox x:Name="cmbSearchCategory" SelectedIndex="1" Width="179" HorizontalContentAlignment="Center" Height="26" FontFamily="Bahnschrift Light" FontSize="20" Margin="0,5,30,9" Background="Transparent" Foreground="White" FontWeight="Bold" OpacityMask="Teal" >
                     <ComboBoxItem Content="Consoles" HorizontalAlignment="Left"/>
                     <ComboBoxItem Content="Games" HorizontalAlignment="Left"/>
-                    <ComboBoxItem Content="Achievements" HorizontalAlignment="Left"/>
                 </ComboBox>
 
 
                 <Separator />
 
-                <Label x:Name="lblCurrentConsole" Foreground="White" FontWeight="Bold" FontSize="20" Margin="100,0,0,0">?</Label>
-                <iconPacks:PackIconMaterial x:Name="icoTrackerArrow" Kind="ArrowRightBold"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="20,0,20,7" />
-                <Label x:Name="lblCurrentGame" Foreground="White" FontWeight="Bold" FontSize="20">?</Label>
+                <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                    <Label x:Name="lblCurrentConsole" Foreground="White" FontWeight="Bold" FontSize="20" Margin="0,0,0,0">?</Label>
+                    <Label x:Name="lblTrackerSeparator" Foreground="White" FontWeight="Bold" FontSize="20" Margin="0,0,0,0">\</Label>
+                    <Label x:Name="lblCurrentGame" Foreground="White" FontWeight="Bold" FontSize="20">?</Label>
+                </StackPanel>
             </ToolBar>
             <TabControl x:Name="tabControl" Margin="0,35,0,0" TabStripPlacement="Left" BorderBrush="#00000000" FontFamily="Bahnschrift Light" FontSize="14" ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="Transparent">
 
-                <TabItem Selector.Selected="tabUserProfile_Selected" Style="{DynamicResource tabStylings}" x:Name="tabUserProfile" Header="User Profile" Margin="0,0,0,0" Height="50" Width="150" FontSize="16" BorderThickness="3,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <TabItem Selector.Selected="tabUserProfile_Selected" Style="{DynamicResource tabStylings}" x:Name="tabUserProfile" Header="User Profile" Margin="0,0,0,0" Height="100" Width="150" FontSize="16" BorderThickness="3,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel x:Name="bgUserProfile" Background="#FF00575A" ScrollViewer.CanContentScroll="True" >
 
                             <StackPanel Orientation="Horizontal">
-                                <GroupBox x:Name="groupBox" Header="User Profile" Height="188" VerticalAlignment="Top" Margin="10,0,10,10" Width="400" Foreground="White" HorizontalAlignment="Left">
+                                <GroupBox x:Name="groupBox" Header="User Profile" Height="188" VerticalAlignment="Top" Margin="10,0,10,10" Width="400" Foreground="White" HorizontalAlignment="Left" Background="Teal" BorderThickness="0">
                                     <Grid>
                                         <Image x:Name="imgUserAvatar" HorizontalAlignment="Left" Height="150" Margin="5,6,0,0" VerticalAlignment="Top" Width="150" Panel.ZIndex="2"/>
                                         <Label x:Name="lblUsername" Content="Label" HorizontalAlignment="Left" Margin="168,6,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontSize="20" Panel.ZIndex="1" Background="#00000000"/>
@@ -495,11 +497,11 @@
                                     </Grid>
                                 </GroupBox>
 
-                                <GroupBox Header="Last Game Played" Margin="10,0,10,10" HorizontalAlignment="Left">
+                                <GroupBox Header="Last Game Played" Margin="10,0,10,10" HorizontalAlignment="Left" BorderThickness="0" Background="Teal">
                                     <Grid x:Name="grdLastPlayedGame" Height="Auto" Width="Auto"/>
                                 </GroupBox>
                             </StackPanel>
-                            <GroupBox Header="Recent Achievements" Margin="10,0,10,10" HorizontalAlignment="Left">
+                            <GroupBox Header="Recent Achievements" Margin="10,0,10,10" HorizontalAlignment="Left" BorderThickness="0" Background="#00008080">
                                 <WrapPanel x:Name="wrpRecentAchievements" Height="Auto" Width="Auto">
                                     <WrapPanel.Resources>
                                         <Style TargetType="{x:Type Image}">
@@ -510,8 +512,8 @@
                             </GroupBox>
 
 
-                            <GroupBox Header="Recently Played Games" Margin="10,0,10,10" HorizontalAlignment="Left">
-                                <WrapPanel x:Name="wrpRecentlyPlayed" Height="Auto" Width="Auto">
+                            <GroupBox Header="Recently Played Games" Margin="10,0,10,10" HorizontalAlignment="Left" BorderThickness="0" Background="#00008080">
+                                <WrapPanel x:Name="wrpRecentlyPlayed" Height="Auto" Width="Auto" Background="#00008080">
                                     <WrapPanel.Resources>
                                         <Style TargetType="{x:Type Image}">
                                             <Setter Property="Margin" Value="10,10" />
@@ -528,7 +530,7 @@
                     </ScrollViewer>
                 </TabItem>
 
-                <TabItem Selector.Selected="tabConsoles_Selected" Style="{StaticResource tabStylings}" x:Name="tabConsoles" Header="Consoles" Margin="0,0,0,0" Height="50" Width="150" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                <TabItem Selector.Selected="tabConsoles_Selected" Style="{StaticResource tabStylings}" x:Name="tabConsoles" Header="Consoles" Margin="0,0,0,0" Height="100" Width="150" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <DockPanel x:Name="bgConsoles" Margin="0" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
 
                         <Border DockPanel.Dock="Top" BorderBrush="White" Padding="10" Margin="10" BorderThickness="2">
@@ -586,7 +588,7 @@
                     </DockPanel>
                 </TabItem>
 
-                <TabItem Selector.Selected="tabGames_Selected" Style="{DynamicResource tabStylings}" x:Name="tabGames" Header="Games" Margin="0,0,0,0" Height="50" Width="150" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                <TabItem Selector.Selected="tabGames_Selected" Style="{DynamicResource tabStylings}" x:Name="tabGames" Header="Games" Margin="0,0,0,0" Height="100" Width="150" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <DockPanel x:Name="bgGames" Margin="0" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
 
 
@@ -601,7 +603,7 @@
                                 <StackPanel DockPanel.Dock="Top">
                                     <Image x:Name="imgGame" Height="532"/>
                                 </StackPanel>
-                                
+
                                 <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
                                     <Label x:Name="lblGameTitle" HorizontalContentAlignment="Center" Content="Game Title" Foreground="White" FontWeight="SemiBold" FontSize="20" Margin="0,20,0,10"/>
 
@@ -618,7 +620,7 @@
                                         <Label x:Name="lblGames_Publisher" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="240" />
                                     </WrapPanel>
                                 </StackPanel>
-                                
+
                             </DockPanel>
                         </Border>
 
@@ -640,7 +642,7 @@
                                       VerticalContentAlignment="Stretch" 
                                       Grid.IsSharedSizeScope="True" 
                                       MouseDoubleClick="dgGames_MouseDoubleClick" 
-                                      SelectionChanged="dgGames_SelectionChanged"
+                                      SelectionChanged="dgGames_SelectionChanged" AutoGeneratingColumn="dgGames_AutoGeneratingColumn"
                                       >
                                     <DataGrid.RowStyle>
                                         <Style TargetType="{x:Type DataGridRow}">
@@ -675,7 +677,7 @@
                     </DockPanel>
                 </TabItem>
 
-                <TabItem Selector.Selected="tabAchievements_Selected" Style="{DynamicResource tabStylings}" x:Name="tabAchievements" Header="Achievements" Margin="0,0,0,0" Height="50" Width="150">
+                <TabItem Selector.Selected="tabAchievements_Selected" Style="{DynamicResource tabStylings}" x:Name="tabAchievements" Header="Achievements" Margin="0,0,0,0" Height="100" Width="150">
                     <DockPanel x:Name="bgAchievements" Margin="0" Background="#FF00575A" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
 
                         <StackPanel DockPanel.Dock="Right" >
@@ -786,13 +788,13 @@
                     </DockPanel>
                 </TabItem>
 
-                <TabItem Selector.Selected="tabLeaderBoard_Selected" Style="{DynamicResource tabStylings}" x:Name="tabLeaderBoard" Header="Leader Board" Margin="0,0,0,0" Height="50" Width="150">
+                <TabItem Selector.Selected="tabLeaderBoard_Selected" Style="{DynamicResource tabStylings}" x:Name="tabLeaderBoard" Header="Leader Board" Margin="0,0,0,0" Height="100" Width="150">
                     <ScrollViewer HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="#FF00575A">
                         <StackPanel x:Name="stackLeaderBoard" Margin="0"></StackPanel>
                     </ScrollViewer>
                 </TabItem>
 
-                <TabItem Selector.Selected="tabSettings_Selected" Style="{DynamicResource tabStylings}" x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="50" Width="150">
+                <TabItem Selector.Selected="tabSettings_Selected" Style="{DynamicResource tabStylings}" x:Name="tabSettings" Header="Settings" Margin="0,0,0,0" Height="100" Width="150">
                     <ScrollViewer HorizontalContentAlignment="Left">
                         <StackPanel x:Name="bgSettings" ScrollViewer.VerticalScrollBarVisibility="Auto" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True" Background="#FF00575A">
 

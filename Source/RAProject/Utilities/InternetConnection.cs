@@ -9,6 +9,10 @@ namespace RAProject.Connection
 {
     class InternetConnection
     {
+        /// <summary>
+        /// Checks if application has internet access.
+        /// </summary>
+        /// <returns>True if internet is connected, false if connection fails.</returns>
         public static bool InternetConnected ()
         {
             try

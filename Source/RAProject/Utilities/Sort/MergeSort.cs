@@ -102,7 +102,7 @@ namespace RAProject.Utilities
 
             while ((left <= left_end) && (mid <= right))
             {
-                if (numbers[left].Title.CompareTo(numbers[mid].Title) < 0)
+                if (numbers[left].ID.CompareTo(numbers[mid].ID) < 0)
                     temp[tmp_pos++] = numbers[left++];
                 else
                     temp[tmp_pos++] = numbers[mid++];

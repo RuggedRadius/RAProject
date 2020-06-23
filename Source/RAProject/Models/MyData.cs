@@ -17,11 +17,18 @@ namespace RAProject.Models
 
         public struct FileHandling
         {
+            /// <summary>
+            /// Saves all data to file.
+            /// </summary>
+            /// <returns>True on completion.</returns>
             public static bool SaveData()
             {
+                Console.WriteLine("Saving myData to file...");
                 try
                 {
-                    Console.WriteLine("Saving myData to file...");
+                    MyData.myData.username = Properties.Settings.Default.Credential_Username;
+                    MyData.myData.apikey = Properties.Settings.Default.Credential_APIKey;
+
                     string launchDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
                     FileInfo dataFile = new FileInfo(launchDirectory + dataFileName);
                     using (FileStream stream = new FileStream(dataFile.FullName, FileMode.Create))
@@ -39,6 +46,10 @@ namespace RAProject.Models
                     return false;
                 }
             }
+            /// <summary>
+            /// Loads all data from file.
+            /// </summary>
+            /// <returns>True on completion.</returns>
             public static bool LoadData()
             {
                 Console.WriteLine("Loading data from file...");
@@ -52,11 +63,13 @@ namespace RAProject.Models
 
                         // Deserilise stream of binary data into object
                         myData = (DataFile) binaryFormatter.Deserialize(stream);
-
-                        Console.WriteLine("Data file {0} loaded.", dataFile.FullName);
-
-                        return true;
                     }
+
+                    Properties.Settings.Default.Credential_Username = MyData.myData.username;
+                    Properties.Settings.Default.Credential_APIKey = MyData.myData.apikey;
+
+                    Console.WriteLine("Data file {0} loaded.", dataFile.FullName);
+                    return true;
                 }
                 catch (FileNotFoundException ex)
                 {
@@ -73,6 +86,9 @@ namespace RAProject.Models
             }
         }
 
+        /// <summary>
+        /// Downloads all console data.
+        /// </summary>
         public static void DownloadConsoles()
         {
             Console.WriteLine("Downloading console data...");
@@ -114,6 +130,9 @@ namespace RAProject.Models
                     );
             }
         }
+        /// <summary>
+        /// Downloads all games for all consoles in MyData.
+        /// </summary>
         public static void DownloadAllGames()
         {
             foreach (GameConsole console in MyData.myData.consoles)
