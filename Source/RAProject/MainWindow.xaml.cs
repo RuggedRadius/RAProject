@@ -332,8 +332,7 @@ namespace RAProject
                     continue;
 
                 // Add to datagrid
-                //dgConsoleList.Items.Add(new ConsoleDataRow(console.Name, console.released, console.games.Count));
-                dgConsoleList.Items.Add(console);
+                dgConsoleList.Items.Add(new ConsoleDataRow(console.Name, console.released, console.games.Count));
             }
 
             // Select first item
