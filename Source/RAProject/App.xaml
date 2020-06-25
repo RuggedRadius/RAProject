@@ -15,23 +15,31 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TabItem}">
                         <Grid>
-                            <Border  x:Name="Border" Margin="0,0,-4,0" BorderThickness="1,1,1,1" CornerRadius="10,0,0,10" >
+                            <Border  x:Name="Border" Margin="2" BorderThickness="0,0,0,0" CornerRadius="5" >
                                 <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="12,2,12,2" RecognizesAccessKey="True"/>
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#FF00575A" />
+                                <Setter TargetName="Border" Property="Background" Value="#FF0E0E0E" />                                
                             </Trigger>
                             <Trigger Property="IsSelected" Value="False">
-                                <Setter TargetName="Border" Property="Background" Value="Teal" />
+                                <Setter TargetName="Border" Property="Background" Value="#FF1D1D1D" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#FF303030" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#FF1D1D1D" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
-        
+
+
+
+
     </Application.Resources>
 </Application>

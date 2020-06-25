@@ -101,11 +101,6 @@ namespace RAProject.Models
 
             if (data["console"][0] != null)
             {
-                if (myData == null)
-                {
-                    myData = new DataFile();
-                }
-
                 // Create list of consoles
                 myData.consoles = new List<GameConsole>();
 

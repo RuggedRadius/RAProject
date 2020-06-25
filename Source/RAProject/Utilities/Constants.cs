@@ -43,7 +43,6 @@ namespace RAProject.Connection
 
             // Game Images
             internal const string GAME_IMAGES_URL_BASE = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org";
-
         }
     }
 }

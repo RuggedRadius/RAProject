@@ -50,6 +50,22 @@ namespace RAProject
         #endregion
 
         #region Constructor
+        private bool receivedTestData()
+        {
+            string url = Requests.Users.getUserSummary();
+            string jsonString = Requests.FetchJSON(url);
+            dynamic testFetchData = JsonConvert.DeserializeObject(jsonString);
+
+            if (testFetchData == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -60,26 +76,16 @@ namespace RAProject
             // If connection settings are empty, 
             if (string.IsNullOrEmpty(Properties.Settings.Default.Credential_Username) ||
                 string.IsNullOrEmpty(Properties.Settings.Default.Credential_APIKey))
-            {   
-                // Init test data
-                dynamic testFetchData = null;
+            {
+                int counter = 1;
 
                 // While NOT receiving test data...
-                while (testFetchData == null)
+                while (!receivedTestData())
                 {
                     // Show input window
-                    Credentials wndCredentials = new Credentials();
+                    Credentials wndCredentials = new Credentials(counter);
                     wndCredentials.ShowDialog();
-                   
-                    // Get test data
-                    string url = Requests.Users.getUserSummary();
-                    string jsonString = Requests.FetchJSON(url);
-                    testFetchData = JsonConvert.DeserializeObject(jsonString);
-
-                    if (testFetchData == null)
-                    {
-                        MessageBox.Show("No response from server.\n\n1. Check your internet connection/firewall.\n2. Check your credentials", "No response", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    counter++;
                 }
             }
             
@@ -265,6 +271,8 @@ namespace RAProject
             });
         }
         #endregion
+
+
 
         #region Menu
 
@@ -1150,6 +1158,10 @@ namespace RAProject
         /// </summary>
         private void populateLeaderBoard()
         {
+            // Dont re-populate. Not the best way to do this but it'll do for now.
+            if (stackLeaderBoard.Children.Count > 0)
+                return;
+
             Task.Run(() => {
                 // Init list
                 List<User> leaders = new List<User>();
@@ -1158,6 +1170,11 @@ namespace RAProject
                 string requestURL = Requests.Users.getTop10Users();
                 string json = Requests.FetchJSON(requestURL);
                 dynamic data = JsonConvert.DeserializeObject(json);
+
+                Dispatcher.Invoke(() => {
+                    // Clear stack panel
+                    stackLeaderBoard.Children.Clear();
+                });
 
                 // Populate leader board
                 for (int i = 0; i < 10; i++)
@@ -1210,11 +1227,14 @@ namespace RAProject
             image.EndInit();
 
             GroupBox newUser = new GroupBox();
-            newUser.Width = 420;
+            
 
             Dispatcher.Invoke(() => {
+                newUser.Width = 370;
                 newUser.Header = "#" + rank;
                 newUser.Margin = new Thickness(20, 5, 20, 5);
+                newUser.Background = new SolidColorBrush(Color.FromArgb(204, 0, 0, 0));
+                newUser.BorderThickness = new Thickness(0);
 
                 StackPanel userLayout = new StackPanel();
                 userLayout.Orientation = Orientation.Horizontal;
@@ -1280,37 +1300,20 @@ namespace RAProject
         #endregion
 
         #region User Tab
-        // Init
-        private void tabUserProfile_Selected(object sender, RoutedEventArgs e)
-        {
-            displayTab_UserProfile();
-        }
+        // Init        
         /// <summary>
         /// Displays user's profile.
         /// </summary>
-        private async void displayTab_UserProfile() 
+        private void displayTab_UserProfile() 
         {
-            await Task.Run(() =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    // Check user object exists, if not create it and fetch it's data
-                    if (MyData.myData.currentUser == null)
-                    {
-                        Console.WriteLine("No user found in myData.");
-                        MyData.myData.currentUser = new User();
-                    }
-                });
-            });
-
             // Populate fields with user data
             FillUserDetails();
 
-            populateRankScoreAndRecentlyPlayed();
+            FillRecentlyPlayed();
 
-            FillLastGamePlayed();
+            //FillLastGamePlayed();
 
-            populateRecentAchievements();
+            FillRecentAchievements();
         }
 
         // Population Methods
@@ -1387,17 +1390,14 @@ namespace RAProject
                 }
             }
         }
+
         /// <summary>
         /// Populates user's score, rank and recently played games. All in one as the
         /// JSON that delivers this information is.
         /// </summary>
-        private void populateRankScoreAndRecentlyPlayed()
+        private void FillRecentlyPlayed()
         {
             Dispatcher.Invoke(() => {
-
-                lblUserScore.Content = MyData.myData.currentUser.score;
-                lblUserRank.Content = string.Format("#{0}", MyData.myData.currentUser.Rank);
-
                 // Clear wrap panel
                 Dispatcher.Invoke(() =>
                 {
@@ -1407,6 +1407,8 @@ namespace RAProject
                 // For each game in list
                 foreach (Game game in MyData.myData.currentUser.RecentlyPlayedGames)
                 {
+                    GroupBox newGamePanel = new GroupBox();
+
                     Task.Run(() =>
                     {
                         System.Windows.Controls.Image img = null;
@@ -1422,20 +1424,22 @@ namespace RAProject
 
                         Dispatcher.Invoke(() =>
                         {
-                            GroupBox newGamePanel = new GroupBox();
+                            
                             newGamePanel.BorderThickness = new Thickness(0);
-                            newGamePanel.Margin = new Thickness(2);
-
+                            newGamePanel.Margin = new Thickness(5);
+                            newGamePanel.Background = new SolidColorBrush(Color.FromArgb(204, 0, 0, 0));
+                            newGamePanel.Header = "#" + (MyData.myData.currentUser.RecentlyPlayedGames.IndexOf(game) + 1);
+                            
 
                             StackPanel gamePanel = new StackPanel();
                             //gamePanel.Margin = new Thickness(5);
                             gamePanel.Tag = game.ID;
-                            gamePanel.Background = new SolidColorBrush(Color.FromRgb(0, 128, 128));
+                            //gamePanel.Background = new SolidColorBrush(Color.FromRgb(0, 128, 128));
                             newGamePanel.Content = gamePanel;
 
                             // Add Image
-                            img.Height = 300;
-                            img.Width = 300;
+                            img.Height = 200;
+                            img.Width = 200;
                             img.Cursor = Cursors.Hand;
                             gamePanel.Children.Add(img);
 
@@ -1475,22 +1479,21 @@ namespace RAProject
                             // Add click event handler
                             gamePanel.AddHandler(MouseDownEvent, new RoutedEventHandler(RecentlyPlayedGame_Click));
 
-                            // Add object to wrap panel
-                            wrpRecentlyPlayed.Children.Add(newGamePanel);
+
 
                         });
                     });
+
+                    // Add object to wrap panel
+                    wrpRecentlyPlayed.Children.Add(newGamePanel);
+
                 }
             });
-
-            
-
-            
         }
         /// <summary>
         /// Populates user's recent achievements.
         /// </summary>
-        private void populateRecentAchievements()
+        private void FillRecentAchievements()
         {
             Console.WriteLine("Populating recent achievements...");
 
@@ -1531,17 +1534,22 @@ namespace RAProject
                         GroupBox newAchievement = new GroupBox();
                         newAchievement.Margin = new Thickness(5);
                         newAchievement.BorderThickness = new Thickness(0);
+                        newAchievement.Width = 300;
 
                         StackPanel content = new StackPanel();
                         newAchievement.Content = content;
                         //content.Cursor = Cursors.Hand;
                         content.Tag = achievement.ID;
-                        content.Background = new SolidColorBrush(Color.FromRgb(0, 128, 128));
+                        content.Background = new SolidColorBrush(Color.FromArgb(204, 0, 0, 0));
 
                         // Title
                         Label title = new Label();
                         title.Content = achievement.Title;
                         title.Foreground = new SolidColorBrush(Colors.White);
+                        title.FontWeight = FontWeights.Bold;
+                        title.FontStyle = FontStyles.Oblique;
+                        title.FontSize = 20;
+                        title.HorizontalContentAlignment = HorizontalAlignment.Center;
 
                         // Image
                         img.Height = 140;
@@ -1553,9 +1561,12 @@ namespace RAProject
                         achDescription.Foreground = new SolidColorBrush(Colors.White);
                         achDescription.BorderBrush = new SolidColorBrush(Colors.Transparent);
                         achDescription.Background = new SolidColorBrush(Colors.Transparent);
-                        achDescription.MaxWidth = 150;
+                        achDescription.MaxWidth = 260;
+                        achDescription.Margin = new Thickness(10);
                         achDescription.TextWrapping = TextWrapping.WrapWithOverflow;
                         achDescription.Text = achievement.Description;
+                        achDescription.IsReadOnly = true;
+                        achDescription.IsHitTestVisible = false;
 
                         // Add content
                         content.Children.Add(title);
@@ -1566,6 +1577,7 @@ namespace RAProject
                         content.AddHandler(MouseDownEvent, new RoutedEventHandler(RecentAchievement_Click));
 
                         // Add object to wrap panel
+                        
                         wrpRecentAchievements.Children.Add(newAchievement);
                     });
                 });
@@ -1577,13 +1589,13 @@ namespace RAProject
         private async void FillUserDetails()
         {
             Console.WriteLine("Populating user details...");
-            // Update status
+
             Dispatcher.Invoke(() =>
             {
-                lblStatus.Content = "Populating user details...";
-
-                // Update label
+                // Update labels
                 lblUsername.Content = Properties.Settings.Default.Credential_Username;
+                lblUserScore.Content = MyData.myData.currentUser.score;
+                lblUserRank.Content = string.Format("#{0}", MyData.myData.currentUser.Rank);
             });
 
             await Task.Run(() =>
@@ -1602,6 +1614,10 @@ namespace RAProject
         }
 
         // Event Handlers
+        private void tabUserProfile_Selected(object sender, RoutedEventArgs e)
+        {
+            displayTab_UserProfile();
+        }
         private void RecentAchievement_Click(object sender, RoutedEventArgs e)
         {
             // Game BoxArt clicked
@@ -1686,18 +1702,6 @@ namespace RAProject
                     // Store credentials in user object
                     MyData.myData.currentUser.addToCredentials(txtSettingsUsername.Text, Security.ComputeSha256Hash(txtSettingsAPIKey.Password));
                 });
-
-                if (MyData.myData == null)
-                {
-                    // Create new data file for user
-                    MyData.myData = new DataFile();
-                }
-
-                if (MyData.myData.currentUser == null)
-                {
-                    // Create new user
-                    MyData.myData.currentUser = new User();
-                }
 
                 Console.WriteLine("Displaying user profile");
                 displayTab_UserProfile();
@@ -1951,18 +1955,18 @@ namespace RAProject
         /// </summary>
         private void applyTheme()
         {
-            tabControl.Background = new SolidColorBrush(Theme.primaryColour);
-            toolBarMain.Background = new SolidColorBrush(Theme.primaryColour);
-            statBarMain.Background = new SolidColorBrush(Theme.primaryColour);
-            lblStatus.Background = new SolidColorBrush(Theme.primaryColour);
+            //tabControl.Background = new SolidColorBrush(Theme.primaryColour);
+            //toolBarMain.Background = new SolidColorBrush(Theme.primaryColour);
+            //statBarMain.Background = new SolidColorBrush(Theme.primaryColour);
+            //lblStatus.Background = new SolidColorBrush(Theme.primaryColour);
 
 
-            bgUserProfile.Background = new SolidColorBrush(Theme.secondaryColour);
-            bgConsoles.Background = new SolidColorBrush(Theme.secondaryColour);
-            bgGames.Background = new SolidColorBrush(Theme.secondaryColour);
-            bgAchievements.Background = new SolidColorBrush(Theme.secondaryColour);
-            //bgLeaderboard.Background = new SolidColorBrush(Theme.secondaryColour);
-            bgSettings.Background = new SolidColorBrush(Theme.secondaryColour);
+            //bgUserProfile.Background = new SolidColorBrush(Theme.secondaryColour);
+            //bgConsoles.Background = new SolidColorBrush(Theme.secondaryColour);
+            //bgGames.Background = new SolidColorBrush(Theme.secondaryColour);
+            //bgAchievements.Background = new SolidColorBrush(Theme.secondaryColour);
+            ////bgLeaderboard.Background = new SolidColorBrush(Theme.secondaryColour);
+            //bgSettings.Background = new SolidColorBrush(Theme.secondaryColour);
 
         }
         /// <summary>
@@ -2018,5 +2022,16 @@ namespace RAProject
                 applyVisualStyles();
         }
         #endregion
+
+        private void groupBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //UIElement source = (UIElement)e.Source;
+            //source.
+        }
+
+        private void groupBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
@@ -42,7 +43,33 @@ namespace RAProject.Connection
             using (WebClient client = new WebClient())
             {
                 // Download image data to byte[]
-                byte[] imgData = client.DownloadData(url);
+                byte[] imgData = new byte[0];
+
+                while (imgData.Length == 0)
+                {
+                    int waitTime = 0;
+                    try
+                    {
+                        Thread.Sleep(waitTime);
+                        imgData = client.DownloadData(url);
+                    }
+                    catch (Exception ex)
+                    {
+                        DialogResult result = MessageBox.Show("Error fetching achievement badge.\n\n" + ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                        if (result == DialogResult.Cancel)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            // Reset data
+                            imgData = new byte[0];
+
+                            // Increase pre-delay between requests for remote servers to not block connection
+                            waitTime += 50;
+                        }
+                    }
+                }
 
 
                 using (var memStream = new MemoryStream(imgData))
@@ -93,6 +120,7 @@ namespace RAProject.Connection
                 boxArtURL += game.ImageBoxArt;
                 return boxArtURL;
             }
+
             public static string getGameInfoBasic(string gameID)
             {
                 return String.Format(
@@ -104,7 +132,6 @@ namespace RAProject.Connection
                     gameID
                     );
             }
-
             public static string getGameInfoExtended(string gameID)
             {
                     return String.Format(
@@ -116,7 +143,6 @@ namespace RAProject.Connection
                         gameID
                         );
             }
-
             public static string getGameInfoExtendedProgress(string gameID)
             {
                 return String.Format(
@@ -151,7 +177,6 @@ namespace RAProject.Connection
                     Properties.Settings.Default.Credential_APIKey
                     );
             }
-
             public static string getLastWeekAcheivements()
             {
                 DateTime currentDate = DateTime.Today;

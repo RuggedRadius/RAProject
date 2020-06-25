@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAProject", "RAProject.csproj", "{DB1F2C5F-E0D5-47EA-8DE7-9C6F316BEFF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Browser", "Browser.csproj", "{DB1F2C5F-E0D5-47EA-8DE7-9C6F316BEFF2}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupWizard", "..\SetupWizard\SetupWizard.vdproj", "{AEA2E4EA-F870-48AA-A8D5-9BC133D79242}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,8 @@ Global
 		{DB1F2C5F-E0D5-47EA-8DE7-9C6F316BEFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB1F2C5F-E0D5-47EA-8DE7-9C6F316BEFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB1F2C5F-E0D5-47EA-8DE7-9C6F316BEFF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEA2E4EA-F870-48AA-A8D5-9BC133D79242}.Debug|Any CPU.ActiveCfg = Debug
+		{AEA2E4EA-F870-48AA-A8D5-9BC133D79242}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

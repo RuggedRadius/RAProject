@@ -19,9 +19,20 @@ namespace RAProject
     /// </summary>
     public partial class Credentials : Window
     {
-        public Credentials()
+        public Credentials(int count)
         {
             InitializeComponent();
+
+            if (count > 1)
+            {
+                this.Height += 50;
+
+                Label errorMessage = new Label();
+                errorMessage.Content = "No response from the server. Check internet connection, firewall settings and credentials.";
+                errorMessage.Foreground = new SolidColorBrush(Color.FromRgb(255, 69, 69));
+                errorMessage.HorizontalContentAlignment = HorizontalAlignment.Center;
+                mainStack.Children.Add(errorMessage);
+            }
         }
 
         private void btnConfirmCredentials_Click(object sender, RoutedEventArgs e)
@@ -31,6 +42,11 @@ namespace RAProject
 
             // Close window
             this.Close();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

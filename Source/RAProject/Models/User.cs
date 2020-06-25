@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RAProject.Connection;
+using RAProject.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,12 +36,15 @@ namespace RAProject.Models
         private Hashtable credentials;
 
         // Constructors
-        public User() {
-            fetchUserData();
-            credentials = new Hashtable();
-        }
+        //public User() {
+        //    fetchUserData();
+        //    credentials = new Hashtable();
+        //}
         public User(JToken j)
         {
+            RecentlyPlayedGames = new List<Game>();
+            credentials = new Hashtable();
+
             score = (string) j["score"];
             trueratio = (string) j["trueratio"];
 
@@ -52,11 +56,28 @@ namespace RAProject.Models
             if (j["RecentlyPlayed"] != null)
             {
                 // Get recent games
-                RecentlyPlayedGames = new List<Game>();
+                Game[] allGames = Search.getAllGames();                
+                Game recentGame = null;
+
                 foreach (JObject jo in j["RecentlyPlayed"])
                 {
-                    Game recentGame = new Game(jo);
-                    RecentlyPlayedGames.Add(recentGame);
+                    // Find game
+                    foreach (Game game in allGames)
+                    {
+                        if (Int32.Parse(game.ID) == MyData.myData.currentUser.LastGameId)
+                        {
+                            // Found
+                            recentGame = game;
+
+                            // Add to recent list
+                            RecentlyPlayedGames.Add(recentGame);
+                        }
+                    }
+                    if (recentGame == null)
+                    {
+                        // Not found
+                        MessageBox.Show("Game not found!", "Error adding recently played game", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
             if (j["UserPic"] != null)
@@ -236,7 +257,8 @@ namespace RAProject.Models
 
             if (data == null)
             {
-                MessageBox.Show("No response from server.\n\n1. Check your internet connection/firewall.\n2. Check your credentials in the Settings tab.", "No response", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+                //MessageBox.Show("No response from server.\n\n1. Check your internet connection/firewall.\n2. Check your credentials in the Settings tab.", "No response", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
