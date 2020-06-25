@@ -1708,24 +1708,7 @@ namespace RAProject
             });
 
         }
-        private void cpPrimaryColour_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
-        {
-            Theme.primaryColour = (Color)cpPrimaryColour.SelectedColor;
-            applyTheme();
 
-            Style currentStyle = (Style)Application.Current.Resources["tabStylings"];
-            Style newStyle = new Style(typeof(TabItem), currentStyle);
-
-            newStyle.Setters.Add(new Setter(BackgroundProperty, Theme.primaryColour));
-            newStyle.Setters.Add(new Setter(ForegroundProperty, Theme.secondaryColour));
-
-            //Application.Current.Resources["tabStylings"] = newStyle;
-        }
-        private void cpSecondaryColour_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
-        {
-            Theme.secondaryColour = (Color)cpSecondaryColour.SelectedColor;
-            applyTheme();
-        }
         #endregion
 
         #region Help Tab
