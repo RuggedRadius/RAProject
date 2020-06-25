@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -42,6 +43,12 @@ namespace RAProject.Models
         //}
         public User(JToken j)
         {
+            //while (!MainWindow.initialised)
+            //{
+            //    Thread.Sleep(3000);
+            //    Console.WriteLine("Waiting for initialisation to complete.");
+            //}
+
             RecentlyPlayedGames = new List<Game>();
             credentials = new Hashtable();
 
@@ -53,33 +60,35 @@ namespace RAProject.Models
                 LastGameId = (int)j["LastGameID"];
             }
 
-            if (j["RecentlyPlayed"] != null)
-            {
-                // Get recent games
-                Game[] allGames = Search.getAllGames();                
-                Game recentGame = null;
+            //if (j["RecentlyPlayed"] != null)
+            //{
 
-                foreach (JObject jo in j["RecentlyPlayed"])
-                {
-                    // Find game
-                    foreach (Game game in allGames)
-                    {
-                        if (Int32.Parse(game.ID) == MyData.myData.currentUser.LastGameId)
-                        {
-                            // Found
-                            recentGame = game;
 
-                            // Add to recent list
-                            RecentlyPlayedGames.Add(recentGame);
-                        }
-                    }
-                    if (recentGame == null)
-                    {
-                        // Not found
-                        MessageBox.Show("Game not found!", "Error adding recently played game", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            }
+            //    // Get recent games
+            //    Game[] allGames = Search.getAllGames();
+            //    Game recentGame = null;
+
+            //    foreach (JObject jo in j["RecentlyPlayed"])
+            //    {
+            //        // Find game
+            //        foreach (Game game in allGames)
+            //        {
+            //            if (Int32.Parse(game.ID) == MyData.myData.currentUser.LastGameId)
+            //            {
+            //                // Found
+            //                recentGame = game;
+
+            //                // Add to recent list
+            //                RecentlyPlayedGames.Add(recentGame);
+            //            }
+            //        }
+            //        if (recentGame == null)
+            //        {
+            //            // Not found
+            //            MessageBox.Show("Game not found!", "Error adding recently played game", MessageBoxButton.OK, MessageBoxImage.Error);
+            //        }
+            //    }
+            //}
             if (j["UserPic"] != null)
             {
                 UserPic = "http://retroachievements.org";
@@ -236,7 +245,7 @@ namespace RAProject.Models
         /// Sub-method of fetchUserData. Fetches user's data.
         /// </summary>
         /// <returns>Current user's data</returns>
-        public dynamic fetchData()
+        private dynamic fetchData()
         {
             // Determine URL
             string url = Requests.Users.getUserSummary();

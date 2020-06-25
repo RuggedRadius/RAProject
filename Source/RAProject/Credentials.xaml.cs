@@ -38,7 +38,7 @@ namespace RAProject
         private void btnConfirmCredentials_Click(object sender, RoutedEventArgs e)
         {
             // Update credentials
-            MainWindow.UpdateCredentials(txtInputUsername.Text, txtInputAPIKey.Text);
+            MainWindow.UpdateCredentials(txtInputUsername.Text, txtInputAPIKey.Password);
 
             // Close window
             this.Close();
@@ -47,6 +47,14 @@ namespace RAProject
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void txtInputUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                btnConfirmCredentials_Click(sender, e);
+            }
         }
     }
 }

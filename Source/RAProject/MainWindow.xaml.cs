@@ -35,7 +35,7 @@ namespace RAProject
     {
         #region Properties
         // States
-        bool initialised;
+        public static bool initialised;
         bool initialising;
         bool populatingGames;
         static bool initTrigger;
@@ -89,17 +89,21 @@ namespace RAProject
                 }
             }
             
-            // Apply theme
-            applyTheme();
-
-            // Start on user profile
-            tabControl.SelectedIndex = 0;
-
             // Check if initialisation is required
             if (MyData.myData.consoles.Count == 0)
             {
                 Initialise();
             }
+
+            string url = Requests.Users.getUserSummary(); // Determine URL of user summary
+            string jsonString = Requests.FetchJSON(url); // Fetch user JSON data
+            dynamic data = JsonConvert.DeserializeObject(jsonString); // Deserialize JSON into object
+            MyData.myData.currentUser = new User(data);
+            MyData.myData.currentUser.getRecentGames(data);
+
+
+            // Start on user profile
+            tabControl.SelectedIndex = 0;
 
             initialised = true;
 
@@ -176,7 +180,7 @@ namespace RAProject
                 {
                     try
                     {
-                        Dispatcher.Invoke(async () =>
+                        Dispatcher.Invoke(() =>
                         {
                             if (initTrigger)
                             {
@@ -230,6 +234,8 @@ namespace RAProject
             // Close init window
             this.Visibility = Visibility.Visible;
             wndInit.Close();
+
+            Console.WriteLine("Initialise completed");
         }
         /// <summary>
         /// Sub method of intialise, downloads all consoles and their games from the retroachievements servers.
@@ -1306,6 +1312,12 @@ namespace RAProject
         /// </summary>
         private void displayTab_UserProfile() 
         {
+            if (MyData.myData.currentUser.RecentAchievements == null ||
+                MyData.myData.currentUser.RecentlyPlayedGames == null)
+            {
+                MyData.myData.currentUser.fetchUserData();
+            }
+
             // Populate fields with user data
             FillUserDetails();
 
@@ -1474,19 +1486,12 @@ namespace RAProject
                                     });
                                 }
                             });
-
-
                             // Add click event handler
                             gamePanel.AddHandler(MouseDownEvent, new RoutedEventHandler(RecentlyPlayedGame_Click));
-
-
-
                         });
                     });
-
                     // Add object to wrap panel
                     wrpRecentlyPlayed.Children.Add(newGamePanel);
-
                 }
             });
         }
@@ -1706,9 +1711,7 @@ namespace RAProject
                 Console.WriteLine("Displaying user profile");
                 displayTab_UserProfile();
             });
-
         }
-
         #endregion
 
         #region Help Tab
@@ -1928,29 +1931,6 @@ namespace RAProject
             elem.IsEnabled = false;
             elem.Visibility = Visibility.Hidden;
             Panel.SetZIndex(elem, -1);
-        }
-
-        /// <summary>
-        /// 
-        ///         *** [Currently in Alpha] ***
-        /// 
-        /// Applies the selected colour scheme to the application.
-        /// </summary>
-        private void applyTheme()
-        {
-            //tabControl.Background = new SolidColorBrush(Theme.primaryColour);
-            //toolBarMain.Background = new SolidColorBrush(Theme.primaryColour);
-            //statBarMain.Background = new SolidColorBrush(Theme.primaryColour);
-            //lblStatus.Background = new SolidColorBrush(Theme.primaryColour);
-
-
-            //bgUserProfile.Background = new SolidColorBrush(Theme.secondaryColour);
-            //bgConsoles.Background = new SolidColorBrush(Theme.secondaryColour);
-            //bgGames.Background = new SolidColorBrush(Theme.secondaryColour);
-            //bgAchievements.Background = new SolidColorBrush(Theme.secondaryColour);
-            ////bgLeaderboard.Background = new SolidColorBrush(Theme.secondaryColour);
-            //bgSettings.Background = new SolidColorBrush(Theme.secondaryColour);
-
         }
         /// <summary>
         /// Master method of hideVisualStyles and showVisualStyles. 
