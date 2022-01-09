@@ -547,7 +547,7 @@
                             <DockPanel>
                                 <StackPanel Background="#CC000000" DockPanel.Dock="Top">
                                     <Image x:Name="imgConsole" Height="200" Source="Resources/Consoles/gba.png" Margin="20,20,20,10"/>
-                                    <Label x:Name="lblConsoleName" HorizontalContentAlignment="Center" Content="Console Name" Foreground="White" FontWeight="SemiBold" FontSize="20"/>
+                                    <Label x:Name="lblConsoleName" HorizontalContentAlignment="Center" Content="Console Name" Foreground="White" FontWeight="SemiBold" FontSize="20" x:FieldModifier="public"/>
                                     <WrapPanel Margin="0,20,0,17">
                                         <Label Content="Games" HorizontalContentAlignment="Center" Foreground="White" Width="200" FontWeight="Bold" />
                                         <Label x:Name="lblConsoleGamesCount" Content="-" HorizontalContentAlignment="Center" Foreground="White" Width="200" />

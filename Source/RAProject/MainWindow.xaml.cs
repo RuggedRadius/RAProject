@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RAProject.Activities;
 using RAProject.Connection;
+using RAProject.Consoles;
 using RAProject.Models;
 using RAProject.Modules;
 using RAProject.Utilities;
@@ -225,7 +227,7 @@ namespace RAProject
             MyData.myData = new DataFile();
 
             // Download data
-            await downloadAllMainData(wndInit);
+            await FetchData.downloadAllMainData(wndInit);
 
             // Reset init flag
             initTrigger = false;
@@ -237,45 +239,7 @@ namespace RAProject
 
             Console.WriteLine("Initialise completed");
         }
-        /// <summary>
-        /// Sub method of intialise, downloads all consoles and their games from the retroachievements servers.
-        /// </summary>
-        /// <param name="initWindow"></param>
-        /// <returns></returns>
-        private Task downloadAllMainData(InitialisationWindow initWindow)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                // Download consoles
-                if (MyData.myData.consoles.Count == 0)
-                {
-                    MyData.DownloadConsoles();
-                }
-
-                // setup up progress bar
-                Dispatcher.Invoke(() => {
-                    initWindow.pbInit.Maximum = MyData.myData.consoles.Count;
-                    initWindow.pbInit.Value = 0;
-                });
-
-                // Download games
-                foreach (GameConsole console in MyData.myData.consoles)
-                {
-                    string status = String.Format("Downloading {0} games...", console.Name);
-                    Console.WriteLine(status);
-
-                    Dispatcher.Invoke(() => {
-                        initWindow.UpdateStatus(status);
-                    });
-
-                    console.DownloadConsoleGames();
-
-                    Dispatcher.Invoke(() => {
-                        initWindow.pbInit.Value++;
-                    });
-                }
-            });
-        }
+        
         #endregion
 
 
@@ -317,75 +281,11 @@ namespace RAProject
         // Init
         private void tabConsoles_Selected(object sender, RoutedEventArgs e)
         {
-            populateConsoleDataGrid();
+            PopulateConsoleDataGrid.populateConsoleDataGrid(dgConsoleList);
         }     
 
-        // Population Methods
-        /// <summary>
-        /// Populates the console tab data grid.
-        /// </summary>
-        public void populateConsoleDataGrid()
-        {
-            dgConsoleList.Items.Clear();
-
-            if (MyData.myData == null)
-            {
-                MyData.FileHandling.LoadData();
-            }
-
-            if (MyData.myData.consoles.Count == 0)
-            {
-                MyData.DownloadConsoles();
-            }
-
-            // Populate list with each downloaded console
-            foreach (GameConsole console in MyData.myData.consoles)
-            {
-                // Filter non-games, don't know why they exist in the db.. they must have their reasons
-                if (console.Name == "Events" || console.Name == "Hubs" || console.Name == "[Unused]")
-                    continue;
-
-                // Add to datagrid
-                dgConsoleList.Items.Add(new ConsoleDataRow(console.Name, console.released, console.games.Count));
-            }
-
-            // Select first item
-            if (MyData.myData.currentConsole == null)
-            {
-                dgConsoleList.SelectedIndex = 0;
-            }
-        }
-        /// <summary>
-        /// Populates the selected console's details in the informaiton panel.
-        /// </summary>
-        /// <param name="console">The console to display details from</param>
-        private void populateConsoleInfo (GameConsole console)
-        {
-            Dispatcher.Invoke(() => {
-                // Set image
-                System.Drawing.Image consoleImage = ConsoleInformation.getConsoleImage(console);
-
-                if (consoleImage == null)
-                {
-                    Console.WriteLine("Image not found...");
-                }
-                else
-                {
-                    Bitmap bmp = new Bitmap(consoleImage);
-                    IntPtr hBitmap = bmp.GetHbitmap();
-                    ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                    imgConsole.Source = WpfBitmap;
-
-                    // Set title
-                    lblConsoleName.Content = console.Name;
-
-                    // Set details
-                    lblConsoleGamesCount.Content = console.games.Count.ToString();
-                }
-            });
-
-        }
+        
+        
 
         // Event handlers
         private void btnDownloadConsoleGames_Click(object sender, RoutedEventArgs e)
@@ -405,7 +305,7 @@ namespace RAProject
 
             selectedConsole.DownloadConsoleGames();
 
-            populateConsoleDataGrid();
+            PopulateConsoleDataGrid.populateConsoleDataGrid(dgConsoleList);
         }
         private void dgConsoleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -430,7 +330,7 @@ namespace RAProject
                     MyData.myData.currentGame = null;
 
                     // Populate console information panel
-                    populateConsoleInfo(console);
+                    PopulateConsoleInformation.populateConsoleInfo(console, imgConsole, lblConsoleName, lblConsoleGamesCount);
 
                     // Prevent event from bubbling and re-triggering this method
                     e.Handled = true;
@@ -485,29 +385,7 @@ namespace RAProject
                 tabControl.SelectedIndex = 1;
             }
         }
-        /// <summary>
-        /// Sets all images and labels to loading status, indicating to the user the values are coming.
-        /// </summary>
-        private void SetLoadingLabels()
-        {
-            string loadingString = "Loading...";
 
-            Dispatcher.Invoke(() => {
-                // Image
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.UriSource = new Uri("Resources/loading.gif", UriKind.Relative);
-                image.EndInit();
-                ImageBehavior.SetAnimatedSource(imgGame, image);
-
-                // Labels
-                lblConsoleName.Content = loadingString;
-                lblGameTitle.Content = loadingString;
-                lblGames_Developer.Content = loadingString;
-                lblGames_Publisher.Content = loadingString;
-                lblGames_Released.Content = loadingString;
-            });
-        }
 
         // Population Methods
         /// <summary>
@@ -631,7 +509,7 @@ namespace RAProject
         private async void FillGameInfoPanel(Game game)
         {
             // Set all fields to loading status
-            SetLoadingLabels();
+            Loading.SetLoadingLabels();
 
             // Load details
             await LoadGameDetails(game);

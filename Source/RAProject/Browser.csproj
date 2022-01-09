@@ -55,7 +55,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>78E4C96A5D6B24C03FB7BFF77E631367CABFD4A6</ManifestCertificateThumbprint>
@@ -93,6 +93,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Activities\FetchData.cs" />
+    <Compile Include="Activities\Loading.cs" />
+    <Compile Include="Consoles\PopulateConsoleDataGrid.cs" />
+    <Compile Include="Consoles\PopulateConsoleInformation.cs" />
     <Compile Include="Credentials.xaml.cs">
       <DependentUpon>Credentials.xaml</DependentUpon>
     </Compile>
