@@ -9,7 +9,7 @@ using WpfAnimatedGif;
 
 namespace RAProject.Activities
 {
-    class Loading
+    class LoadingData
     {
         /// <summary>
         /// Sets all images and labels to loading status, indicating to the user the values are coming.

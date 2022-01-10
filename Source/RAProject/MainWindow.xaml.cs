@@ -6,6 +6,7 @@ using RAProject.Consoles;
 using RAProject.Models;
 using RAProject.Modules;
 using RAProject.Utilities;
+using RAProject.Utilities.Images;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -289,80 +290,68 @@ namespace RAProject
 
         // Event handlers
         private void btnDownloadConsoleGames_Click(object sender, RoutedEventArgs e)
-        {
-            // Get selected game
+        { 
+            // Get selected console DataRow.
             ConsoleDataRow selectedConsoleRow = (ConsoleDataRow)dgConsoleList.SelectedItem;
-            GameConsole selectedConsole = null;
+            
+            // Get selected console.
+            GameConsole selectedConsole = GameConsole.GetGameConsoleByName(selectedConsoleRow.ConsoleName);
 
-            foreach (GameConsole console in MyData.myData.consoles)
+            // Exit if no console found.
+            if (selectedConsole == null)
             {
-                if (console.Name == selectedConsoleRow.ConsoleName)
-                {
-                    selectedConsole = console;
-                    break;
-                }
+                Console.WriteLine("WARNING: No console found by that name, aborting fetching of games.");
+
+                return;
             }
 
+            // Download games data for selected console.
             selectedConsole.DownloadConsoleGames();
 
+            // Display games to DataGrid.
             PopulateConsoleDataGrid.populateConsoleDataGrid(dgConsoleList);
         }
         private void dgConsoleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Get console data row object.
             ConsoleDataRow row = (ConsoleDataRow)dgConsoleList.SelectedItem;
 
-            if (row == null)
+            try
             {
-                return;
-            }
+                // Get console by name.
+                GameConsole currentConsole = GameConsole.GetGameConsoleByName(row.ConsoleName);
 
-            string consoleName = row.ConsoleName;
-
-            Console.WriteLine("{0} clicked.", consoleName);
-
-            // Search for selected console
-            foreach (GameConsole console in MyData.myData.consoles)
-            {
-                if (console.Name == consoleName)
+                if (currentConsole != null)
                 {
-                    // Update current console
-                    MyData.myData.currentConsole = console;
+                    // Update current console in MyData.
+                    MyData.myData.currentConsole = currentConsole;
+
+                    // Set current game to none in MyData.
                     MyData.myData.currentGame = null;
 
                     // Populate console information panel
-                    PopulateConsoleInformation.populateConsoleInfo(console, imgConsole, lblConsoleName, lblConsoleGamesCount);
-
-                    // Prevent event from bubbling and re-triggering this method
-                    e.Handled = true;
-                    return;
+                    PopulateConsoleInformation.s_PopulateConsoleInfo(currentConsole);
                 }
+
+                // Prevent event from bubbling and re-triggering this method
+                e.Handled = true;
+
+                return;
             }
+            catch(NullReferenceException ex)
+            {
+                Console.WriteLine("ERROR: [NOT FOUND] " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
+
+
         }
         private void dgConsoleList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            ConsoleDataRow row = (ConsoleDataRow)dgConsoleList.SelectedItem;
-            string consoleName = row.ConsoleName;
-
-            // Search for selected console
-            foreach (GameConsole console in MyData.myData.consoles)
-            {
-                if (console.Name == consoleName)
-                {
-                    MyData.myData.currentConsole = console;
-                    MyData.myData.currentGame = null;
-
-                    //// Populate console information panel
-                    //populateGamesTab(console);
-
-                    tabControl.SelectedIndex = 2;
-
-                    // Prevent event from bubbling and re-triggering this method
-                    e.Handled = true;
-                    return;
-                }
-            }
-
-            Console.WriteLine("Double CLICK!!!!");
+        { 
+            PopulateConsoleGames.s_PopulateConsoleGames(e);
         }
         private void dgConsoleList_Sorting(object sender, DataGridSortingEventArgs e)
         {
@@ -509,7 +498,7 @@ namespace RAProject
         private async void FillGameInfoPanel(Game game)
         {
             // Set all fields to loading status
-            Loading.SetLoadingLabels();
+            LoadingData.SetLoadingLabels();
 
             // Load details
             await LoadGameDetails(game);
@@ -524,38 +513,7 @@ namespace RAProject
         /// <param name="console"></param>
         private void DetermineBoxArtSize(System.Windows.Controls.Image img, GameConsole console)
         {
-            switch (console.Name)
-            {
-                case ConsoleInformation.ConsoleNames.GameBoy:
-                    img.Width = 160;
-                    img.Height = 160;
-                    break;
-
-                case ConsoleInformation.ConsoleNames.GameBoyAdvance:
-                    img.Width = 160;
-                    img.Height = 160;
-                    break;
-
-                case ConsoleInformation.ConsoleNames.GameBoyColor:
-                    img.Width = 160;
-                    img.Height = 160;
-                    break;
-
-                case ConsoleInformation.ConsoleNames.SNES:
-                    img.Width = 240;
-                    img.Height = 160;
-                    break;
-
-                case ConsoleInformation.ConsoleNames.PlayStation:
-                    img.Width = 160;
-                    img.Height = 160;
-                    break;
-
-                default:
-                    img.Width = 160;
-                    img.Height = 240;
-                    break;
-            }
+            img = DetermineBoxArtSizeByConsole.s_SetBoxArtImageSize(img, console);
         }
 
         /// <summary>

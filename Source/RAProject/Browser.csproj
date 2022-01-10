@@ -93,10 +93,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Activities\FetchData.cs" />
-    <Compile Include="Activities\Loading.cs" />
-    <Compile Include="Consoles\PopulateConsoleDataGrid.cs" />
-    <Compile Include="Consoles\PopulateConsoleInformation.cs" />
+    <Compile Include="Activities\Data Fetching\FetchData.cs" />
+    <Compile Include="Activities\Data Fetching\LoadingData.cs" />
+    <Compile Include="Activities\Consoles\PopulateConsoleDataGrid.cs" />
+    <Compile Include="Activities\Games\PopulateConsoleGames.cs" />
+    <Compile Include="Activities\Consoles\PopulateConsoleInformation.cs" />
     <Compile Include="Credentials.xaml.cs">
       <DependentUpon>Credentials.xaml</DependentUpon>
     </Compile>
@@ -117,7 +118,9 @@
     </Compile>
     <Compile Include="Utilities\ConsoleInformation.cs" />
     <Compile Include="Utilities\Constants.cs" />
-    <Compile Include="Utilities\ImageConversion.cs" />
+    <Compile Include="Utilities\GetMainWindowUIControls.cs" />
+    <Compile Include="Utilities\Images\DetermineBoxArtSizeByConsole.cs" />
+    <Compile Include="Utilities\Images\ImageConversion.cs" />
     <Compile Include="Utilities\Sort\MergeSort.cs" />
     <Compile Include="Utilities\Requests.cs" />
     <Compile Include="Utilities\InternetConnection.cs" />
@@ -276,6 +279,9 @@
     <PackageReference Include="WpfAnimatedGif">
       <Version>2.0.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Activities\Achievements\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

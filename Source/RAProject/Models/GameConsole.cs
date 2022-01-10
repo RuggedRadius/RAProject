@@ -53,5 +53,27 @@ namespace RAProject.Models
                 }
             }
         }
+
+        public static GameConsole GetGameConsoleByName(string consoleName)
+        {
+            if (MyData.myData.consoles.Count == 0)
+            {
+                Console.WriteLine("WARNING: No consoles in MyData.");
+
+                return null;
+            }
+
+            foreach (GameConsole gameConsole in MyData.myData.consoles)
+            {
+                if (gameConsole.Name == consoleName)
+                {
+                    return gameConsole;
+                }
+            }
+
+            Console.WriteLine("WARNING: No console by given name found.");
+
+            return null;
+        }
     }
 }
